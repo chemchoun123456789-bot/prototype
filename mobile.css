@@ -1,678 +1,393 @@
 /* ═══════════════════════════════════════════════════════
    mobile.css — LAST STAND: MACHINE WAR
-   Mobile-only styles. Link AFTER style.css in <head>.
+   Link AFTER style.css  |  ONLY affects mobile ≤900px
    ═══════════════════════════════════════════════════════ */
 
-@media (max-width: 900px) {
-  /* ─── LANDSCAPE LOCK OVERLAY ─────────────────────────── */
-
-  #mob-landscape-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    background: #04001280;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  #mob-landscape-overlay.mob-visible {
-    display: flex;
-  }
-
-  .mob-rotate-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 40px 30px;
-    background: rgba(4, 0, 18, 0.95);
-    border: 1px solid rgba(155, 48, 255, 0.4);
-    border-radius: 20px;
-    box-shadow:
-      0 0 60px rgba(155, 48, 255, 0.25),
-      0 0 120px rgba(155, 48, 255, 0.1);
-  }
-
-  .mob-rotate-phone {
-    font-size: 52px;
-    animation: mob-rock 1.4s ease-in-out infinite;
-    transform-origin: center;
-  }
-
-  @keyframes mob-rock {
-    0% {
-      transform: rotate(0deg);
-    }
-    30% {
-      transform: rotate(-90deg);
-    }
-    60% {
-      transform: rotate(-90deg);
-    }
-    90% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-
-  .mob-rotate-title {
-    font-family: "Orbitron", sans-serif;
-    font-size: 16px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: #fff;
-    text-shadow: 0 0 15px rgba(155, 48, 255, 0.8);
-  }
-
-  .mob-rotate-sub {
-    font-family: "Share Tech Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.5);
-    text-align: center;
-  }
-
-  .mob-rotate-arrow {
-    font-size: 28px;
-    color: rgba(155, 48, 255, 0.9);
-    animation: mob-pulse 1s ease-in-out infinite;
-  }
-
-  @keyframes mob-pulse {
-    0%,
-    100% {
-      opacity: 0.4;
-      transform: scale(0.9);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.1);
-    }
-  }
-
-  /* ─── LOGIN SCREEN ───────────────────────────────────── */
-
-  #s-login {
-    flex-direction: column !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    padding: 0 !important;
-  }
-
-  #s-login .left {
-    display: none !important;
-  }
-
-  #s-login .right {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: 100vh !important;
-    padding: 24px 16px 40px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #s-login .card {
-    width: 100% !important;
-    max-width: 420px !important;
-    padding: 28px 20px 20px !important;
-  }
-
-  /* tabs */
-  #s-login .tabs {
-    gap: 6px !important;
-    margin-bottom: 20px !important;
-  }
-
-  #s-login .tb {
-    padding: 9px 20px !important;
-    font-size: 11px !important;
-    min-height: 40px !important;
-  }
-
-  /* inputs */
-  #s-login .if {
-    font-size: 14px !important;
-    padding: 12px 14px !important;
-    min-height: 46px !important;
-  }
-
-  /* main CTA buttons */
-  #s-login .btn {
-    min-height: 48px !important;
-    font-size: 12px !important;
-    letter-spacing: 2px !important;
-    padding: 14px 20px !important;
-    border-radius: 8px !important;
-    margin-top: 4px !important;
-  }
-
-  /* google button */
-  #s-login .btn-google {
-    min-height: 46px !important;
-    font-size: 12px !important;
-    padding: 12px 16px !important;
-    border-radius: 8px !important;
-    gap: 10px !important;
-  }
-
-  /* ─── COMPLETE PROFILE SCREEN ────────────────────────── */
-
-  #s-complete-profile .left {
-    display: none !important;
-  }
-
-  #s-complete-profile .right {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 24px 16px 40px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #s-complete-profile .card {
-    width: 100% !important;
-    max-width: 420px !important;
-    padding: 28px 20px 20px !important;
-  }
-
-  #s-complete-profile .btn {
-    min-height: 48px !important;
-    font-size: 12px !important;
-    padding: 14px 20px !important;
-  }
-
-  /* ─── MAIN MENU ──────────────────────────────────────── */
-
-  .topbar {
-    padding: 10px 14px !important;
-    height: auto !important;
-    min-height: 54px !important;
-  }
-
-  .topbar-logo {
-    font-size: 13px !important;
-    letter-spacing: 2px !important;
-  }
-
-  .topbar-coins {
-    font-size: 12px !important;
-    padding: 5px 10px !important;
-  }
-
-  .topbar-nick {
-    font-size: 11px !important;
-  }
-
-  .topbar-rank {
-    font-size: 9px !important;
-  }
-
-  .topbar-av {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 14px !important;
-  }
-
-  /* page title */
-  .page-title {
-    font-size: 15px !important;
-    letter-spacing: 3px !important;
-    margin-top: 10px !important;
-  }
-
-  .page-sub {
-    font-size: 9px !important;
-    letter-spacing: 2px !important;
-  }
-
-  /* ─── GAME LAYOUT (character select) ────────────────── */
-
-  .game-layout {
-    flex-direction: column !important;
-    gap: 16px !important;
-    padding: 12px 14px !important;
-    overflow-y: auto !important;
-  }
-
-  .game-hero {
-    flex-direction: row !important;
-    gap: 12px !important;
-    width: 100% !important;
-    min-width: unset !important;
-  }
-
-  .hero-char-area {
-    width: 90px !important;
-    height: 90px !important;
-    flex-shrink: 0;
-  }
-
-  #bigCharCanvas {
-    width: 80px !important;
-    height: 80px !important;
-  }
-
-  .hero-ring {
-    width: 90px !important;
-    height: 90px !important;
-  }
-
-  .hero-game-title {
-    font-size: 10px !important;
-    letter-spacing: 1px !important;
-  }
-
-  .hero-char-name {
-    font-size: 16px !important;
-    letter-spacing: 2px !important;
-  }
-
-  .start-game-btn {
-    min-height: 42px !important;
-    font-size: 11px !important;
-    padding: 10px 16px !important;
-    letter-spacing: 2px !important;
-  }
-
-  .game-skins-col {
-    width: 100% !important;
-    min-width: unset !important;
-    max-height: 220px !important;
-  }
-
-  .skins-grid {
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important;
-    gap: 8px !important;
-  }
-
-  .preview-panel {
-    display: none !important;
-  }
-
-  /* ─── MODE SELECT SCREEN ─────────────────────────────── */
-
-  .mode-select-inner {
-    padding: 28px 20px !important;
-    gap: 16px !important;
-  }
-
-  .mode-select-title {
-    font-size: 14px !important;
-    letter-spacing: 2px !important;
-  }
-
-  .cards {
-    flex-direction: column !important;
-    gap: 12px !important;
-    width: 100% !important;
-    max-width: 280px !important;
-  }
-
-  .cards .card {
-    padding: 18px 20px !important;
-    min-height: 90px !important;
-  }
-
-  .card-icon {
-    font-size: 24px !important;
-  }
-
-  .cards .card .tip {
-    font-size: 13px !important;
-    letter-spacing: 2px !important;
-  }
-
-  .mode-back-btn {
-    min-height: 44px !important;
-    font-size: 11px !important;
-    padding: 10px 24px !important;
-  }
-
-  /* ─── IN-GAME HUD ────────────────────────────────────── */
-
-  /* supply buttons at bottom-left — move them up to avoid joystick overlap */
-  #btn-spawn-ammo,
-  #btn-spawn-shield,
-  #btn-spawn-heal {
-    padding: 6px 10px !important;
-    border-radius: 6px !important;
-  }
-
-  #btn-spawn-ammo div:first-child,
-  #btn-spawn-shield div:first-child,
-  #btn-spawn-heal div:first-child {
-    font-size: 13px !important;
-  }
-
-  /* minimap at bottom-right — move up to avoid shoot button overlap */
-  #hud-minimap-wrap {
-    bottom: 160px !important;
-    right: 12px !important;
-    transform: scale(0.75) !important;
-    transform-origin: bottom right !important;
-  }
-
-  /* boss bar */
-  #boss-bar-wrap {
-    bottom: 170px !important;
-  }
-
-  /* reload indicator */
-  #reload-indicator {
-    bottom: 220px !important;
-  }
-
-  /* combo hud */
-  #combo-hud {
-    top: 70px !important;
-    right: 12px !important;
-  }
-
-  /* game over screen buttons */
-  #game-over-screen > div {
-    padding: 32px 24px !important;
-    margin: 16px !important;
-    width: calc(100% - 32px) !important;
-    box-sizing: border-box !important;
-  }
-
-  #game-over-screen button {
-    min-height: 46px !important;
-    font-size: 10px !important;
-    padding: 12px 20px !important;
-  }
-
-  /* upgrade screen */
-  .upgrade-cards {
-    flex-direction: column !important;
-    gap: 10px !important;
-    padding: 0 16px !important;
-    max-height: 60vh !important;
-    overflow-y: auto !important;
-  }
-
-  /* ─── SHOWCASE SCREEN ────────────────────────────────── */
-
-  .sc-title {
-    font-size: 13px !important;
-    letter-spacing: 2px !important;
-    padding: 0 16px !important;
-    top: 16px !important;
-  }
-
-  .sc-skip-btn {
-    bottom: 16px !important;
-    right: 16px !important;
-    padding: 8px 14px !important;
-  }
-
-  .sc-skip-txt {
-    font-size: 10px !important;
-  }
-
-  /* ─── SIDEBAR NAV ────────────────────────────────────── */
-
-  .sidebar {
-    width: 240px !important;
-  }
-
-  .nav-item {
-    padding: 12px 18px !important;
-    font-size: 11px !important;
-    min-height: 46px !important;
-  }
-
-  /* ─── LEADERBOARD / PROFILE / SHOP pages ─────────────── */
-
-  .page {
-    padding: 12px 14px !important;
-  }
+/* ─────────────────────────────────────────────────────────
+   0.  LANDSCAPE LOCK OVERLAY
+───────────────────────────────────────────────────────── */
+#mob-landscape-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(4, 0, 18, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#mob-landscape-overlay.mob-visible { display: flex; }
+
+.mob-rotate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 44px 36px;
+  background: rgba(10, 0, 30, 0.97);
+  border: 1px solid rgba(155, 48, 255, 0.45);
+  border-radius: 22px;
+  box-shadow: 0 0 60px rgba(155, 48, 255, 0.25),
+              0 0 120px rgba(155, 48, 255, 0.1);
+}
+.mob-rotate-phone {
+  font-size: 54px;
+  animation: mob-rock 1.6s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes mob-rock {
+  0%  { transform: rotate(0deg); }
+  30% { transform: rotate(-90deg); }
+  65% { transform: rotate(-90deg); }
+  95% { transform: rotate(0deg); }
+  100%{ transform: rotate(0deg); }
+}
+.mob-rotate-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 0 16px rgba(155, 48, 255, 0.9);
+}
+.mob-rotate-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+}
+.mob-rotate-arrow {
+  font-size: 30px;
+  color: rgba(155, 48, 255, 0.9);
+  animation: mob-blink 1s ease-in-out infinite;
+}
+@keyframes mob-blink {
+  0%,100% { opacity: 0.35; transform: scale(0.88); }
+  50%     { opacity: 1;    transform: scale(1.12); }
 }
 
-/* ═══════════════════════════════════════════════════════
-   VIRTUAL JOYSTICK
-   ═══════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────────
+   1.  MENU SCREENS  (login, profile, character select, etc.)
+───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
 
+  button, .btn, .tb, .nav-item, .card, .ctab,
+  #btn-spawn-ammo, #btn-spawn-shield, #btn-spawn-heal {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #c { touch-action: none; }
+
+  /* LOGIN */
+  #s-login { flex-direction: column !important; overflow-y: auto !important; }
+  #s-login .left { display: none !important; }
+  #s-login .right {
+    width: 100% !important; max-width: 100% !important;
+    min-height: 100dvh !important; padding: 24px 16px 36px !important;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  #s-login .card { width: 100% !important; max-width: 420px !important; padding: 26px 20px 20px !important; }
+  #s-login .tabs { gap: 6px !important; margin-bottom: 18px !important; }
+  #s-login .tb   { padding: 9px 18px !important; font-size: 11px !important; min-height: 42px !important; }
+  #s-login .if   { font-size: 14px !important; padding: 12px 14px !important; min-height: 46px !important; }
+  #s-login .btn  { min-height: 48px !important; font-size: 12px !important; letter-spacing: 2px !important; padding: 14px 20px !important; }
+  #s-login .btn-google { min-height: 46px !important; font-size: 12px !important; padding: 12px 16px !important; gap: 10px !important; }
+
+  /* COMPLETE PROFILE */
+  #s-complete-profile .left { display: none !important; }
+  #s-complete-profile .right {
+    width: 100% !important; max-width: 100% !important; padding: 24px 16px 40px !important;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  #s-complete-profile .card { width: 100% !important; max-width: 420px !important; padding: 26px 20px 20px !important; }
+  #s-complete-profile .btn  { min-height: 48px !important; font-size: 12px !important; }
+
+  /* TOPBAR */
+  .topbar      { padding: 8px 12px !important; min-height: 50px !important; }
+  .topbar-logo { font-size: 12px !important; letter-spacing: 2px !important; }
+  .topbar-coins{ font-size: 11px !important; padding: 5px 10px !important; }
+  .topbar-nick { font-size: 10px !important; }
+  .topbar-rank { font-size: 8px !important; }
+  .topbar-av   { width: 28px !important; height: 28px !important; font-size: 13px !important; }
+  .page-title  { font-size: 14px !important; letter-spacing: 3px !important; margin-top: 10px !important; }
+  .page-sub    { font-size: 9px !important; letter-spacing: 2px !important; }
+
+  /* CHARACTER SELECT */
+  .game-layout    { flex-direction: column !important; gap: 14px !important; padding: 10px 12px !important; overflow-y: auto !important; }
+  .game-hero      { flex-direction: row !important; gap: 12px !important; width: 100% !important; min-width: unset !important; }
+  .hero-char-area { width: 88px !important; height: 88px !important; flex-shrink: 0; }
+  #bigCharCanvas  { width: 78px !important; height: 78px !important; }
+  .hero-ring      { width: 88px !important; height: 88px !important; }
+  .hero-game-title{ font-size: 9px !important; letter-spacing: 1px !important; }
+  .hero-char-name { font-size: 15px !important; letter-spacing: 2px !important; }
+  .start-game-btn { min-height: 42px !important; font-size: 11px !important; padding: 10px 14px !important; }
+  .game-skins-col { width: 100% !important; min-width: unset !important; max-height: 200px !important; }
+  .skins-grid     { grid-template-columns: repeat(auto-fill, minmax(66px, 1fr)) !important; gap: 7px !important; }
+  .preview-panel  { display: none !important; }
+
+  /* MODE SELECT */
+  .mode-select-inner { padding: 26px 18px !important; gap: 14px !important; }
+  .mode-select-title { font-size: 13px !important; letter-spacing: 2px !important; }
+  .cards         { flex-direction: column !important; gap: 10px !important; width: 100% !important; max-width: 270px !important; }
+  .cards .card   { padding: 16px 18px !important; min-height: 86px !important; }
+  .card-icon     { font-size: 22px !important; }
+  .cards .card .tip { font-size: 12px !important; letter-spacing: 2px !important; }
+  .mode-back-btn { min-height: 44px !important; font-size: 11px !important; padding: 10px 22px !important; }
+
+  /* IN-GAME HUD tweaks */
+  #combo-hud        { top: 60px !important; right: 10px !important; }
+  #reload-indicator { bottom: 140px !important; }
+  #boss-bar-wrap    { bottom: 145px !important; }
+
+  /* GAME OVER */
+  #game-over-screen > div {
+    padding: 28px 20px !important; margin: 14px !important;
+    width: calc(100% - 28px) !important; box-sizing: border-box !important;
+  }
+  #game-over-screen button { min-height: 44px !important; font-size: 10px !important; padding: 11px 18px !important; }
+
+  /* UPGRADES */
+  .upgrade-cards { flex-direction: column !important; gap: 9px !important;
+                   padding: 0 14px !important; max-height: 58vh !important; overflow-y: auto !important; }
+
+  /* SIDEBAR */
+  .sidebar  { width: 230px !important; }
+  .nav-item { padding: 11px 16px !important; font-size: 10px !important; min-height: 44px !important; }
+
+  /* SHOWCASE */
+  .sc-title   { font-size: 12px !important; letter-spacing: 2px !important; padding: 0 14px !important; top: 14px !important; }
+  .sc-skip-btn{ bottom: 14px !important; right: 14px !important; padding: 7px 12px !important; }
+  .sc-skip-txt{ font-size: 9px !important; }
+
+  /* PAUSE MENU */
+  #pause-menu > div { padding: 32px 28px !important; margin: 0 20px !important; width: auto !important; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   2.  MINIMAP — hidden on mobile (all orientations)
+───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #minimap-canvas              { display: none !important; }
+  /* text label under minimap */
+  #minimap-canvas + div        { display: none !important; }
+  /* hide the parent wrapper — JS also does this for safety */
+  #mob-minimap-parent          { display: none !important; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   3.  VIRTUAL JOYSTICK
+───────────────────────────────────────────────────────── */
 #mob-joystick-wrap {
   display: none;
   position: fixed;
-  bottom: 28px;
-  left: 28px;
+  bottom: 22px;
+  left: 22px;
   z-index: 10000;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  align-items: center;
+  justify-content: center;
 }
 
 #mob-joystick-base {
-  width: 110px;
-  height: 110px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
-  background: rgba(4, 0, 18, 0.55);
-  border: 2px solid rgba(155, 48, 255, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow:
-    0 0 20px rgba(155, 48, 255, 0.15),
-    inset 0 0 30px rgba(155, 48, 255, 0.08);
+  background: rgba(4, 0, 18, 0.50);
+  border: 1.5px solid rgba(155, 48, 255, 0.36);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 18px rgba(155, 48, 255, 0.16),
+              inset 0 0 26px rgba(155, 48, 255, 0.06);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-#mob-joystick-ring {
+#mob-joystick-base::before {
+  content: '';
   position: absolute;
-  inset: 8px;
+  inset: 10px;
   border-radius: 50%;
-  border: 1px dashed rgba(155, 48, 255, 0.2);
+  border: 1px dashed rgba(155, 48, 255, 0.16);
   pointer-events: none;
 }
 
 #mob-joystick-knob {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 35%,
-    rgba(155, 48, 255, 0.7),
-    rgba(100, 20, 200, 0.5)
-  );
-  border: 2px solid rgba(155, 48, 255, 0.7);
-  box-shadow:
-    0 0 12px rgba(155, 48, 255, 0.5),
-    0 0 24px rgba(155, 48, 255, 0.2);
+  background: radial-gradient(circle at 38% 35%,
+    rgba(175, 80, 255, 0.82),
+    rgba(90, 15, 190, 0.62));
+  border: 1.5px solid rgba(155, 48, 255, 0.72);
+  box-shadow: 0 0 10px rgba(155, 48, 255, 0.52),
+              0 0 22px rgba(155, 48, 255, 0.20);
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  transition: box-shadow 0.1s ease;
   will-change: transform;
+  transition: box-shadow 0.08s ease;
 }
-
 #mob-joystick-knob.mob-active {
-  box-shadow:
-    0 0 20px rgba(155, 48, 255, 0.8),
-    0 0 40px rgba(155, 48, 255, 0.4);
+  box-shadow: 0 0 18px rgba(155, 48, 255, 0.88),
+              0 0 36px rgba(155, 48, 255, 0.38);
 }
 
-/* ═══════════════════════════════════════════════════════
-   SHOOT BUTTON
-   ═══════════════════════════════════════════════════════ */
+#mob-joy-label {
+  position: absolute;
+  bottom: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: rgba(155, 48, 255, 0.48);
+  white-space: nowrap;
+  pointer-events: none;
+}
 
-#mob-shoot-btn {
+/* ─────────────────────────────────────────────────────────
+   4.  RIGHT-SIDE ACTIONS  (Sprint above, Shoot below)
+───────────────────────────────────────────────────────── */
+#mob-actions-wrap {
   display: none;
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 22px;
+  right: 22px;
   z-index: 10000;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  align-items: center;
-  justify-content: center;
 }
 
-#mob-shoot-inner {
-  width: 80px;
-  height: 80px;
+/* SPRINT */
+#mob-sprint-btn {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: rgba(4, 0, 18, 0.6);
-  border: 2px solid rgba(0, 238, 255, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(4, 0, 18, 0.56);
+  border: 1.5px solid rgba(255, 215, 0, 0.40);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(255, 200, 0, 0.12),
+              inset 0 0 14px rgba(255, 200, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+#mob-sprint-btn svg { width: 20px; height: 20px; display: block; }
+#mob-sprint-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255, 210, 0, 0.72);
+}
+#mob-sprint-btn.mob-active {
+  border-color: rgba(255, 215, 0, 0.88);
+  box-shadow: 0 0 22px rgba(255, 200, 0, 0.52),
+              inset 0 0 16px rgba(255, 200, 0, 0.16);
+  transform: scale(0.92);
+  background: rgba(30, 20, 0, 0.72);
+}
+
+/* SHOOT */
+#mob-shoot-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(4, 0, 18, 0.58);
+  border: 2px solid rgba(0, 238, 255, 0.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.14),
+              inset 0 0 18px rgba(0, 238, 255, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  box-shadow:
-    0 0 20px rgba(0, 238, 255, 0.15),
-    inset 0 0 20px rgba(0, 238, 255, 0.05);
   position: relative;
-  transition: all 0.15s ease;
+  transition: all 0.1s ease;
+  cursor: pointer;
 }
-
-#mob-shoot-icon {
-  font-size: 22px;
-  line-height: 1;
-  transition: transform 0.1s ease;
-}
-
+#mob-shoot-btn svg { width: 28px; height: 28px; display: block; }
 #mob-shoot-label {
-  font-family: "Orbitron", sans-serif;
+  font-family: 'Orbitron', sans-serif;
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  color: rgba(0, 238, 255, 0.8);
-  transition: color 0.15s ease;
+  color: rgba(0, 238, 255, 0.78);
+  transition: color 0.1s ease;
 }
-
-/* charge ring animation */
 #mob-charge-ring {
   position: absolute;
-  inset: -6px;
+  inset: -7px;
   border-radius: 50%;
   border: 2px solid transparent;
   pointer-events: none;
-  transition: all 0.15s ease;
 }
 
-/* active state (tap) */
-#mob-shoot-btn.mob-btn-active #mob-shoot-inner {
-  transform: scale(0.9);
-  border-color: rgba(0, 238, 255, 0.8);
-  box-shadow:
-    0 0 30px rgba(0, 238, 255, 0.4),
-    inset 0 0 20px rgba(0, 238, 255, 0.15);
+/* shoot — pressed */
+#mob-shoot-btn.mob-active {
+  transform: scale(0.90);
+  border-color: rgba(0, 238, 255, 0.90);
+  box-shadow: 0 0 28px rgba(0, 238, 255, 0.44),
+              inset 0 0 18px rgba(0, 238, 255, 0.16);
 }
 
-#mob-shoot-btn.mob-btn-active #mob-shoot-icon {
-  transform: scale(1.15);
+/* shoot — charging */
+#mob-shoot-btn.mob-charging {
+  border-color: rgba(255, 90, 0, 0.90);
+  box-shadow: 0 0 36px rgba(255, 110, 0, 0.58),
+              inset 0 0 22px rgba(255, 80, 0, 0.20);
+  background: rgba(35, 8, 0, 0.76);
 }
-
-/* charging state */
-#mob-shoot-btn.mob-btn-charging #mob-shoot-inner {
-  border-color: rgba(255, 80, 0, 0.9);
-  box-shadow:
-    0 0 40px rgba(255, 120, 0, 0.6),
-    inset 0 0 30px rgba(255, 80, 0, 0.2);
-  background: rgba(40, 10, 0, 0.75);
-}
-
-#mob-shoot-btn.mob-btn-charging #mob-shoot-label {
-  color: rgba(255, 150, 0, 0.95);
-}
-
-#mob-shoot-btn.mob-btn-charging #mob-charge-ring {
-  border-color: rgba(255, 100, 0, 0.7);
-  animation: mob-charge-spin 0.6s linear infinite;
-  inset: -8px;
+#mob-shoot-btn.mob-charging #mob-shoot-label { color: rgba(255, 160, 0, 0.95); }
+#mob-shoot-btn.mob-charging #mob-charge-ring {
   border-top-color: transparent;
-  border-right-color: rgba(255, 200, 0, 0.9);
+  border-right-color: rgba(255, 180, 0, 0.90);
+  border-bottom-color: rgba(255, 80, 0, 0.60);
+  border-left-color: transparent;
+  animation: mob-charge-spin 0.52s linear infinite;
 }
+@keyframes mob-charge-spin { to { transform: rotate(360deg); } }
 
-@keyframes mob-charge-spin {
-  to {
-    transform: rotate(360deg);
-  }
+/* ─────────────────────────────────────────────────────────
+   5.  SUPPLY BAR  (top-center during gameplay)
+───────────────────────────────────────────────────────── */
+#mob-supply-bar {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 9500;
+  pointer-events: all;
+  touch-action: manipulation;
 }
-
-/* ═══════════════════════════════════════════════════════
-   SUPPLY BUTTONS — position adjustment above joystick
-   ═══════════════════════════════════════════════════════ */
-
-@media (max-width: 900px) {
-  /* Push supply buttons up so they don't overlap joystick */
-  [style*="bottom: 16px"][style*="left: 16px"] {
-    bottom: 158px !important;
-    left: 16px !important;
-    gap: 7px !important;
-  }
-
-  /* shrink supply buttons a bit */
-  #btn-spawn-ammo,
-  #btn-spawn-shield,
-  #btn-spawn-heal {
-    padding: 5px 8px !important;
-    min-width: 46px !important;
-  }
+/* supply buttons inside bar inherit original styles but get size tweaks */
+#mob-supply-bar > div {
+  padding: 5px 10px !important;
+  border-radius: 8px !important;
+  min-width: 52px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent;
 }
-
-/* ═══════════════════════════════════════════════════════
-   GLOBAL TOUCH IMPROVEMENTS
-   ═══════════════════════════════════════════════════════ */
-
-@media (max-width: 900px) {
-  /* Prevent default touch behavior on interactive elements */
-  button,
-  .btn,
-  .tb,
-  .nav-item,
-  .card,
-  .ctab,
-  .sc-skip-btn {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* Ensure canvas doesn't block scrolling outside game */
-  #c {
-    touch-action: none;
-  }
-
-  /* Scrollable panels */
-  .skins-grid,
-  .upgrade-cards,
-  .menu-content {
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Loading bar screen — smaller text */
-  .llogo {
-    font-size: 10px !important;
-    letter-spacing: 3px !important;
-  }
-
-  #lo > div {
-    padding: 0 24px !important;
-  }
-
-  /* Transition screen */
-  .pt-txt {
-    font-size: 18px !important;
-    letter-spacing: 6px !important;
-  }
-}
+#mob-supply-bar > div > div:first-child { font-size: 14px !important; }
