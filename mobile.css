@@ -11,7 +11,7 @@
   position:        fixed;
   inset:           0;
   z-index:         999999;
-  background:      rgba(4, 0, 18, 0.94);
+  background:      rgba(4,0,18,.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   flex-direction:  column;
@@ -19,284 +19,293 @@
   justify-content: center;
 }
 #mob-rotate-overlay.show { display: flex; }
-
 .mob-rot-box {
   display:       flex;
   flex-direction:column;
   align-items:   center;
   gap:           14px;
   padding:       44px 36px;
-  background:    rgba(8, 0, 26, 0.97);
+  background:    rgba(8,0,26,.97);
   border:        1px solid rgba(155,48,255,.45);
   border-radius: 22px;
-  box-shadow:    0 0 60px rgba(155,48,255,.22), 0 0 120px rgba(155,48,255,.08);
+  box-shadow:    0 0 60px rgba(155,48,255,.22),0 0 120px rgba(155,48,255,.08);
 }
-.mob-rot-phone {
-  font-size:        52px;
-  animation:        mob-tilt 1.6s ease-in-out infinite;
-  transform-origin: center;
-}
+.mob-rot-phone { font-size:52px; animation:mob-tilt 1.6s ease-in-out infinite; transform-origin:center; }
 @keyframes mob-tilt {
-  0%,100% { transform: rotate(0deg);   }
-  28%,62% { transform: rotate(-90deg); }
+  0%,100% { transform:rotate(0deg); }
+  28%,62% { transform:rotate(-90deg); }
 }
 .mob-rot-title {
-  font-family:  'Orbitron', sans-serif;
-  font-size:    15px;
-  font-weight:  900;
-  letter-spacing:4px;
-  color:        #fff;
-  text-shadow:  0 0 16px rgba(155,48,255,.9);
+  font-family:'Orbitron',sans-serif; font-size:15px; font-weight:900;
+  letter-spacing:4px; color:#fff; text-shadow:0 0 16px rgba(155,48,255,.9);
 }
 .mob-rot-sub {
-  font-family:  'Share Tech Mono', monospace;
-  font-size:    10px;
-  letter-spacing:2.5px;
-  color:        rgba(255,255,255,.42);
+  font-family:'Share Tech Mono',monospace; font-size:10px;
+  letter-spacing:2.5px; color:rgba(255,255,255,.42);
 }
-.mob-rot-arrow {
-  font-size:  28px;
-  color:      rgba(155,48,255,.88);
-  animation:  mob-pulse 1s ease-in-out infinite;
-}
+.mob-rot-arrow { font-size:28px; color:rgba(155,48,255,.88); animation:mob-pulse 1s ease-in-out infinite; }
 @keyframes mob-pulse {
-  0%,100% { opacity:.3;  transform:scale(.88); }
-  50%     { opacity:1;   transform:scale(1.12);}
+  0%,100% { opacity:.3; transform:scale(.88); }
+  50%     { opacity:1;  transform:scale(1.12);}
 }
 
 /* ──────────────────────────────────────────────────────────
-   B.  SUPPLY BAR  (top-center, only during game)
+   B.  LEFT-ZONE  (captures left-half touches → joystick)
+       Prevents game's own touch-ring from appearing
+────────────────────────────────────────────────────────── */
+#mob-left-zone {
+  display:         none;   /* JS shows when game active */
+  position:        fixed;
+  top:             0;
+  left:            0;
+  width:           52%;
+  height:          100%;
+  z-index:         9000;   /* above canvas, below our buttons */
+  touch-action:    none;
+  -webkit-tap-highlight-color: transparent;
+  background:      transparent;
+}
+
+/* ──────────────────────────────────────────────────────────
+   C.  SUPPLY BAR  — top-center during gameplay
+                   — bottom-center during upgrade screen
 ────────────────────────────────────────────────────────── */
 #mob-supply-bar {
-  display:        none;          /* JS shows it */
+  display:        none;
   position:       fixed;
-  top:            10px;
   left:           50%;
   transform:      translateX(-50%);
-  z-index:        8999;
+  z-index:        9800;
   flex-direction: row;
-  gap:            8px;
+  gap:            6px;
   pointer-events: all;
   touch-action:   manipulation;
+  transition:     top .25s ease, bottom .25s ease;
 }
-/* supply buttons inside the bar */
+/* gameplay position */
+#mob-supply-bar.in-game {
+  top:    7px;
+  bottom: auto;
+}
+/* upgrade-screen position */
+#mob-supply-bar.in-upgrade {
+  top:    auto;
+  bottom: 14px;
+}
+
+/* each supply button — SMALLER than before */
 #mob-supply-bar > div {
-  padding:          5px 10px !important;
-  border-radius:    8px !important;
-  min-width:        54px !important;
+  padding:          3px 8px !important;
+  border-radius:    7px !important;
+  min-width:        44px !important;
   text-align:       center !important;
   cursor:           pointer !important;
   touch-action:     manipulation !important;
   -webkit-tap-highlight-color: transparent;
   user-select:      none;
 }
-#mob-supply-bar > div > div:first-child { font-size: 14px !important; }
+/* icon row */
+#mob-supply-bar > div > div:first-child { font-size:12px !important; }
+/* label row (AMMO / SHIELD / HEAL) */
+#mob-supply-bar > div > div:nth-child(2) { font-size:6.5px !important; letter-spacing:.8px !important; }
+/* price row */
+#mob-supply-bar > div > div:nth-child(3) { font-size:7px !important; }
+/* cooldown row */
+#mob-supply-bar > div > div:nth-child(4) { font-size:7px !important; }
 
 /* ──────────────────────────────────────────────────────────
-   C.  VIRTUAL JOYSTICK  (bottom-left)
+   D.  VIRTUAL JOYSTICK  (bottom-left, always in game)
 ────────────────────────────────────────────────────────── */
 #mob-joy-wrap {
-  display:         none;   /* JS shows it */
+  display:         none;
   position:        fixed;
-  bottom:          20px;
-  left:            20px;
+  bottom:          18px;
+  left:            18px;
   z-index:         9999;
   touch-action:    none;
   user-select:     none;
-  -webkit-user-select: none;
+  -webkit-user-select:none;
 }
 #mob-joy-base {
-  width:           100px;
-  height:          100px;
+  width:           96px;
+  height:          96px;
   border-radius:   50%;
   background:      rgba(4,0,18,.48);
   border:          1.5px solid rgba(155,48,255,.34);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow:      0 0 18px rgba(155,48,255,.14), inset 0 0 24px rgba(155,48,255,.06);
+  -webkit-backdrop-filter:blur(6px);
+  box-shadow:      0 0 16px rgba(155,48,255,.14),inset 0 0 22px rgba(155,48,255,.05);
   position:        relative;
   display:         flex;
   align-items:     center;
   justify-content: center;
 }
-/* inner dashed guide ring */
 #mob-joy-base::before {
-  content:       '';
-  position:      absolute;
-  inset:         11px;
-  border-radius: 50%;
-  border:        1px dashed rgba(155,48,255,.16);
-  pointer-events:none;
+  content:''; position:absolute; inset:10px; border-radius:50%;
+  border:1px dashed rgba(155,48,255,.15); pointer-events:none;
 }
-/* cardinal tick marks */
 #mob-joy-base::after {
-  content:       '';
-  position:      absolute;
-  inset:         4px;
-  border-radius: 50%;
+  content:''; position:absolute; inset:4px; border-radius:50%;
   background:
-    radial-gradient(circle at 50% 6%,  rgba(155,48,255,.22) 2px, transparent 2px),
-    radial-gradient(circle at 50% 94%, rgba(155,48,255,.22) 2px, transparent 2px),
-    radial-gradient(circle at 6%  50%, rgba(155,48,255,.22) 2px, transparent 2px),
-    radial-gradient(circle at 94% 50%, rgba(155,48,255,.22) 2px, transparent 2px);
-  pointer-events: none;
+    radial-gradient(circle at 50% 6%,  rgba(155,48,255,.20) 2px,transparent 2px),
+    radial-gradient(circle at 50% 94%, rgba(155,48,255,.20) 2px,transparent 2px),
+    radial-gradient(circle at 6%  50%, rgba(155,48,255,.20) 2px,transparent 2px),
+    radial-gradient(circle at 94% 50%, rgba(155,48,255,.20) 2px,transparent 2px);
+  pointer-events:none;
 }
 #mob-joy-knob {
-  width:           40px;
-  height:          40px;
-  border-radius:   50%;
-  background:      radial-gradient(circle at 38% 34%, rgba(180,80,255,.84), rgba(88,14,192,.64));
-  border:          1.5px solid rgba(155,48,255,.72);
-  box-shadow:      0 0 10px rgba(155,48,255,.5), 0 0 22px rgba(155,48,255,.2);
-  position:        absolute;
-  top:50%; left:50%;
-  transform:       translate(-50%,-50%);
-  will-change:     transform;
-  transition:      box-shadow .08s;
+  width:38px; height:38px; border-radius:50%;
+  background:radial-gradient(circle at 38% 34%,rgba(178,80,255,.82),rgba(88,14,192,.62));
+  border:1.5px solid rgba(155,48,255,.70);
+  box-shadow:0 0 10px rgba(155,48,255,.50),0 0 22px rgba(155,48,255,.18);
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  will-change:transform; transition:box-shadow .08s;
 }
 #mob-joy-knob.active {
-  box-shadow: 0 0 18px rgba(155,48,255,.9), 0 0 36px rgba(155,48,255,.38);
+  box-shadow:0 0 18px rgba(155,48,255,.9),0 0 36px rgba(155,48,255,.38);
 }
 #mob-joy-label {
-  position:      absolute;
-  bottom:        -17px;
-  left:          50%;
-  transform:     translateX(-50%);
-  font-family:   'Share Tech Mono', monospace;
-  font-size:     7px;
-  letter-spacing:2px;
-  color:         rgba(155,48,255,.44);
-  white-space:   nowrap;
-  pointer-events:none;
+  position:absolute; bottom:-17px; left:50%; transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace; font-size:7px; letter-spacing:2px;
+  color:rgba(155,48,255,.42); white-space:nowrap; pointer-events:none;
 }
 
 /* ──────────────────────────────────────────────────────────
-   D.  ACTION BUTTONS  (bottom-right stack: SPRINT above FIRE)
+   E.  ACTION BUTTONS  (Sprint + Fire)
 ────────────────────────────────────────────────────────── */
 #mob-actions {
-  display:        none;   /* JS shows it */
+  display:        none;
   position:       fixed;
-  bottom:         20px;
-  right:          20px;
+  bottom:         18px;
+  right:          18px;
   z-index:        9999;
   flex-direction: column;
   align-items:    center;
   gap:            10px;
   touch-action:   none;
   user-select:    none;
-  -webkit-user-select: none;
+  -webkit-user-select:none;
 }
 
-/* SPRINT button */
+/* SPRINT */
 #mob-sprint {
-  width:           54px;
-  height:          54px;
-  border-radius:   50%;
-  background:      rgba(4,0,18,.54);
-  border:          1.5px solid rgba(255,215,0,.38);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow:      0 0 14px rgba(255,200,0,.11), inset 0 0 14px rgba(255,200,0,.04);
-  display:         flex;
-  flex-direction:  column;
-  align-items:     center;
-  justify-content: center;
-  gap:             2px;
-  transition:      all .1s ease;
-  cursor:          pointer;
+  width:52px; height:52px; border-radius:50%;
+  background:rgba(4,0,18,.54); border:1.5px solid rgba(255,215,0,.38);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 14px rgba(255,200,0,.10),inset 0 0 12px rgba(255,200,0,.04);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; transition:all .10s ease; cursor:pointer;
 }
-#mob-sprint svg    { width:20px; height:20px; display:block; }
+#mob-sprint svg { width:20px; height:20px; display:block; }
 #mob-sprint-lbl {
-  font-family:  'Orbitron', sans-serif;
-  font-size:    6px;
-  font-weight:  700;
-  letter-spacing:1px;
-  color:        rgba(255,210,0,.70);
+  font-family:'Orbitron',sans-serif; font-size:6px; font-weight:700;
+  letter-spacing:1px; color:rgba(255,210,0,.70);
 }
 #mob-sprint.active {
-  border-color: rgba(255,215,0,.88);
-  box-shadow:   0 0 22px rgba(255,200,0,.50), inset 0 0 16px rgba(255,200,0,.16);
-  transform:    scale(.92);
-  background:   rgba(30,20,0,.72);
+  border-color:rgba(255,215,0,.88);
+  box-shadow:0 0 22px rgba(255,200,0,.50),inset 0 0 16px rgba(255,200,0,.16);
+  transform:scale(.92); background:rgba(30,20,0,.72);
 }
 
-/* FIRE button */
+/* FIRE */
 #mob-fire {
-  width:           74px;
-  height:          74px;
-  border-radius:   50%;
-  background:      rgba(4,0,18,.56);
-  border:          2px solid rgba(0,238,255,.40);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow:      0 0 20px rgba(0,238,255,.13), inset 0 0 18px rgba(0,238,255,.05);
-  display:         flex;
-  flex-direction:  column;
-  align-items:     center;
-  justify-content: center;
-  gap:             3px;
-  position:        relative;
-  transition:      all .1s ease;
-  cursor:          pointer;
+  width:72px; height:72px; border-radius:50%;
+  background:rgba(4,0,18,.56); border:2px solid rgba(0,238,255,.40);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 18px rgba(0,238,255,.13),inset 0 0 16px rgba(0,238,255,.04);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; position:relative; transition:all .10s ease; cursor:pointer;
 }
-#mob-fire svg    { width:28px; height:28px; display:block; }
+#mob-fire svg { width:28px; height:28px; display:block; }
 #mob-fire-lbl {
-  font-family:  'Orbitron', sans-serif;
-  font-size:    7px;
-  font-weight:  700;
-  letter-spacing:1.5px;
-  color:        rgba(0,238,255,.76);
-  transition:   color .1s;
+  font-family:'Orbitron',sans-serif; font-size:7px; font-weight:700;
+  letter-spacing:1.5px; color:rgba(0,238,255,.76); transition:color .10s;
 }
 #mob-charge-ring {
-  position:      absolute;
-  inset:         -7px;
-  border-radius: 50%;
-  border:        2px solid transparent;
-  pointer-events:none;
+  position:absolute; inset:-7px; border-radius:50%;
+  border:2px solid transparent; pointer-events:none;
 }
-
-/* fire — pressed */
-#mob-fire.active {
-  transform:   scale(.90);
-  border-color:rgba(0,238,255,.90);
-  box-shadow:  0 0 28px rgba(0,238,255,.44), inset 0 0 18px rgba(0,238,255,.16);
+#mob-fire.active  {
+  transform:scale(.90); border-color:rgba(0,238,255,.90);
+  box-shadow:0 0 28px rgba(0,238,255,.44),inset 0 0 18px rgba(0,238,255,.16);
 }
-/* fire — charging */
 #mob-fire.charging {
   border-color:rgba(255,90,0,.90);
-  box-shadow:  0 0 36px rgba(255,110,0,.56), inset 0 0 22px rgba(255,80,0,.20);
-  background:  rgba(35,8,0,.76);
+  box-shadow:0 0 36px rgba(255,110,0,.56),inset 0 0 22px rgba(255,80,0,.20);
+  background:rgba(35,8,0,.76);
 }
-#mob-fire.charging #mob-fire-lbl  { color: rgba(255,160,0,.95); }
+#mob-fire.charging #mob-fire-lbl { color:rgba(255,160,0,.95); }
 #mob-fire.charging #mob-charge-ring {
-  border-top-color:    transparent;
-  border-right-color:  rgba(255,180,0,.9);
-  border-bottom-color: rgba(255,80,0,.6);
-  border-left-color:   transparent;
-  animation:           mob-cspin .52s linear infinite;
+  border-top-color:transparent; border-right-color:rgba(255,180,0,.90);
+  border-bottom-color:rgba(255,80,0,.60); border-left-color:transparent;
+  animation:mob-cspin .52s linear infinite;
 }
 @keyframes mob-cspin { to { transform:rotate(360deg); } }
 
 /* ──────────────────────────────────────────────────────────
-   E.  MINIMAP HIDDEN on mobile
+   F.  MINIMAP — hidden on mobile
 ────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width:900px) {
   #minimap-canvas,
-  #minimap-canvas + div { display: none !important; }
-
-  /* also kill the fixed/absolute minimap wrapper if it gets an id */
-  #mob-minimap-wrap { display: none !important; }
+  #minimap-canvas + div { display:none !important; }
+  #mob-minimap-wrap      { display:none !important; }
 }
 
 /* ──────────────────────────────────────────────────────────
-   F.  LOGIN / MENU SCREENS  (portrait-friendly)
+   G.  UPGRADE SCREEN  — compact on mobile
 ────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width:900px) {
+  #upgrade-screen {
+    padding:    10px 12px !important;
+    gap:        8px !important;
+  }
+  .upgrade-title {
+    font-size:  18px !important;
+    letter-spacing: 4px !important;
+    margin-bottom: 2px !important;
+  }
+  .upgrade-sub {
+    font-size:  8px !important;
+    letter-spacing: 3px !important;
+    margin-bottom: 6px !important;
+  }
+  /* Cards container */
+  .upgrade-cards {
+    flex-direction: row !important;
+    gap:            8px !important;
+    padding:        0 4px !important;
+    max-height:     unset !important;
+    overflow-y:     visible !important;
+    overflow-x:     auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Individual card */
+  .upgrade-card {
+    min-width:     120px !important;
+    max-width:     145px !important;
+    flex:          1 !important;
+    padding:       12px 10px !important;
+    gap:           6px !important;
+  }
+  .upgrade-card .upgrade-card-icon { font-size:28px !important; }
+  .upgrade-card .upgrade-card-name { font-size:9px !important;  letter-spacing:1px !important; }
+  .upgrade-card .upgrade-card-desc { font-size:8px !important;  }
+  .upgrade-card .upgrade-card-val  { font-size:12px !important; }
+}
 
-  button, .btn, .tb, .nav-item, .card, .ctab {
-    touch-action:              manipulation;
-    -webkit-tap-highlight-color: transparent;
+/* ──────────────────────────────────────────────────────────
+   H.  MENU SCREENS  — login, profile, menus
+────────────────────────────────────────────────────────── */
+@media (max-width:900px) {
+  button,.btn,.tb,.nav-item,.card,.ctab {
+    touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  }
+  /* CANVAS: strip all touch highlights */
+  #game-canvas, #c {
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
   }
 
   /* LOGIN */
@@ -320,8 +329,8 @@
     width:100% !important; max-width:100% !important; padding:24px 16px 40px !important;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
   }
-  #s-complete-profile .card  { width:100% !important; max-width:420px !important; padding:26px 20px !important; }
-  #s-complete-profile .btn   { min-height:48px !important; font-size:12px !important; }
+  #s-complete-profile .card { width:100% !important; max-width:420px !important; padding:26px 20px !important; }
+  #s-complete-profile .btn  { min-height:48px !important; font-size:12px !important; }
 
   /* TOPBAR */
   .topbar       { padding:8px 12px !important; min-height:50px !important; }
@@ -346,22 +355,21 @@
   .preview-panel  { display:none !important; }
 
   /* MODE SELECT */
-  .mode-select-inner  { padding:26px 18px !important; gap:14px !important; }
-  .mode-select-title  { font-size:13px !important; letter-spacing:2px !important; }
-  .cards              { flex-direction:column !important; gap:10px !important; width:100% !important; max-width:270px !important; }
-  .cards .card        { padding:16px 18px !important; min-height:86px !important; }
-  .card-icon          { font-size:22px !important; }
-  .cards .card .tip   { font-size:12px !important; letter-spacing:2px !important; }
-  .mode-back-btn      { min-height:44px !important; font-size:11px !important; padding:10px 22px !important; }
+  .mode-select-inner { padding:26px 18px !important; gap:14px !important; }
+  .mode-select-title { font-size:13px !important; letter-spacing:2px !important; }
+  .cards             { flex-direction:column !important; gap:10px !important; width:100% !important; max-width:270px !important; }
+  .cards .card       { padding:16px 18px !important; min-height:86px !important; }
+  .card-icon         { font-size:22px !important; }
+  .cards .card .tip  { font-size:12px !important; letter-spacing:2px !important; }
+  .mode-back-btn     { min-height:44px !important; font-size:11px !important; padding:10px 22px !important; }
 
   /* IN-GAME MISC */
-  #combo-hud          { top:60px !important; right:10px !important; }
-  #reload-indicator   { bottom:140px !important; }
-  #boss-bar-wrap      { bottom:145px !important; }
-  #game-over-screen > div { padding:28px 20px !important; margin:14px !important; width:calc(100% - 28px) !important; box-sizing:border-box !important; }
+  #combo-hud        { top:56px !important; right:8px !important; }
+  #reload-indicator { bottom:136px !important; }
+  #boss-bar-wrap    { bottom:140px !important; }
+  #game-over-screen > div { padding:26px 18px !important; margin:12px !important; width:calc(100% - 24px) !important; box-sizing:border-box !important; }
   #game-over-screen button { min-height:44px !important; font-size:10px !important; padding:11px 18px !important; }
-  .upgrade-cards { flex-direction:column !important; gap:9px !important; padding:0 14px !important; max-height:58vh !important; overflow-y:auto !important; }
   .sidebar  { width:230px !important; }
   .nav-item { padding:11px 16px !important; font-size:10px !important; min-height:44px !important; }
-  #pause-menu > div { padding:32px 28px !important; margin:0 20px !important; }
+  #pause-menu > div { padding:28px 24px !important; margin:0 16px !important; }
 }
