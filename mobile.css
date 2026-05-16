@@ -1,393 +1,367 @@
-/* ═══════════════════════════════════════════════════════
-   mobile.css — LAST STAND: MACHINE WAR
-   Link AFTER style.css  |  ONLY affects mobile ≤900px
-   ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   mobile.css  —  LAST STAND: MACHINE WAR
+   Link AFTER style.css in <head>.  PC untouched.
+   ═══════════════════════════════════════════════════════════ */
 
-/* ─────────────────────────────────────────────────────────
-   0.  LANDSCAPE LOCK OVERLAY
-───────────────────────────────────────────────────────── */
-#mob-landscape-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  background: rgba(4, 0, 18, 0.92);
+/* ──────────────────────────────────────────────────────────
+   A.  ROTATE-DEVICE OVERLAY
+────────────────────────────────────────────────────────── */
+#mob-rotate-overlay {
+  display:         none;
+  position:        fixed;
+  inset:           0;
+  z-index:         999999;
+  background:      rgba(4, 0, 18, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  align-items: center;
+  flex-direction:  column;
+  align-items:     center;
   justify-content: center;
-  flex-direction: column;
 }
-#mob-landscape-overlay.mob-visible { display: flex; }
+#mob-rotate-overlay.show { display: flex; }
 
-.mob-rotate-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 44px 36px;
-  background: rgba(10, 0, 30, 0.97);
-  border: 1px solid rgba(155, 48, 255, 0.45);
+.mob-rot-box {
+  display:       flex;
+  flex-direction:column;
+  align-items:   center;
+  gap:           14px;
+  padding:       44px 36px;
+  background:    rgba(8, 0, 26, 0.97);
+  border:        1px solid rgba(155,48,255,.45);
   border-radius: 22px;
-  box-shadow: 0 0 60px rgba(155, 48, 255, 0.25),
-              0 0 120px rgba(155, 48, 255, 0.1);
+  box-shadow:    0 0 60px rgba(155,48,255,.22), 0 0 120px rgba(155,48,255,.08);
 }
-.mob-rotate-phone {
-  font-size: 54px;
-  animation: mob-rock 1.6s ease-in-out infinite;
+.mob-rot-phone {
+  font-size:        52px;
+  animation:        mob-tilt 1.6s ease-in-out infinite;
   transform-origin: center;
 }
-@keyframes mob-rock {
-  0%  { transform: rotate(0deg); }
-  30% { transform: rotate(-90deg); }
-  65% { transform: rotate(-90deg); }
-  95% { transform: rotate(0deg); }
-  100%{ transform: rotate(0deg); }
+@keyframes mob-tilt {
+  0%,100% { transform: rotate(0deg);   }
+  28%,62% { transform: rotate(-90deg); }
 }
-.mob-rotate-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: #fff;
-  text-shadow: 0 0 16px rgba(155, 48, 255, 0.9);
+.mob-rot-title {
+  font-family:  'Orbitron', sans-serif;
+  font-size:    15px;
+  font-weight:  900;
+  letter-spacing:4px;
+  color:        #fff;
+  text-shadow:  0 0 16px rgba(155,48,255,.9);
 }
-.mob-rotate-sub {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  color: rgba(255,255,255,0.45);
-  text-align: center;
+.mob-rot-sub {
+  font-family:  'Share Tech Mono', monospace;
+  font-size:    10px;
+  letter-spacing:2.5px;
+  color:        rgba(255,255,255,.42);
 }
-.mob-rotate-arrow {
-  font-size: 30px;
-  color: rgba(155, 48, 255, 0.9);
-  animation: mob-blink 1s ease-in-out infinite;
+.mob-rot-arrow {
+  font-size:  28px;
+  color:      rgba(155,48,255,.88);
+  animation:  mob-pulse 1s ease-in-out infinite;
 }
-@keyframes mob-blink {
-  0%,100% { opacity: 0.35; transform: scale(0.88); }
-  50%     { opacity: 1;    transform: scale(1.12); }
+@keyframes mob-pulse {
+  0%,100% { opacity:.3;  transform:scale(.88); }
+  50%     { opacity:1;   transform:scale(1.12);}
 }
 
-/* ─────────────────────────────────────────────────────────
-   1.  MENU SCREENS  (login, profile, character select, etc.)
-───────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-
-  button, .btn, .tb, .nav-item, .card, .ctab,
-  #btn-spawn-ammo, #btn-spawn-shield, #btn-spawn-heal {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-  #c { touch-action: none; }
-
-  /* LOGIN */
-  #s-login { flex-direction: column !important; overflow-y: auto !important; }
-  #s-login .left { display: none !important; }
-  #s-login .right {
-    width: 100% !important; max-width: 100% !important;
-    min-height: 100dvh !important; padding: 24px 16px 36px !important;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-  }
-  #s-login .card { width: 100% !important; max-width: 420px !important; padding: 26px 20px 20px !important; }
-  #s-login .tabs { gap: 6px !important; margin-bottom: 18px !important; }
-  #s-login .tb   { padding: 9px 18px !important; font-size: 11px !important; min-height: 42px !important; }
-  #s-login .if   { font-size: 14px !important; padding: 12px 14px !important; min-height: 46px !important; }
-  #s-login .btn  { min-height: 48px !important; font-size: 12px !important; letter-spacing: 2px !important; padding: 14px 20px !important; }
-  #s-login .btn-google { min-height: 46px !important; font-size: 12px !important; padding: 12px 16px !important; gap: 10px !important; }
-
-  /* COMPLETE PROFILE */
-  #s-complete-profile .left { display: none !important; }
-  #s-complete-profile .right {
-    width: 100% !important; max-width: 100% !important; padding: 24px 16px 40px !important;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-  }
-  #s-complete-profile .card { width: 100% !important; max-width: 420px !important; padding: 26px 20px 20px !important; }
-  #s-complete-profile .btn  { min-height: 48px !important; font-size: 12px !important; }
-
-  /* TOPBAR */
-  .topbar      { padding: 8px 12px !important; min-height: 50px !important; }
-  .topbar-logo { font-size: 12px !important; letter-spacing: 2px !important; }
-  .topbar-coins{ font-size: 11px !important; padding: 5px 10px !important; }
-  .topbar-nick { font-size: 10px !important; }
-  .topbar-rank { font-size: 8px !important; }
-  .topbar-av   { width: 28px !important; height: 28px !important; font-size: 13px !important; }
-  .page-title  { font-size: 14px !important; letter-spacing: 3px !important; margin-top: 10px !important; }
-  .page-sub    { font-size: 9px !important; letter-spacing: 2px !important; }
-
-  /* CHARACTER SELECT */
-  .game-layout    { flex-direction: column !important; gap: 14px !important; padding: 10px 12px !important; overflow-y: auto !important; }
-  .game-hero      { flex-direction: row !important; gap: 12px !important; width: 100% !important; min-width: unset !important; }
-  .hero-char-area { width: 88px !important; height: 88px !important; flex-shrink: 0; }
-  #bigCharCanvas  { width: 78px !important; height: 78px !important; }
-  .hero-ring      { width: 88px !important; height: 88px !important; }
-  .hero-game-title{ font-size: 9px !important; letter-spacing: 1px !important; }
-  .hero-char-name { font-size: 15px !important; letter-spacing: 2px !important; }
-  .start-game-btn { min-height: 42px !important; font-size: 11px !important; padding: 10px 14px !important; }
-  .game-skins-col { width: 100% !important; min-width: unset !important; max-height: 200px !important; }
-  .skins-grid     { grid-template-columns: repeat(auto-fill, minmax(66px, 1fr)) !important; gap: 7px !important; }
-  .preview-panel  { display: none !important; }
-
-  /* MODE SELECT */
-  .mode-select-inner { padding: 26px 18px !important; gap: 14px !important; }
-  .mode-select-title { font-size: 13px !important; letter-spacing: 2px !important; }
-  .cards         { flex-direction: column !important; gap: 10px !important; width: 100% !important; max-width: 270px !important; }
-  .cards .card   { padding: 16px 18px !important; min-height: 86px !important; }
-  .card-icon     { font-size: 22px !important; }
-  .cards .card .tip { font-size: 12px !important; letter-spacing: 2px !important; }
-  .mode-back-btn { min-height: 44px !important; font-size: 11px !important; padding: 10px 22px !important; }
-
-  /* IN-GAME HUD tweaks */
-  #combo-hud        { top: 60px !important; right: 10px !important; }
-  #reload-indicator { bottom: 140px !important; }
-  #boss-bar-wrap    { bottom: 145px !important; }
-
-  /* GAME OVER */
-  #game-over-screen > div {
-    padding: 28px 20px !important; margin: 14px !important;
-    width: calc(100% - 28px) !important; box-sizing: border-box !important;
-  }
-  #game-over-screen button { min-height: 44px !important; font-size: 10px !important; padding: 11px 18px !important; }
-
-  /* UPGRADES */
-  .upgrade-cards { flex-direction: column !important; gap: 9px !important;
-                   padding: 0 14px !important; max-height: 58vh !important; overflow-y: auto !important; }
-
-  /* SIDEBAR */
-  .sidebar  { width: 230px !important; }
-  .nav-item { padding: 11px 16px !important; font-size: 10px !important; min-height: 44px !important; }
-
-  /* SHOWCASE */
-  .sc-title   { font-size: 12px !important; letter-spacing: 2px !important; padding: 0 14px !important; top: 14px !important; }
-  .sc-skip-btn{ bottom: 14px !important; right: 14px !important; padding: 7px 12px !important; }
-  .sc-skip-txt{ font-size: 9px !important; }
-
-  /* PAUSE MENU */
-  #pause-menu > div { padding: 32px 28px !important; margin: 0 20px !important; width: auto !important; }
-}
-
-/* ─────────────────────────────────────────────────────────
-   2.  MINIMAP — hidden on mobile (all orientations)
-───────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  #minimap-canvas              { display: none !important; }
-  /* text label under minimap */
-  #minimap-canvas + div        { display: none !important; }
-  /* hide the parent wrapper — JS also does this for safety */
-  #mob-minimap-parent          { display: none !important; }
-}
-
-/* ─────────────────────────────────────────────────────────
-   3.  VIRTUAL JOYSTICK
-───────────────────────────────────────────────────────── */
-#mob-joystick-wrap {
-  display: none;
-  position: fixed;
-  bottom: 22px;
-  left: 22px;
-  z-index: 10000;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  align-items: center;
-  justify-content: center;
-}
-
-#mob-joystick-base {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: rgba(4, 0, 18, 0.50);
-  border: 1.5px solid rgba(155, 48, 255, 0.36);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 18px rgba(155, 48, 255, 0.16),
-              inset 0 0 26px rgba(155, 48, 255, 0.06);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#mob-joystick-base::before {
-  content: '';
-  position: absolute;
-  inset: 10px;
-  border-radius: 50%;
-  border: 1px dashed rgba(155, 48, 255, 0.16);
-  pointer-events: none;
-}
-
-#mob-joystick-knob {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%,
-    rgba(175, 80, 255, 0.82),
-    rgba(90, 15, 190, 0.62));
-  border: 1.5px solid rgba(155, 48, 255, 0.72);
-  box-shadow: 0 0 10px rgba(155, 48, 255, 0.52),
-              0 0 22px rgba(155, 48, 255, 0.20);
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-  transition: box-shadow 0.08s ease;
-}
-#mob-joystick-knob.mob-active {
-  box-shadow: 0 0 18px rgba(155, 48, 255, 0.88),
-              0 0 36px rgba(155, 48, 255, 0.38);
-}
-
-#mob-joy-label {
-  position: absolute;
-  bottom: -17px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 7px;
-  letter-spacing: 2px;
-  color: rgba(155, 48, 255, 0.48);
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-/* ─────────────────────────────────────────────────────────
-   4.  RIGHT-SIDE ACTIONS  (Sprint above, Shoot below)
-───────────────────────────────────────────────────────── */
-#mob-actions-wrap {
-  display: none;
-  position: fixed;
-  bottom: 22px;
-  right: 22px;
-  z-index: 10000;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* SPRINT */
-#mob-sprint-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(4, 0, 18, 0.56);
-  border: 1.5px solid rgba(255, 215, 0, 0.40);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 14px rgba(255, 200, 0, 0.12),
-              inset 0 0 14px rgba(255, 200, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  transition: all 0.1s ease;
-  cursor: pointer;
-}
-#mob-sprint-btn svg { width: 20px; height: 20px; display: block; }
-#mob-sprint-label {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: rgba(255, 210, 0, 0.72);
-}
-#mob-sprint-btn.mob-active {
-  border-color: rgba(255, 215, 0, 0.88);
-  box-shadow: 0 0 22px rgba(255, 200, 0, 0.52),
-              inset 0 0 16px rgba(255, 200, 0, 0.16);
-  transform: scale(0.92);
-  background: rgba(30, 20, 0, 0.72);
-}
-
-/* SHOOT */
-#mob-shoot-btn {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: rgba(4, 0, 18, 0.58);
-  border: 2px solid rgba(0, 238, 255, 0.42);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 20px rgba(0, 238, 255, 0.14),
-              inset 0 0 18px rgba(0, 238, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  position: relative;
-  transition: all 0.1s ease;
-  cursor: pointer;
-}
-#mob-shoot-btn svg { width: 28px; height: 28px; display: block; }
-#mob-shoot-label {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: rgba(0, 238, 255, 0.78);
-  transition: color 0.1s ease;
-}
-#mob-charge-ring {
-  position: absolute;
-  inset: -7px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  pointer-events: none;
-}
-
-/* shoot — pressed */
-#mob-shoot-btn.mob-active {
-  transform: scale(0.90);
-  border-color: rgba(0, 238, 255, 0.90);
-  box-shadow: 0 0 28px rgba(0, 238, 255, 0.44),
-              inset 0 0 18px rgba(0, 238, 255, 0.16);
-}
-
-/* shoot — charging */
-#mob-shoot-btn.mob-charging {
-  border-color: rgba(255, 90, 0, 0.90);
-  box-shadow: 0 0 36px rgba(255, 110, 0, 0.58),
-              inset 0 0 22px rgba(255, 80, 0, 0.20);
-  background: rgba(35, 8, 0, 0.76);
-}
-#mob-shoot-btn.mob-charging #mob-shoot-label { color: rgba(255, 160, 0, 0.95); }
-#mob-shoot-btn.mob-charging #mob-charge-ring {
-  border-top-color: transparent;
-  border-right-color: rgba(255, 180, 0, 0.90);
-  border-bottom-color: rgba(255, 80, 0, 0.60);
-  border-left-color: transparent;
-  animation: mob-charge-spin 0.52s linear infinite;
-}
-@keyframes mob-charge-spin { to { transform: rotate(360deg); } }
-
-/* ─────────────────────────────────────────────────────────
-   5.  SUPPLY BAR  (top-center during gameplay)
-───────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────
+   B.  SUPPLY BAR  (top-center, only during game)
+────────────────────────────────────────────────────────── */
 #mob-supply-bar {
-  position: fixed;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
+  display:        none;          /* JS shows it */
+  position:       fixed;
+  top:            10px;
+  left:           50%;
+  transform:      translateX(-50%);
+  z-index:        8999;
   flex-direction: row;
-  gap: 8px;
-  z-index: 9500;
+  gap:            8px;
   pointer-events: all;
-  touch-action: manipulation;
+  touch-action:   manipulation;
 }
-/* supply buttons inside bar inherit original styles but get size tweaks */
+/* supply buttons inside the bar */
 #mob-supply-bar > div {
-  padding: 5px 10px !important;
-  border-radius: 8px !important;
-  min-width: 52px !important;
-  text-align: center !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
+  padding:          5px 10px !important;
+  border-radius:    8px !important;
+  min-width:        54px !important;
+  text-align:       center !important;
+  cursor:           pointer !important;
+  touch-action:     manipulation !important;
   -webkit-tap-highlight-color: transparent;
+  user-select:      none;
 }
 #mob-supply-bar > div > div:first-child { font-size: 14px !important; }
+
+/* ──────────────────────────────────────────────────────────
+   C.  VIRTUAL JOYSTICK  (bottom-left)
+────────────────────────────────────────────────────────── */
+#mob-joy-wrap {
+  display:         none;   /* JS shows it */
+  position:        fixed;
+  bottom:          20px;
+  left:            20px;
+  z-index:         9999;
+  touch-action:    none;
+  user-select:     none;
+  -webkit-user-select: none;
+}
+#mob-joy-base {
+  width:           100px;
+  height:          100px;
+  border-radius:   50%;
+  background:      rgba(4,0,18,.48);
+  border:          1.5px solid rgba(155,48,255,.34);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:      0 0 18px rgba(155,48,255,.14), inset 0 0 24px rgba(155,48,255,.06);
+  position:        relative;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+/* inner dashed guide ring */
+#mob-joy-base::before {
+  content:       '';
+  position:      absolute;
+  inset:         11px;
+  border-radius: 50%;
+  border:        1px dashed rgba(155,48,255,.16);
+  pointer-events:none;
+}
+/* cardinal tick marks */
+#mob-joy-base::after {
+  content:       '';
+  position:      absolute;
+  inset:         4px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 6%,  rgba(155,48,255,.22) 2px, transparent 2px),
+    radial-gradient(circle at 50% 94%, rgba(155,48,255,.22) 2px, transparent 2px),
+    radial-gradient(circle at 6%  50%, rgba(155,48,255,.22) 2px, transparent 2px),
+    radial-gradient(circle at 94% 50%, rgba(155,48,255,.22) 2px, transparent 2px);
+  pointer-events: none;
+}
+#mob-joy-knob {
+  width:           40px;
+  height:          40px;
+  border-radius:   50%;
+  background:      radial-gradient(circle at 38% 34%, rgba(180,80,255,.84), rgba(88,14,192,.64));
+  border:          1.5px solid rgba(155,48,255,.72);
+  box-shadow:      0 0 10px rgba(155,48,255,.5), 0 0 22px rgba(155,48,255,.2);
+  position:        absolute;
+  top:50%; left:50%;
+  transform:       translate(-50%,-50%);
+  will-change:     transform;
+  transition:      box-shadow .08s;
+}
+#mob-joy-knob.active {
+  box-shadow: 0 0 18px rgba(155,48,255,.9), 0 0 36px rgba(155,48,255,.38);
+}
+#mob-joy-label {
+  position:      absolute;
+  bottom:        -17px;
+  left:          50%;
+  transform:     translateX(-50%);
+  font-family:   'Share Tech Mono', monospace;
+  font-size:     7px;
+  letter-spacing:2px;
+  color:         rgba(155,48,255,.44);
+  white-space:   nowrap;
+  pointer-events:none;
+}
+
+/* ──────────────────────────────────────────────────────────
+   D.  ACTION BUTTONS  (bottom-right stack: SPRINT above FIRE)
+────────────────────────────────────────────────────────── */
+#mob-actions {
+  display:        none;   /* JS shows it */
+  position:       fixed;
+  bottom:         20px;
+  right:          20px;
+  z-index:        9999;
+  flex-direction: column;
+  align-items:    center;
+  gap:            10px;
+  touch-action:   none;
+  user-select:    none;
+  -webkit-user-select: none;
+}
+
+/* SPRINT button */
+#mob-sprint {
+  width:           54px;
+  height:          54px;
+  border-radius:   50%;
+  background:      rgba(4,0,18,.54);
+  border:          1.5px solid rgba(255,215,0,.38);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:      0 0 14px rgba(255,200,0,.11), inset 0 0 14px rgba(255,200,0,.04);
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  gap:             2px;
+  transition:      all .1s ease;
+  cursor:          pointer;
+}
+#mob-sprint svg    { width:20px; height:20px; display:block; }
+#mob-sprint-lbl {
+  font-family:  'Orbitron', sans-serif;
+  font-size:    6px;
+  font-weight:  700;
+  letter-spacing:1px;
+  color:        rgba(255,210,0,.70);
+}
+#mob-sprint.active {
+  border-color: rgba(255,215,0,.88);
+  box-shadow:   0 0 22px rgba(255,200,0,.50), inset 0 0 16px rgba(255,200,0,.16);
+  transform:    scale(.92);
+  background:   rgba(30,20,0,.72);
+}
+
+/* FIRE button */
+#mob-fire {
+  width:           74px;
+  height:          74px;
+  border-radius:   50%;
+  background:      rgba(4,0,18,.56);
+  border:          2px solid rgba(0,238,255,.40);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:      0 0 20px rgba(0,238,255,.13), inset 0 0 18px rgba(0,238,255,.05);
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  gap:             3px;
+  position:        relative;
+  transition:      all .1s ease;
+  cursor:          pointer;
+}
+#mob-fire svg    { width:28px; height:28px; display:block; }
+#mob-fire-lbl {
+  font-family:  'Orbitron', sans-serif;
+  font-size:    7px;
+  font-weight:  700;
+  letter-spacing:1.5px;
+  color:        rgba(0,238,255,.76);
+  transition:   color .1s;
+}
+#mob-charge-ring {
+  position:      absolute;
+  inset:         -7px;
+  border-radius: 50%;
+  border:        2px solid transparent;
+  pointer-events:none;
+}
+
+/* fire — pressed */
+#mob-fire.active {
+  transform:   scale(.90);
+  border-color:rgba(0,238,255,.90);
+  box-shadow:  0 0 28px rgba(0,238,255,.44), inset 0 0 18px rgba(0,238,255,.16);
+}
+/* fire — charging */
+#mob-fire.charging {
+  border-color:rgba(255,90,0,.90);
+  box-shadow:  0 0 36px rgba(255,110,0,.56), inset 0 0 22px rgba(255,80,0,.20);
+  background:  rgba(35,8,0,.76);
+}
+#mob-fire.charging #mob-fire-lbl  { color: rgba(255,160,0,.95); }
+#mob-fire.charging #mob-charge-ring {
+  border-top-color:    transparent;
+  border-right-color:  rgba(255,180,0,.9);
+  border-bottom-color: rgba(255,80,0,.6);
+  border-left-color:   transparent;
+  animation:           mob-cspin .52s linear infinite;
+}
+@keyframes mob-cspin { to { transform:rotate(360deg); } }
+
+/* ──────────────────────────────────────────────────────────
+   E.  MINIMAP HIDDEN on mobile
+────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #minimap-canvas,
+  #minimap-canvas + div { display: none !important; }
+
+  /* also kill the fixed/absolute minimap wrapper if it gets an id */
+  #mob-minimap-wrap { display: none !important; }
+}
+
+/* ──────────────────────────────────────────────────────────
+   F.  LOGIN / MENU SCREENS  (portrait-friendly)
+────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+
+  button, .btn, .tb, .nav-item, .card, .ctab {
+    touch-action:              manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* LOGIN */
+  #s-login { flex-direction:column !important; overflow-y:auto !important; }
+  #s-login .left  { display:none !important; }
+  #s-login .right {
+    width:100% !important; max-width:100% !important;
+    min-height:100dvh !important; padding:24px 16px 36px !important;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  #s-login .card   { width:100% !important; max-width:420px !important; padding:26px 20px !important; }
+  #s-login .tabs   { gap:6px !important; margin-bottom:18px !important; }
+  #s-login .tb     { padding:9px 18px !important; font-size:11px !important; min-height:42px !important; }
+  #s-login .if     { font-size:14px !important; padding:12px 14px !important; min-height:46px !important; }
+  #s-login .btn    { min-height:48px !important; font-size:12px !important; letter-spacing:2px !important; padding:14px 20px !important; }
+  #s-login .btn-google { min-height:46px !important; font-size:12px !important; padding:12px 16px !important; gap:10px !important; }
+
+  /* COMPLETE PROFILE */
+  #s-complete-profile .left  { display:none !important; }
+  #s-complete-profile .right {
+    width:100% !important; max-width:100% !important; padding:24px 16px 40px !important;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  #s-complete-profile .card  { width:100% !important; max-width:420px !important; padding:26px 20px !important; }
+  #s-complete-profile .btn   { min-height:48px !important; font-size:12px !important; }
+
+  /* TOPBAR */
+  .topbar       { padding:8px 12px !important; min-height:50px !important; }
+  .topbar-logo  { font-size:12px !important; letter-spacing:2px !important; }
+  .topbar-coins { font-size:11px !important; padding:5px 10px !important; }
+  .topbar-nick  { font-size:10px !important; }
+  .topbar-rank  { font-size:8px !important; }
+  .topbar-av    { width:28px !important; height:28px !important; font-size:13px !important; }
+  .page-title   { font-size:14px !important; letter-spacing:3px !important; margin-top:10px !important; }
+  .page-sub     { font-size:9px !important; letter-spacing:2px !important; }
+
+  /* CHARACTER SELECT */
+  .game-layout    { flex-direction:column !important; gap:14px !important; padding:10px 12px !important; overflow-y:auto !important; }
+  .game-hero      { flex-direction:row !important; gap:12px !important; width:100% !important; min-width:unset !important; }
+  .hero-char-area { width:88px !important; height:88px !important; flex-shrink:0; }
+  #bigCharCanvas  { width:78px !important; height:78px !important; }
+  .hero-ring      { width:88px !important; height:88px !important; }
+  .hero-char-name { font-size:15px !important; letter-spacing:2px !important; }
+  .start-game-btn { min-height:42px !important; font-size:11px !important; padding:10px 14px !important; }
+  .game-skins-col { width:100% !important; min-width:unset !important; max-height:200px !important; }
+  .skins-grid     { grid-template-columns:repeat(auto-fill,minmax(66px,1fr)) !important; gap:7px !important; }
+  .preview-panel  { display:none !important; }
+
+  /* MODE SELECT */
+  .mode-select-inner  { padding:26px 18px !important; gap:14px !important; }
+  .mode-select-title  { font-size:13px !important; letter-spacing:2px !important; }
+  .cards              { flex-direction:column !important; gap:10px !important; width:100% !important; max-width:270px !important; }
+  .cards .card        { padding:16px 18px !important; min-height:86px !important; }
+  .card-icon          { font-size:22px !important; }
+  .cards .card .tip   { font-size:12px !important; letter-spacing:2px !important; }
+  .mode-back-btn      { min-height:44px !important; font-size:11px !important; padding:10px 22px !important; }
+
+  /* IN-GAME MISC */
+  #combo-hud          { top:60px !important; right:10px !important; }
+  #reload-indicator   { bottom:140px !important; }
+  #boss-bar-wrap      { bottom:145px !important; }
+  #game-over-screen > div { padding:28px 20px !important; margin:14px !important; width:calc(100% - 28px) !important; box-sizing:border-box !important; }
+  #game-over-screen button { min-height:44px !important; font-size:10px !important; padding:11px 18px !important; }
+  .upgrade-cards { flex-direction:column !important; gap:9px !important; padding:0 14px !important; max-height:58vh !important; overflow-y:auto !important; }
+  .sidebar  { width:230px !important; }
+  .nav-item { padding:11px 16px !important; font-size:10px !important; min-height:44px !important; }
+  #pause-menu > div { padding:32px 28px !important; margin:0 20px !important; }
+}
