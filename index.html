@@ -1,0 +1,2809 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAST STAND : MACHINE WAR — Survive or Die</title>
+    <link rel="icon" type="image/jpg.icon" href="/icon.jpg" />
+    <!-- ═══ SEO ═══ -->
+    <meta
+      name="description"
+      content="LAST STAND: MACHINE WAR is a free browser-based top-down shooter. Survive endless waves of rogue robots, upgrade your soldier, unlock weapon skins and climb the global leaderboard. No download needed — play now!"
+    />
+    <meta
+      name="keywords"
+      content="last stand machine war, browser game, top down shooter, free online game, wave survival, robot shooter, leaderboard game, action game, no download game, last stand game"
+    />
+    <meta name="author" content="FARAH MOHAMED AMINE" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://last-stand-five.vercel.app/" />
+
+    <!-- ═══ Open Graph (Facebook / WhatsApp / Discord / LinkedIn) ═══ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://last-stand-five.vercel.app/" />
+    <meta
+      property="og:title"
+      content="LAST STAND: MACHINE WAR — Survive or Die"
+    />
+    <meta
+      property="og:description"
+      content="Survive endless waves of rogue machines in a brutal top-down shooter. Upgrade your soldier, unlock weapon skins, and climb the global leaderboard. Free browser game — no download needed!"
+    />
+    <meta
+      property="og:image"
+      content="https://last-stand-five.vercel.app/og-image.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="LAST STAND: MACHINE WAR — top-down robot shooter game"
+    />
+    <meta property="og:site_name" content="LAST STAND: MACHINE WAR" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@laststandgame" />
+    <meta name="twitter:url" content="https://last-stand-five.vercel.app/" />
+    <meta
+      name="twitter:title"
+      content="LAST STAND: MACHINE WAR — Survive or Die"
+    />
+    <meta
+      name="twitter:description"
+      content="Survive endless waves of rogue machines. Upgrade. Unlock skins. Climb the leaderboard. Free browser game — no download needed!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://last-stand-five.vercel.app/og-image.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="LAST STAND: MACHINE WAR — top-down robot shooter game"
+    />
+
+    <!-- ═══ Discord ═══ -->
+    <meta name="theme-color" content="#9b30ff" />
+
+    <!-- ═══ WhatsApp / Telegram ═══ -->
+    <meta
+      property="og:image:secure_url"
+      content="https://last-stand-five.vercel.app/og-image.png"
+    />
+
+    <!-- ═══ iMessage / iOS ═══ -->
+    <meta name="apple-mobile-web-app-title" content="LAST STAND" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/mobile.css" />
+    <!-- ═══ Google Identity Services ═══ -->
+    <meta
+      name="google-signin-client_id"
+      content="705975913285-1ssvt8om86p9ac4e1f207fms763cegdu.apps.googleusercontent.com"
+    />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <!-- LOAD -->
+
+    <div id="lo">
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+          width: 100%;
+          max-width: 400px;
+        "
+      >
+        <div
+          style="
+            font-family: &quot;Orbitron&quot;, sans-serif;
+            font-size: clamp(18px, 3vw, 28px);
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow:
+              0 0 20px var(--purple),
+              0 0 40px var(--purple2);
+            margin-bottom: 6px;
+            text-align: center;
+          "
+        >
+          LAST STAND
+        </div>
+        <div
+          style="
+            font-family: &quot;Orbitron&quot;, sans-serif;
+            font-size: clamp(10px, 1.5vw, 14px);
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--purple);
+            margin-bottom: 32px;
+            text-align: center;
+          "
+        >
+          MACHINE WAR
+        </div>
+        <div class="llogo" id="ltxt" style="margin-bottom: 16px">
+          INITIALIZING SYSTEM
+        </div>
+        <div class="lbar"><div class="lbar-fill" id="lf"></div></div>
+        <div class="lpct" id="lp">0%</div>
+      </div>
+    </div>
+
+    <!-- TRANSITION -->
+    <div id="pt"><div class="pt-txt" id="pt-txt">DEPLOYING...</div></div>
+
+    <!-- ══════ GAME LOADING SCREEN ══════ -->
+    <div
+      id="game-loading-screen"
+      class="game-overlay-screen"
+      style="display: none"
+    >
+      <div class="game-ls-inner">
+        <div class="game-ls-title">
+          LAST STAND
+          <span style="color: var(--purple)">: MW</span>
+        </div>
+        <div class="game-ls-sub">INITIALIZING COMBAT SYSTEMS</div>
+        <div class="loader-wrapper">
+          <div class="packman"></div>
+          <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="game-ls-bar-wrap">
+          <div class="game-ls-bar">
+            <div class="game-ls-fill" id="game-ls-fill"></div>
+          </div>
+          <div class="game-ls-txt" id="game-ls-txt">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ MODE SELECTION SCREEN ══════ -->
+    <div
+      id="mode-select-screen"
+      class="game-overlay-screen"
+      style="display: none"
+    >
+      <div class="mode-select-inner">
+        <div class="mode-select-title">◆ SELECT GAME MODE ◆</div>
+        <div class="mode-select-sub">Choose how you want to play</div>
+        <div class="cards">
+          <div class="card blue" onclick="selectMode('vs-robots')">
+            <div class="card-icon">🤖</div>
+            <p class="tip">VS ROBOTS</p>
+            <p class="second-text">Play against Robots</p>
+            <div class="card-tag">SOLO</div>
+          </div>
+          <div class="card green" onclick="selectMode('coop')">
+            <div class="card-icon">👥</div>
+            <p class="tip">CO-OP LOCAL</p>
+            <p class="second-text">Play against a friend</p>
+            <div class="card-tag">1V1</div>
+          </div>
+        </div>
+        <button class="mode-back-btn" onclick="closeModeSelect()">
+          ← BACK
+        </button>
+      </div>
+    </div>
+
+    <!-- CANVAS & FX -->
+    <canvas id="c"></canvas>
+    <div class="neb neb1"></div>
+    <div class="neb neb2"></div>
+    <div class="neb neb3"></div>
+    <div class="sl"></div>
+    <div class="beam"></div>
+    <div class="vig"></div>
+    <div class="particles" id="pts"></div>
+
+    <!-- ═══ LOGIN ═══ -->
+    <div class="screen active" id="s-login">
+      <div class="left">
+        <div class="lsub">[ survival protocol activated ]</div>
+        <div class="shape ltitle">
+          LAST STAND
+          <span class="colon">:</span>
+          <br />
+          <span class="war">MACHINE WAR</span>
+        </div>
+        <span class="lspacer"></span>
+        <span class="lspacer"></span>
+        <span class="lspacer"></span>
+        <span class="lspacer"></span>
+        <span class="lspacer"></span>
+        <div class="ldesc">
+          Survive endless waves of rogue machines in a
+          <span class="hl">brutal top-down shooter</span>
+          . Upgrade your soldier, unlock rare weapon skins, and climb the global
+          leaderboard.
+          <br />
+          <br />
+          Every wave is harder. Every decision matters.
+          <span class="hl">How long can you last?</span>
+        </div>
+        <div class="lrights">
+          &copy; All rights reserved to the owner &mdash;
+          <span style="color: rgba(155, 48, 255, 0.6)">Farah Mohamed</span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <div class="cglow"></div>
+          <div class="c-tr"></div>
+          <div class="c-bl"></div>
+          <div class="tabs">
+            <button class="tb on" id="tb-login" onclick="goTab('login')">
+              Login
+            </button>
+            <button class="tb" id="tb-reg" onclick="goTab('reg')">
+              Register
+            </button>
+          </div>
+          <div class="panel on" id="p-login">
+            <div class="ig">
+              <label class="il">Username or Email</label>
+              <input
+                class="if"
+                id="lu"
+                type="text"
+                placeholder="username or email"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <div class="ig">
+              <label class="il">Password</label>
+              <input
+                class="if"
+                id="lp2"
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
+            <button class="btn" onclick="doLogin()">
+              ⚡ &nbsp;ENTER THE WAR
+            </button>
+            <div class="oauth-divider"><span>OR</span></div>
+            <button class="btn-google" onclick="doGoogleLogin()">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 48 48"
+                style="flex-shrink: 0"
+              >
+                <path
+                  fill="#EA4335"
+                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                />
+                <path fill="none" d="M0 0h48v48H0z" />
+              </svg>
+              التسجيل بواسطة Google
+            </button>
+            <div class="msg" id="lmsg"></div>
+          </div>
+          <div class="panel" id="p-reg">
+            <div class="av-row">
+              <div
+                class="av-wrap"
+                id="avprev"
+                onclick="document.getElementById('avInput').click()"
+              >
+                <span id="avEmoji">🤖</span>
+                <img id="avImg" style="display: none" alt="" />
+              </div>
+              <div>
+                <label class="il">Avatar</label>
+                <div class="av-hint">Click to upload</div>
+              </div>
+              <input
+                type="file"
+                id="avInput"
+                accept="image/*"
+                onchange="handleAv(event)"
+              />
+            </div>
+            <div class="ig">
+              <label class="il">Username</label>
+              <input
+                class="if"
+                id="ru"
+                type="text"
+                placeholder="unique identifier"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <div class="ig">
+              <label class="il">Nickname</label>
+              <input
+                class="if"
+                id="rn"
+                type="text"
+                placeholder="display name"
+                autocomplete="off"
+              />
+            </div>
+            <div class="ig">
+              <label class="il">Email</label>
+              <input
+                class="if"
+                id="re"
+                type="email"
+                placeholder="your@email.com"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <div class="ig">
+              <label class="il">Password</label>
+              <input
+                class="if"
+                id="rp"
+                type="password"
+                placeholder="min 6 characters"
+              />
+            </div>
+            <button class="btn" onclick="doReg()">
+              🔥 &nbsp;CREATE SOLDIER
+            </button>
+            <div class="oauth-divider"><span>OR</span></div>
+            <button class="btn-google" onclick="doGoogleRegister()">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 48 48"
+                style="flex-shrink: 0"
+              >
+                <path
+                  fill="#EA4335"
+                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                />
+                <path fill="none" d="M0 0h48v48H0z" />
+              </svg>
+              إنشاء حساب بواسطة Google
+            </button>
+            <div class="msg" id="rmsg"></div>
+          </div>
+          <div class="cfoot">
+            SYS v1.0 &nbsp;|&nbsp;
+            <span>LAST STAND: MACHINE WAR</span>
+            &nbsp;|&nbsp; 2026
+          </div>
+        </div>
+        <div class="status" id="stbar">▶ awaiting authentication</div>
+      </div>
+    </div>
+
+    <!-- ═══ COMPLETE PROFILE (Google OAuth new users) ═══ -->
+    <div class="screen" id="s-complete-profile">
+      <div class="left">
+        <div class="lsub">[ completing soldier profile ]</div>
+        <div class="shape ltitle">
+          LAST STAND
+          <span class="colon">:</span>
+          <br />
+          <span class="war">MACHINE WAR</span>
+        </div>
+        <span class="lspacer"></span>
+        <div class="ldesc">
+          Almost there, soldier. Choose your
+          <span class="hl">username</span> and
+          <span class="hl">in-game name</span> to complete your profile and
+          enter the war. <br /><br />
+          These details will be visible on the leaderboard.
+        </div>
+        <div class="lrights">
+          &copy; All rights reserved to the owner &mdash;
+          <span style="color: rgba(155, 48, 255, 0.6)">Farah Mohamed</span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="card">
+          <div class="cglow"></div>
+          <div class="c-tr"></div>
+          <div class="c-bl"></div>
+          <div class="cp-header">
+            <div class="cp-google-badge">
+              <svg width="16" height="16" viewBox="0 0 48 48">
+                <path
+                  fill="#EA4335"
+                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                />
+                <path fill="none" d="M0 0h48v48H0z" />
+              </svg>
+              Google Account Connected
+            </div>
+            <div class="cp-email" id="cp-email-display"></div>
+          </div>
+          <div class="panel on" id="p-complete-profile">
+            <div class="ig">
+              <label class="il"
+                >Username
+                <span style="color: var(--purple); font-size: 10px"
+                  >[ UNIQUE ID ]</span
+                ></label
+              >
+              <input
+                class="if"
+                id="cp-username"
+                type="text"
+                placeholder="unique identifier (3-16 chars)"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <div class="ig">
+              <label class="il"
+                >In-Game Name
+                <span style="color: var(--purple); font-size: 10px"
+                  >[ DISPLAY NAME ]</span
+                ></label
+              >
+              <input
+                class="if"
+                id="cp-nickname"
+                type="text"
+                placeholder="your battle name"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn" onclick="doCompleteProfile()">
+              &#9889; &nbsp;ENTER THE WAR
+            </button>
+            <div class="msg" id="cpmsg"></div>
+          </div>
+          <div class="cfoot">
+            SYS v1.0 &nbsp;|&nbsp;
+            <span>LAST STAND: MACHINE WAR</span>
+            &nbsp;|&nbsp; 2026
+          </div>
+        </div>
+        <div class="status" id="cpstbar">
+          &#9658; complete your soldier profile
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SHOWCASE ═══ -->
+    <div class="screen" id="s-showcase">
+      <div class="sc-bg"></div>
+      <div class="sc-title" id="sc-title">◆ UNLOCK LEGENDARY SKINS ◆</div>
+      <div class="sc-grid" id="sc-grid"></div>
+      <div class="sc-bar-wrap">
+        <div class="sc-label" id="sc-label">PREPARING BATTLE SYSTEMS...</div>
+        <div class="sc-bar-out"><div class="sc-bar-in" id="sc-bar"></div></div>
+      </div>
+      <div class="sc-skip-btn" id="sc-skip-btn" onclick="skipShowcase()">
+        <div class="sc-skip-inner">
+          <span class="sc-skip-icon">▶▶</span>
+          <span class="sc-skip-txt">SKIP LOADING ...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MAIN MENU ═══ -->
+    <div class="screen" id="s-menu">
+      <div class="topbar">
+        <div style="display: flex; align-items: center; gap: 14px">
+          <div class="burger-btn" id="burgerBtn" onclick="toggleSidebar()">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+          </div>
+          <div class="topbar-logo">
+            LAST STAND
+            <span class="war">: MW</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-coins">
+            💰
+            <span id="hud-coins">500</span>
+          </div>
+          <div class="topbar-user">
+            <div class="topbar-av" id="topbar-av"><span>🤖</span></div>
+            <div>
+              <div class="topbar-nick" id="topbar-nick">SOLDIER</div>
+              <div class="topbar-rank" id="topbar-rank">⚙ IRON RANK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="sidebar-overlay"
+        id="sideOverlay"
+        onclick="closeSidebar()"
+      ></div>
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+          <div class="sidebar-logo">LAST STAND</div>
+          <div class="sidebar-sub">MACHINE WAR // MENU</div>
+        </div>
+        <div class="nav-list">
+          <div class="nav-item active" id="nav-game" onclick="navTo('game')">
+            <span class="nav-icon">🎮</span>
+            GAME
+          </div>
+          <div class="nav-item" id="nav-shop" onclick="navTo('shop')">
+            <span class="nav-icon">🛒</span>
+            SHOP
+            <span class="nav-badge">NEW</span>
+          </div>
+          <div class="nav-item" id="nav-profile" onclick="navTo('profile')">
+            <span class="nav-icon">👤</span>
+            PROFILE
+          </div>
+          <div
+            class="nav-item"
+            id="nav-leaderboard"
+            onclick="navTo('leaderboard')"
+          >
+            <span class="nav-icon">🏆</span>
+            LEADERBOARD
+          </div>
+          <div
+            class="nav-item"
+            id="nav-achievements"
+            onclick="navTo('achievements')"
+          >
+            <span class="nav-icon">🎖</span>
+            ACHIEVEMENTS
+          </div>
+          <div class="nav-item" id="nav-titles" onclick="navTo('titles')">
+            <span class="nav-icon">👑</span>
+            TITLES
+          </div>
+          <div class="nav-item" id="nav-inventory" onclick="navTo('inventory')">
+            <span class="nav-icon">🎒</span>
+            INVENTORY
+          </div>
+          <div class="nav-item" id="nav-settings" onclick="navTo('settings')">
+            <span class="nav-icon">⚙️</span>
+            SETTINGS
+          </div>
+        </div>
+        <div
+          style="
+            padding: 16px 22px;
+            border-top: 1px solid rgba(155, 48, 255, 0.15);
+            display: flex;
+            align-items: center;
+          "
+        >
+          <button class="Btn" onclick="doLogout()" title="Logout">
+            <div class="sign">
+              <svg viewBox="0 0 512 512">
+                <path
+                  d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+                ></path>
+              </svg>
+            </div>
+            <div class="text">Logout</div>
+          </button>
+        </div>
+      </div>
+      <div class="menu-content">
+        <!-- GAME PAGE -->
+        <div class="page active" id="page-game">
+          <div class="page-title">CHOOSE YOUR SOLDIER</div>
+          <div class="page-sub">SELECT A CHARACTER &amp; WEAPON TO DEPLOY</div>
+          <div class="game-layout">
+            <!-- LEFT: hero card -->
+            <div class="game-hero">
+              <div class="hero-char-area">
+                <div class="hero-ring"></div>
+                <canvas id="bigCharCanvas" width="210" height="210"></canvas>
+              </div>
+              <div class="hero-info">
+                <div class="hero-game-title">
+                  LAST STAND
+                  <span class="hero-game-colon">:</span>
+                  <br />
+                  <span class="hero-game-war">MACHINE WAR</span>
+                </div>
+                <div class="hero-char-name" id="bigCharName">PHANTOM</div>
+                <div
+                  class="hero-char-rar"
+                  id="bigCharRarity"
+                  style="color: #9b30ff"
+                >
+                  ◆ MYTHICAL
+                </div>
+                <div class="hero-stats">
+                  <div class="stat-row">
+                    <span class="stat-label">HP</span>
+                    <div class="stat-bar">
+                      <div
+                        class="stat-fill"
+                        id="stat-hp"
+                        style="
+                          background: linear-gradient(90deg, #ff4444, #ff8888);
+                          width: 0%;
+                        "
+                      ></div>
+                    </div>
+                    <span class="stat-val" id="stat-hp-v">—</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">SPEED</span>
+                    <div class="stat-bar">
+                      <div
+                        class="stat-fill"
+                        id="stat-spd"
+                        style="
+                          background: linear-gradient(90deg, #00eeff, #88ffff);
+                          width: 0%;
+                        "
+                      ></div>
+                    </div>
+                    <span class="stat-val" id="stat-spd-v">—</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">REGEN</span>
+                    <div class="stat-bar">
+                      <div
+                        class="stat-fill"
+                        id="stat-regen"
+                        style="
+                          background: linear-gradient(90deg, #00ff88, #88ffcc);
+                          width: 0%;
+                        "
+                      ></div>
+                    </div>
+                    <span class="stat-val" id="stat-regen-v">—</span>
+                  </div>
+                </div>
+                <button class="start-game-btn" onclick="openGameFlow()">
+                  <span class="start-btn-icon">▶</span>
+                  START GAME
+                </button>
+              </div>
+            </div>
+
+            <!-- CENTER: skins list -->
+            <div class="game-skins-col">
+              <div class="char-tabs">
+                <div class="ctab active" onclick="switchCharTab('chars')">
+                  CHARACTERS
+                </div>
+                <div class="ctab" onclick="switchCharTab('weapons')">
+                  WEAPONS
+                </div>
+              </div>
+              <div
+                id="chars-panel"
+                style="
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  overflow: hidden;
+                "
+              >
+                <div class="skins-grid" id="char-skins-grid"></div>
+              </div>
+              <div
+                id="weapons-panel"
+                style="
+                  flex: 1;
+                  display: none;
+                  flex-direction: column;
+                  overflow: hidden;
+                "
+              >
+                <div class="skins-grid" id="weapon-skins-grid"></div>
+              </div>
+            </div>
+
+            <!-- RIGHT: preview panel -->
+            <div class="preview-panel" id="game-preview-panel">
+              <div class="preview-label">SELECTED</div>
+              <div class="preview-canvas-wrap">
+                <canvas
+                  id="previewCharCanvas"
+                  width="130"
+                  height="130"
+                ></canvas>
+              </div>
+              <div class="preview-name" id="preview-char-name">PHANTOM</div>
+              <div
+                class="preview-rar"
+                id="preview-char-rar"
+                style="color: #9b30ff"
+              >
+                ◆ MYTHICAL
+              </div>
+              <div class="preview-divider"></div>
+              <div class="preview-stats" id="preview-char-stats">
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">HP</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-hp"
+                      style="
+                        background: linear-gradient(90deg, #ff4444, #ff8888);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-hp-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">SPEED</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-spd"
+                      style="
+                        background: linear-gradient(90deg, #00eeff, #88ffff);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-spd-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">REGEN</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-regen"
+                      style="
+                        background: linear-gradient(90deg, #00ff88, #88ffcc);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-regen-v">—</span>
+                </div>
+              </div>
+              <div class="preview-divider"></div>
+              <div class="preview-label" style="margin-top: 4px">WEAPON</div>
+              <div class="preview-canvas-wrap">
+                <canvas
+                  id="previewWeaponCanvas"
+                  width="130"
+                  height="80"
+                ></canvas>
+              </div>
+              <div class="preview-name" id="preview-wpn-name">—</div>
+              <div class="preview-rar" id="preview-wpn-rar" style="color: #aaa">
+                —
+              </div>
+              <div class="preview-stats" id="preview-wpn-stats">
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">DMG</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-dmg"
+                      style="
+                        background: linear-gradient(90deg, #ff4444, #ff8888);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-dmg-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">RATE</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-rate"
+                      style="
+                        background: linear-gradient(90deg, #ffd700, #fff088);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-rate-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label">RANGE</span>
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="prev-range"
+                      style="
+                        background: linear-gradient(90deg, #00eeff, #88ffff);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="prev-range-v">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHOP PAGE -->
+        <div class="page" id="page-shop">
+          <div class="page-title">ARMORY SHOP</div>
+          <div class="page-sub">UNLOCK CHARACTERS &amp; WEAPONS</div>
+          <div
+            style="
+              display: flex;
+              gap: 16px;
+              height: calc(100vh - 165px);
+              overflow: hidden;
+            "
+          >
+            <!-- shop main -->
+            <div
+              style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                min-width: 0;
+              "
+            >
+              <!-- main tabs: Characters / Weapons -->
+              <div class="shop-main-tabs">
+                <div
+                  class="shop-tab active"
+                  id="stab-chars"
+                  onclick="switchShopTab('chars')"
+                >
+                  ⚔ CHARACTERS
+                </div>
+                <div
+                  class="shop-tab"
+                  id="stab-weapons"
+                  onclick="switchShopTab('weapons')"
+                >
+                  🔫 WEAPONS
+                </div>
+              </div>
+              <!-- rarity filter -->
+              <div class="shop-rarity-bar" id="shop-rar-bar">
+                <div
+                  class="rar-btn active"
+                  data-rar="ALL"
+                  onclick="filterShop('ALL')"
+                  style="border-color: rgba(255, 255, 255, 0.2); color: #fff"
+                >
+                  ALL
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="COMMON"
+                  onclick="filterShop('COMMON')"
+                  style="border-color: #aaa"
+                >
+                  ⚪ COMMON
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="RARE"
+                  onclick="filterShop('RARE')"
+                  style="border-color: #4488ff"
+                >
+                  🔵 RARE
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="EPIC"
+                  onclick="filterShop('EPIC')"
+                  style="border-color: #9b30ff"
+                >
+                  🟣 EPIC
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="LEGENDARY"
+                  onclick="filterShop('LEGENDARY')"
+                  style="border-color: #ffd700"
+                >
+                  🟡 LEGENDARY
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="MYTHICAL"
+                  onclick="filterShop('MYTHICAL')"
+                  style="border-color: #ff0a50"
+                >
+                  🔴 MYTHICAL
+                </div>
+                <div
+                  class="rar-btn"
+                  data-rar="SECRET"
+                  onclick="filterShop('SECRET')"
+                  style="border-color: #00eeff"
+                >
+                  ⭐ SECRET
+                </div>
+              </div>
+              <div
+                id="shop-chars-grid"
+                class="shop-grid"
+                style="overflow-y: auto; align-content: start"
+              ></div>
+              <div
+                id="shop-weapons-grid"
+                class="shop-grid"
+                style="display: none; overflow-y: auto; align-content: start"
+              ></div>
+            </div>
+            <!-- preview panel -->
+            <div class="preview-panel" id="shop-preview-panel">
+              <div class="preview-label">PREVIEW</div>
+              <div class="preview-canvas-wrap">
+                <canvas
+                  id="shopPreviewCanvas"
+                  width="130"
+                  height="130"
+                ></canvas>
+              </div>
+              <div class="preview-name" id="shop-prev-name">—</div>
+              <div class="preview-rar" id="shop-prev-rar" style="color: #aaa">
+                SELECT ITEM
+              </div>
+              <div class="preview-divider"></div>
+              <div class="preview-stats">
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label" id="shop-s1-label"
+                    >STAT 1</span
+                  >
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="shop-s1"
+                      style="
+                        background: linear-gradient(90deg, #ff4444, #ff8888);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="shop-s1-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label" id="shop-s2-label"
+                    >STAT 2</span
+                  >
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="shop-s2"
+                      style="
+                        background: linear-gradient(90deg, #ffd700, #fff088);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="shop-s2-v">—</span>
+                </div>
+                <div class="preview-stat-row">
+                  <span class="preview-stat-label" id="shop-s3-label"
+                    >STAT 3</span
+                  >
+                  <div
+                    class="preview-stat-bar"
+                    style="position: relative; overflow: hidden"
+                  >
+                    <div
+                      class="preview-stat-fill"
+                      id="shop-s3"
+                      style="
+                        background: linear-gradient(90deg, #00eeff, #88ffff);
+                        width: 0%;
+                      "
+                    ></div>
+                  </div>
+                  <span class="preview-stat-val" id="shop-s3-v">—</span>
+                </div>
+              </div>
+              <div class="preview-divider"></div>
+              <div style="text-align: center; margin-top: 4px">
+                <div
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: var(--gold);
+                    letter-spacing: 2px;
+                  "
+                  id="shop-prev-price"
+                >
+                  —
+                </div>
+                <button
+                  class="start-game-btn"
+                  id="shop-prev-buy"
+                  style="
+                    margin-top: 10px;
+                    font-size: 10px;
+                    letter-spacing: 3px;
+                    padding: 9px;
+                  "
+                  onclick="shopPreviewBuy()"
+                >
+                  BUY NOW
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="page-profile">
+          <div class="page-title">PROFILE</div>
+          <div class="page-sub">SOLDIER IDENTITY &amp; PROGRESSION</div>
+          <div class="profile-layout">
+            <!-- LEFT -->
+            <div class="prof-left">
+              <div class="prof-avatar-card">
+                <div class="prof-av-wrap" id="prof-av-wrap">
+                  <canvas
+                    id="prof-av-canvas"
+                    width="90"
+                    height="90"
+                    class="prof-av-canvas"
+                  ></canvas>
+                </div>
+                <div class="prof-nick" id="prof-nick">—</div>
+                <div class="prof-title" id="prof-title-txt">[ SOLDIER ]</div>
+                <div class="prof-rank-badge" id="prof-rank-badge">🔩 IRON</div>
+                <div class="prof-exp-wrap">
+                  <div class="prof-exp-label">
+                    <span id="prof-exp-cur">0 EXP</span>
+                    <span id="prof-exp-pct">0%</span>
+                  </div>
+                  <div class="prof-exp-bar">
+                    <div
+                      class="prof-exp-fill"
+                      id="prof-exp-fill"
+                      style="
+                        width: 0%;
+                        background: linear-gradient(
+                          90deg,
+                          var(--purple),
+                          var(--cyan)
+                        );
+                      "
+                    ></div>
+                  </div>
+                  <div class="prof-exp-next" id="prof-exp-next">
+                    NEXT RANK: — EXP
+                  </div>
+                </div>
+              </div>
+              <div class="prof-equip-card">
+                <div class="prof-equip-title">EQUIPPED</div>
+                <div class="prof-equip-row">
+                  <div class="prof-equip-canvas-wrap">
+                    <canvas id="prof-eq-char" width="40" height="44"></canvas>
+                  </div>
+                  <div class="prof-equip-info">
+                    <div class="prof-equip-name" id="prof-eq-char-name">—</div>
+                    <div class="prof-equip-rar" id="prof-eq-char-rar">—</div>
+                  </div>
+                </div>
+                <div class="prof-equip-row">
+                  <div class="prof-equip-canvas-wrap">
+                    <canvas id="prof-eq-wpn" width="44" height="28"></canvas>
+                  </div>
+                  <div class="prof-equip-info">
+                    <div class="prof-equip-name" id="prof-eq-wpn-name">—</div>
+                    <div class="prof-equip-rar" id="prof-eq-wpn-rar">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- RIGHT -->
+            <div class="prof-right">
+              <div class="prof-stats-card">
+                <div class="prof-stats-title">COMBAT STATS</div>
+                <div class="prof-stats-grid">
+                  <div class="prof-stat-item">
+                    <div class="prof-stat-icon">⚔️</div>
+                    <div class="prof-stat-val" id="prof-kills">0</div>
+                    <div class="prof-stat-lbl">TOTAL KILLS</div>
+                  </div>
+                  <div class="prof-stat-item">
+                    <div class="prof-stat-icon">🌊</div>
+                    <div class="prof-stat-val" id="prof-waves">0</div>
+                    <div class="prof-stat-lbl">HIGHEST WAVE</div>
+                  </div>
+                  <div class="prof-stat-item">
+                    <div class="prof-stat-icon">⭐</div>
+                    <div class="prof-stat-val" id="prof-exp-big">0</div>
+                    <div class="prof-stat-lbl">TOTAL EXP</div>
+                  </div>
+                  <div class="prof-stat-item">
+                    <div class="prof-stat-icon">💰</div>
+                    <div class="prof-stat-val" id="prof-coins-big">0</div>
+                    <div class="prof-stat-lbl">COINS</div>
+                  </div>
+                </div>
+              </div>
+              <div class="prof-owned-section">
+                <div class="prof-owned-title">
+                  <span>OWNED CHARACTERS</span>
+                  <span class="prof-owned-count" id="prof-char-count">0</span>
+                </div>
+                <div class="prof-owned-grid" id="prof-owned-chars"></div>
+              </div>
+              <div class="prof-owned-section">
+                <div class="prof-owned-title">
+                  <span>OWNED WEAPONS</span>
+                  <span class="prof-owned-count" id="prof-weap-count">0</span>
+                </div>
+                <div class="prof-owned-grid" id="prof-owned-weaps"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page" id="page-leaderboard">
+          <div class="page-title">LEADERBOARD</div>
+          <div class="page-sub">LOCAL HIGH SCORES</div>
+          <div id="leaderboard-table" style="margin-top: 8px"></div>
+        </div>
+
+        <!-- ══════════════ INVENTORY PAGE ══════════════ -->
+        <div class="page" id="page-inventory">
+          <div class="page-title">INVENTORY</div>
+          <div class="page-sub">YOUR OWNED ITEMS & STATS</div>
+          <div id="inventory-content"></div>
+        </div>
+        <!-- ══════════════ TITLES PAGE ══════════════ -->
+        <div class="page" id="page-titles">
+          <div class="page-title">TITLES</div>
+          <div class="page-sub">EQUIP A TITLE TO SHOW YOUR GLORY</div>
+          <div id="titles-grid" class="ach-grid"></div>
+        </div>
+
+        <!-- ══════════════ ACHIEVEMENTS PAGE ══════════════ -->
+        <div class="page" id="page-achievements">
+          <div class="page-title">ACHIEVEMENTS</div>
+          <div class="page-sub">UNLOCK REWARDS &amp; TITLES</div>
+          <div id="ach-grid" class="ach-grid"></div>
+        </div>
+
+        <!-- ══════════════ SETTINGS PAGE ══════════════ -->
+        <div class="page" id="page-settings">
+          <div class="page-title">SETTINGS</div>
+          <div class="page-sub">CONFIGURE YOUR EXPERIENCE</div>
+          <div class="settings-layout">
+            <!-- Theme -->
+            <div class="sett-card">
+              <div class="sett-card-title">🎨 THEME</div>
+              <div class="sett-row">
+                <span class="sett-label">Dark / Light Mode</span>
+                <label class="switch">
+                  <input id="theme-toggle" type="checkbox" />
+                  <div class="slider round">
+                    <div class="sun-moon">
+                      <svg
+                        id="moon-dot-1"
+                        class="moon-dot"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="moon-dot-2"
+                        class="moon-dot"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="moon-dot-3"
+                        class="moon-dot"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="light-ray-1"
+                        class="light-ray"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="light-ray-2"
+                        class="light-ray"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="light-ray-3"
+                        class="light-ray"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-1"
+                        class="cloud-dark"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-2"
+                        class="cloud-dark"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-3"
+                        class="cloud-dark"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-4"
+                        class="cloud-light"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-5"
+                        class="cloud-light"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                      <svg
+                        id="cloud-6"
+                        class="cloud-light"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="50"></circle>
+                      </svg>
+                    </div>
+                    <div class="stars">
+                      <svg id="star-1" class="star" viewBox="0 0 20 20">
+                        <path
+                          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
+                        ></path>
+                      </svg>
+                      <svg id="star-2" class="star" viewBox="0 0 20 20">
+                        <path
+                          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
+                        ></path>
+                      </svg>
+                      <svg id="star-3" class="star" viewBox="0 0 20 20">
+                        <path
+                          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
+                        ></path>
+                      </svg>
+                      <svg id="star-4" class="star" viewBox="0 0 20 20">
+                        <path
+                          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Game Options -->
+            <div class="sett-card">
+              <div class="sett-card-title">🎮 GAME OPTIONS</div>
+              <div class="sett-row">
+                <span class="sett-label">Particle Effects</span>
+                <div class="cyber-toggle-wrapper" style="padding: 8px 0">
+                  <input
+                    class="cyber-toggle-checkbox"
+                    id="tog-particles"
+                    type="checkbox"
+                    checked
+                    onchange="
+                      gameSettings.particles = this.checked;
+                      saveSettings();
+                    "
+                  />
+                  <label class="cyber-toggle" for="tog-particles">
+                    <div class="cyber-toggle-track">
+                      <div class="cyber-toggle-track-glow"></div>
+                      <div class="cyber-toggle-track-dots">
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-thumb">
+                      <div class="cyber-toggle-thumb-shadow"></div>
+                      <div class="cyber-toggle-thumb-highlight"></div>
+                      <div class="cyber-toggle-thumb-icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.5 12c0-2.48-2.02-4.5-4.5-4.5s-4.5 2.02-4.5 4.5 2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5zm-4.5 7.5c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm0-16.5c-4.97 0-9 4.03-9 9h-3l3.89 3.89.07.14 4.04-4.03h-3c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42c1.63 1.63 3.87 2.64 6.36 2.64 4.97 0 9-4.03 9-9s-4.03-9-9-9z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-particles">
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                    </div>
+                  </label>
+                  <div class="cyber-toggle-labels">
+                    <span class="cyber-toggle-label-off">OFF</span>
+                    <span class="cyber-toggle-label-on">ON</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Screen Shake</span>
+                <div class="cyber-toggle-wrapper" style="padding: 8px 0">
+                  <input
+                    class="cyber-toggle-checkbox"
+                    id="tog-shake"
+                    type="checkbox"
+                    checked
+                    onchange="
+                      gameSettings.shake = this.checked;
+                      saveSettings();
+                    "
+                  />
+                  <label class="cyber-toggle" for="tog-shake">
+                    <div class="cyber-toggle-track">
+                      <div class="cyber-toggle-track-glow"></div>
+                      <div class="cyber-toggle-track-dots">
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-thumb">
+                      <div class="cyber-toggle-thumb-shadow"></div>
+                      <div class="cyber-toggle-thumb-highlight"></div>
+                      <div class="cyber-toggle-thumb-icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.5 12c0-2.48-2.02-4.5-4.5-4.5s-4.5 2.02-4.5 4.5 2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5zm-4.5 7.5c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm0-16.5c-4.97 0-9 4.03-9 9h-3l3.89 3.89.07.14 4.04-4.03h-3c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42c1.63 1.63 3.87 2.64 6.36 2.64 4.97 0 9-4.03 9-9s-4.03-9-9-9z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-particles">
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                    </div>
+                  </label>
+                  <div class="cyber-toggle-labels">
+                    <span class="cyber-toggle-label-off">OFF</span>
+                    <span class="cyber-toggle-label-on">ON</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Compact HUD</span>
+                <div class="cyber-toggle-wrapper" style="padding: 8px 0">
+                  <input
+                    class="cyber-toggle-checkbox"
+                    id="tog-hud"
+                    type="checkbox"
+                    onchange="
+                      gameSettings.compactHud = this.checked;
+                      saveSettings();
+                    "
+                  />
+                  <label class="cyber-toggle" for="tog-hud">
+                    <div class="cyber-toggle-track">
+                      <div class="cyber-toggle-track-glow"></div>
+                      <div class="cyber-toggle-track-dots">
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-thumb">
+                      <div class="cyber-toggle-thumb-shadow"></div>
+                      <div class="cyber-toggle-thumb-highlight"></div>
+                      <div class="cyber-toggle-thumb-icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.5 12c0-2.48-2.02-4.5-4.5-4.5s-4.5 2.02-4.5 4.5 2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5zm-4.5 7.5c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm0-16.5c-4.97 0-9 4.03-9 9h-3l3.89 3.89.07.14 4.04-4.03h-3c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42c1.63 1.63 3.87 2.64 6.36 2.64 4.97 0 9-4.03 9-9s-4.03-9-9-9z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-particles">
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                    </div>
+                  </label>
+                  <div class="cyber-toggle-labels">
+                    <span class="cyber-toggle-label-off">OFF</span>
+                    <span class="cyber-toggle-label-on">ON</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Show FPS</span>
+                <div class="cyber-toggle-wrapper" style="padding: 8px 0">
+                  <input
+                    class="cyber-toggle-checkbox"
+                    id="tog-fps"
+                    type="checkbox"
+                    onchange="
+                      gameSettings.showFps = this.checked;
+                      saveSettings();
+                    "
+                  />
+                  <label class="cyber-toggle" for="tog-fps">
+                    <div class="cyber-toggle-track">
+                      <div class="cyber-toggle-track-glow"></div>
+                      <div class="cyber-toggle-track-dots">
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                        <span class="cyber-toggle-track-dot"></span>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-thumb">
+                      <div class="cyber-toggle-thumb-shadow"></div>
+                      <div class="cyber-toggle-thumb-highlight"></div>
+                      <div class="cyber-toggle-thumb-icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.5 12c0-2.48-2.02-4.5-4.5-4.5s-4.5 2.02-4.5 4.5 2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5zm-4.5 7.5c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm0-16.5c-4.97 0-9 4.03-9 9h-3l3.89 3.89.07.14 4.04-4.03h-3c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42c1.63 1.63 3.87 2.64 6.36 2.64 4.97 0 9-4.03 9-9s-4.03-9-9-9z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="cyber-toggle-particles">
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                      <span class="cyber-toggle-particle"></span>
+                    </div>
+                  </label>
+                  <div class="cyber-toggle-labels">
+                    <span class="cyber-toggle-label-off">OFF</span>
+                    <span class="cyber-toggle-label-on">ON</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key Bindings -->
+            <div class="sett-card">
+              <div class="sett-card-title">⌨️ KEY BINDINGS</div>
+              <div class="sett-row">
+                <span class="sett-label">Move Up</span>
+                <input
+                  class="keybind-input"
+                  id="key-up"
+                  value="W"
+                  readonly
+                  onclick="startRebind(this)"
+                />
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Move Down</span>
+                <input
+                  class="keybind-input"
+                  id="key-down"
+                  value="S"
+                  readonly
+                  onclick="startRebind(this)"
+                />
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Move Left</span>
+                <input
+                  class="keybind-input"
+                  id="key-left"
+                  value="A"
+                  readonly
+                  onclick="startRebind(this)"
+                />
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Move Right</span>
+                <input
+                  class="keybind-input"
+                  id="key-right"
+                  value="D"
+                  readonly
+                  onclick="startRebind(this)"
+                />
+              </div>
+              <button class="sett-btn" onclick="resetKeybinds()">
+                ↺ RESET TO DEFAULT
+              </button>
+            </div>
+
+            <!-- Audio -->
+            <div class="sett-card">
+              <div class="sett-card-title">🔊 AUDIO</div>
+              <div class="sett-row">
+                <span class="sett-label">Master</span>
+                <input
+                  type="range"
+                  class="sett-slider"
+                  id="vol-master"
+                  min="0"
+                  max="100"
+                  value="80"
+                  oninput="updateVol('master', this.value)"
+                />
+                <span class="sett-vol-val" id="vol-master-v">80%</span>
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">Music</span>
+                <input
+                  type="range"
+                  class="sett-slider"
+                  id="vol-music"
+                  min="0"
+                  max="100"
+                  value="60"
+                  oninput="updateVol('music', this.value)"
+                />
+                <span class="sett-vol-val" id="vol-music-v">60%</span>
+              </div>
+              <div class="sett-row">
+                <span class="sett-label">SFX</span>
+                <input
+                  type="range"
+                  class="sett-slider"
+                  id="vol-sfx"
+                  min="0"
+                  max="100"
+                  value="80"
+                  oninput="updateVol('sfx', this.value)"
+                />
+                <span class="sett-vol-val" id="vol-sfx-v">80%</span>
+              </div>
+              <button class="sett-btn" onclick="resetAudio()">
+                ↺ RESET AUDIO
+              </button>
+            </div>
+
+            <!-- Redeem Codes -->
+            <div class="sett-card sett-card-wide">
+              <div class="sett-card-title">🎁 REDEEM CODE</div>
+              <div class="redeem-row">
+                <input
+                  class="redeem-input"
+                  id="redeem-input"
+                  type="text"
+                  placeholder="ENTER CODE..."
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                <button class="galaxy-btn" onclick="doRedeem()">
+                  <span class="galaxy-btn__content">
+                    <span class="galaxy-btn__text">REDEEM</span>
+                    <svg
+                      class="galaxy-btn__icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path
+                        d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V3l10 8-10 8v-5z"
+                        fill="currentColor"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="galaxy-btn__glow"></span>
+                  <span class="galaxy-btn__stars"></span>
+                </button>
+              </div>
+              <div id="redeem-msg" class="redeem-msg"></div>
+            </div>
+
+            <!-- Secret Panel -->
+            <div
+              class="sett-card sett-card-wide"
+              style="
+                border-color: rgba(255, 10, 80, 0.2);
+                background: rgba(14, 0, 6, 0.95);
+              "
+            >
+              <div class="sett-card-title" style="color: #ff0a50">
+                🔒 SECRET
+              </div>
+              <div class="redeem-row">
+                <input
+                  class="redeem-input"
+                  id="secret-panel-input"
+                  type="password"
+                  placeholder="ENTER ADMIN CODE..."
+                  autocomplete="off"
+                  spellcheck="false"
+                  style="border-color: rgba(255, 10, 80, 0.25)"
+                />
+                <button
+                  class="galaxy-btn"
+                  style="--btn-primary: #ff0a50; --btn-accent: #ff6600"
+                  onclick="trySecretPanel()"
+                >
+                  <span class="galaxy-btn__content">
+                    <span class="galaxy-btn__text">UNLOCK</span>
+                    <svg
+                      class="galaxy-btn__icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path
+                        d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V3l10 8-10 8v-5z"
+                        fill="currentColor"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="galaxy-btn__glow"></span>
+                  <span class="galaxy-btn__stars"></span>
+                </button>
+              </div>
+              <div id="secret-msg" class="redeem-msg"></div>
+              <div
+                style="
+                  margin-top: 12px;
+                  text-align: center;
+                  font-family: &quot;Share Tech Mono&quot;, monospace;
+                  font-size: 9px;
+                  color: rgba(255, 10, 80, 0.4);
+                  letter-spacing: 1px;
+                "
+              >
+                Only the owner of this game has access to this panel
+              </div>
+            </div>
+          </div>
+          <!-- end settings-layout -->
+        </div>
+        <!-- end page-settings -->
+
+        <!-- ADMIN PANEL (hidden, overlays the page) -->
+        <div id="admin-panel" style="display: none" class="admin-panel">
+          <div class="admin-header">
+            <div class="admin-title">
+              ⚡ ADMIN CONSOLE
+              <span style="font-size: 10px; color: #ff0a50">RESTRICTED</span>
+            </div>
+            <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+          </div>
+          <div class="admin-body">
+            <div class="admin-row">
+              <span class="admin-label">ADMIN MODE</span>
+              <div class="toggler" style="margin: 0">
+                <input
+                  id="tog-admin"
+                  name="tog-admin"
+                  type="checkbox"
+                  onchange="toggleAdminMode(this.checked)"
+                />
+                <label for="tog-admin">
+                  <svg class="toggler-on" viewBox="0 0 130.2 130.2">
+                    <polyline
+                      class="path check"
+                      points="100.2,40.2 51.5,88.8 29.8,67.5"
+                    ></polyline></svg
+                  ><svg class="toggler-off" viewBox="0 0 130.2 130.2">
+                    <line
+                      class="path line"
+                      x1="34.4"
+                      y1="34.4"
+                      x2="95.8"
+                      y2="95.8"
+                    ></line>
+                    <line
+                      class="path line"
+                      x1="95.8"
+                      y1="34.4"
+                      x2="34.4"
+                      y2="95.8"
+                    ></line>
+                  </svg>
+                </label>
+              </div>
+            </div>
+            <div class="admin-row">
+              <span class="admin-label">INFINITE COINS</span>
+              <button class="admin-btn" onclick="adminGiveCoins()">
+                💰 ADD 999,999
+              </button>
+            </div>
+            <div class="admin-row">
+              <span class="admin-label">GOD GUN</span>
+              <div class="toggler" style="margin: 0">
+                <input
+                  id="tog-godgun"
+                  name="tog-godgun"
+                  type="checkbox"
+                  onchange="toggleGodGun(this.checked)"
+                />
+                <label for="tog-godgun">
+                  <svg class="toggler-on" viewBox="0 0 130.2 130.2">
+                    <polyline
+                      class="path check"
+                      points="100.2,40.2 51.5,88.8 29.8,67.5"
+                    ></polyline></svg
+                  ><svg class="toggler-off" viewBox="0 0 130.2 130.2">
+                    <line
+                      class="path line"
+                      x1="34.4"
+                      y1="34.4"
+                      x2="95.8"
+                      y2="95.8"
+                    ></line>
+                    <line
+                      class="path line"
+                      x1="95.8"
+                      y1="34.4"
+                      x2="34.4"
+                      y2="95.8"
+                    ></line>
+                  </svg>
+                </label>
+              </div>
+            </div>
+            <div class="admin-row">
+              <span class="admin-label">GOD CHARACTER</span>
+              <div class="toggler" style="margin: 0">
+                <input
+                  id="tog-godchar"
+                  name="tog-godchar"
+                  type="checkbox"
+                  onchange="toggleGodChar(this.checked)"
+                />
+                <label for="tog-godchar">
+                  <svg class="toggler-on" viewBox="0 0 130.2 130.2">
+                    <polyline
+                      class="path check"
+                      points="100.2,40.2 51.5,88.8 29.8,67.5"
+                    ></polyline></svg
+                  ><svg class="toggler-off" viewBox="0 0 130.2 130.2">
+                    <line
+                      class="path line"
+                      x1="34.4"
+                      y1="34.4"
+                      x2="95.8"
+                      y2="95.8"
+                    ></line>
+                    <line
+                      class="path line"
+                      x1="95.8"
+                      y1="34.4"
+                      x2="34.4"
+                      y2="95.8"
+                    ></line>
+                  </svg>
+                </label>
+              </div>
+            </div>
+            <div class="admin-row">
+              <span class="admin-label">UNLOCK ALL SKINS</span>
+              <button class="admin-btn" onclick="adminUnlockAll()">
+                🔓 UNLOCK ALL
+              </button>
+            </div>
+            <div class="admin-row">
+              <span class="admin-label">MAX EXP / RANK</span>
+              <button class="admin-btn" onclick="adminMaxRank()">
+                👑 MAX RANK
+              </button>
+            </div>
+            <div id="admin-status" class="admin-status">ADMIN MODE: OFF</div>
+          </div>
+        </div>
+
+        <!-- ACHIEVEMENT POPUP -->
+        <div id="ach-popup" class="ach-popup">
+          <div class="ach-popup-inner">
+            <div class="ach-popup-icon" id="ach-popup-icon">🏆</div>
+            <div class="ach-popup-text">
+              <div class="ach-popup-title">ACHIEVEMENT UNLOCKED</div>
+              <div class="ach-popup-name" id="ach-popup-name">—</div>
+              <div class="ach-popup-reward" id="ach-popup-reward">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ GAME SCREEN ══════ -->
+        <div
+          id="game-screen"
+          style="display: none; position: fixed; inset: 0; z-index: 7000"
+        >
+          <!-- Grid background -->
+          <div
+            id="game-bg"
+            style="position: absolute; inset: 0; z-index: 0"
+          ></div>
+          <!-- Main game canvas -->
+          <canvas
+            id="game-canvas"
+            style="position: absolute; inset: 0; z-index: 1; display: block"
+          ></canvas>
+          <!-- Mobile Virtual Joystick -->
+          <canvas
+            id="joystick-canvas"
+            style="
+              position: absolute;
+              inset: 0;
+              z-index: 3;
+              display: none;
+              pointer-events: none;
+            "
+          ></canvas>
+          <!-- HUD -->
+          <div
+            id="game-hud"
+            style="
+              position: absolute;
+              inset: 0;
+              z-index: 2;
+              pointer-events: none;
+            "
+          >
+            <!-- TOP LEFT: HP -->
+            <div
+              style="
+                position: absolute;
+                top: 16px;
+                left: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                pointer-events: none;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: rgba(255, 255, 255, 0.6);
+                    letter-spacing: 1px;
+                  "
+                  >HP</span
+                >
+                <div
+                  id="hud-hp-bar-wrap"
+                  style="
+                    width: 180px;
+                    height: 10px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 5px;
+                    overflow: hidden;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                  "
+                >
+                  <div
+                    id="hud-hp-bar"
+                    style="
+                      height: 100%;
+                      width: 100%;
+                      background: linear-gradient(90deg, #00ff88, #44ff44);
+                      border-radius: 5px;
+                      transition:
+                        width 0.3s ease,
+                        background 0.3s ease;
+                    "
+                  ></div>
+                </div>
+                <span
+                  id="hud-hp-txt"
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #fff;
+                    min-width: 55px;
+                  "
+                  >100/100</span
+                >
+              </div>
+              <!-- Shield bar -->
+              <div
+                id="hud-shield-wrap"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <span
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: #00ccff;
+                    letter-spacing: 1px;
+                  "
+                  >🛡️</span
+                >
+                <div
+                  style="
+                    width: 180px;
+                    height: 8px;
+                    background: rgba(0, 204, 255, 0.1);
+                    border-radius: 4px;
+                    overflow: hidden;
+                    border: 1px solid rgba(0, 204, 255, 0.3);
+                  "
+                >
+                  <div
+                    id="hud-shield-bar"
+                    style="
+                      height: 100%;
+                      width: 0%;
+                      background: linear-gradient(90deg, #00aaff, #00eeff);
+                      border-radius: 4px;
+                      transition: width 0.2s ease;
+                    "
+                  ></div>
+                </div>
+                <span
+                  id="hud-shield-txt"
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 10px;
+                    font-weight: 700;
+                    color: #00ccff;
+                    min-width: 55px;
+                  "
+                  >0/100</span
+                >
+              </div>
+              <!-- Stamina bar -->
+              <div
+                id="hud-stamina-wrap"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <span
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: #ffd700;
+                    letter-spacing: 1px;
+                  "
+                  >⚡</span
+                >
+                <div
+                  style="
+                    width: 180px;
+                    height: 6px;
+                    background: rgba(255, 215, 0, 0.1);
+                    border-radius: 3px;
+                    overflow: hidden;
+                    border: 1px solid rgba(255, 215, 0, 0.25);
+                  "
+                >
+                  <div
+                    id="hud-stamina-bar"
+                    style="
+                      height: 100%;
+                      width: 100%;
+                      background: linear-gradient(90deg, #ffd700, #fff088);
+                      border-radius: 3px;
+                      transition: width 0.1s ease;
+                    "
+                  ></div>
+                </div>
+              </div>
+              <!-- Ammo -->
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: rgba(255, 255, 255, 0.6);
+                    letter-spacing: 1px;
+                  "
+                  >🔫</span
+                >
+                <span
+                  id="hud-ammo"
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 13px;
+                    font-weight: 900;
+                    color: #00eeff;
+                    text-shadow: 0 0 8px #00eeff;
+                  "
+                  >30</span
+                >
+                <span
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: rgba(255, 255, 255, 0.35);
+                  "
+                >
+                  /
+                  <span id="hud-ammo-max">120</span>
+                </span>
+              </div>
+            </div>
+            <!-- TOP RIGHT: Coins + Wave -->
+            <div
+              style="
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                text-align: right;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                align-items: flex-end;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  background: rgba(0, 0, 0, 0.4);
+                  padding: 5px 12px;
+                  border-radius: 20px;
+                  border: 1px solid rgba(255, 215, 0, 0.2);
+                "
+              >
+                <span style="font-size: 14px">💰</span>
+                <span
+                  id="hud-game-coins"
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #ffd700;
+                  "
+                  >0</span
+                >
+              </div>
+              <div
+                id="hud-wave-display"
+                style="
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 14px;
+                  font-weight: 900;
+                  color: var(--purple);
+                  letter-spacing: 3px;
+                  text-shadow: 0 0 10px var(--purple);
+                  background: rgba(0, 0, 0, 0.4);
+                  padding: 5px 14px;
+                  border-radius: 20px;
+                  border: 1px solid rgba(155, 48, 255, 0.3);
+                "
+              >
+                WAVE 1
+              </div>
+              <div
+                id="hud-enemies-left"
+                style="
+                  font-family: &quot;Share Tech Mono&quot;, monospace;
+                  font-size: 10px;
+                  color: rgba(255, 255, 255, 0.45);
+                  letter-spacing: 1px;
+                "
+              >
+                Enemies: 0
+              </div>
+            </div>
+            <!-- FPS counter -->
+            <div
+              id="hud-fps"
+              style="
+                position: absolute;
+                top: 16px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 10px;
+                color: rgba(255, 255, 255, 0.3);
+                display: none;
+              "
+            >
+              60 FPS
+            </div>
+            <!-- BOTTOM LEFT: Supply buttons -->
+            <div
+              style="
+                position: absolute;
+                bottom: 16px;
+                left: 16px;
+                display: flex;
+                gap: 10px;
+                pointer-events: all;
+              "
+            >
+              <div
+                id="btn-spawn-ammo"
+                onclick="spawnSupply('ammo')"
+                style="
+                  cursor: pointer;
+                  background: rgba(0, 30, 60, 0.85);
+                  border: 1px solid rgba(0, 238, 255, 0.4);
+                  border-radius: 8px;
+                  padding: 8px 14px;
+                  text-align: center;
+                  transition: all 0.2s;
+                  user-select: none;
+                "
+              >
+                <div style="font-size: 16px">🔫</div>
+                <div
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 8px;
+                    font-weight: 700;
+                    color: #00eeff;
+                    letter-spacing: 1px;
+                  "
+                >
+                  AMMO
+                </div>
+                <div
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: rgba(255, 215, 0, 0.8);
+                  "
+                >
+                  50💰
+                </div>
+                <div
+                  id="cd-ammo"
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: #ff4444;
+                    display: none;
+                  "
+                >
+                  3s
+                </div>
+              </div>
+              <div
+                id="btn-spawn-shield"
+                onclick="spawnSupply('shield')"
+                style="
+                  cursor: pointer;
+                  background: rgba(0, 20, 50, 0.85);
+                  border: 1px solid rgba(0, 204, 255, 0.4);
+                  border-radius: 8px;
+                  padding: 8px 14px;
+                  text-align: center;
+                  transition: all 0.2s;
+                  user-select: none;
+                "
+              >
+                <div style="font-size: 16px">🛡️</div>
+                <div
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 8px;
+                    font-weight: 700;
+                    color: #00ccff;
+                    letter-spacing: 1px;
+                  "
+                >
+                  SHIELD
+                </div>
+                <div
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: rgba(255, 215, 0, 0.8);
+                  "
+                >
+                  75💰
+                </div>
+                <div
+                  id="cd-shield"
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: #ff4444;
+                    display: none;
+                  "
+                >
+                  3s
+                </div>
+              </div>
+              <div
+                id="btn-spawn-heal"
+                onclick="spawnSupply('heal')"
+                style="
+                  cursor: pointer;
+                  background: rgba(0, 40, 20, 0.85);
+                  border: 1px solid rgba(0, 255, 136, 0.4);
+                  border-radius: 8px;
+                  padding: 8px 14px;
+                  text-align: center;
+                  transition: all 0.2s;
+                  user-select: none;
+                "
+              >
+                <div style="font-size: 16px">💊</div>
+                <div
+                  style="
+                    font-family: &quot;Orbitron&quot;, sans-serif;
+                    font-size: 8px;
+                    font-weight: 700;
+                    color: #00ff88;
+                    letter-spacing: 1px;
+                  "
+                >
+                  HEAL
+                </div>
+                <div
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: rgba(255, 215, 0, 0.8);
+                  "
+                >
+                  100💰
+                </div>
+                <div
+                  id="cd-heal"
+                  style="
+                    font-family: &quot;Share Tech Mono&quot;, monospace;
+                    font-size: 9px;
+                    color: #ff4444;
+                    display: none;
+                  "
+                >
+                  3s
+                </div>
+              </div>
+            </div>
+            <!-- BOTTOM RIGHT: Minimap -->
+            <div
+              style="
+                position: absolute;
+                bottom: 16px;
+                right: 16px;
+                pointer-events: none;
+              "
+            >
+              <canvas
+                id="minimap-canvas"
+                width="150"
+                height="150"
+                style="
+                  border: 1px solid rgba(155, 48, 255, 0.4);
+                  border-radius: 8px;
+                  background: rgba(4, 0, 14, 0.8);
+                  box-shadow: 0 0 15px rgba(155, 48, 255, 0.2);
+                  display: block;
+                "
+              ></canvas>
+              <div
+                style="
+                  text-align: center;
+                  font-family: &quot;Share Tech Mono&quot;, monospace;
+                  font-size: 8px;
+                  color: rgba(155, 48, 255, 0.5);
+                  letter-spacing: 2px;
+                  margin-top: 3px;
+                "
+              >
+                MINIMAP
+              </div>
+            </div>
+            <!-- BOTTOM CENTER: Ammo bar -->
+            <div
+              style="
+                position: absolute;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+              "
+            >
+              <div
+                id="hud-ammo-big"
+                style="
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 22px;
+                  font-weight: 900;
+                  color: #00eeff;
+                  text-shadow: 0 0 14px #00eeff;
+                  letter-spacing: 2px;
+                "
+              >
+                30 / 120
+              </div>
+              <div
+                style="
+                  font-family: &quot;Share Tech Mono&quot;, monospace;
+                  font-size: 9px;
+                  color: rgba(0, 238, 255, 0.5);
+                  letter-spacing: 2px;
+                  margin-top: 2px;
+                "
+              >
+                AMMO
+              </div>
+            </div>
+            <!-- WAVE ANNOUNCEMENT -->
+            <div
+              id="wave-announce"
+              style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+                pointer-events: none;
+              "
+            >
+              <div
+                id="wave-announce-txt"
+                style="
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: clamp(28px, 5vw, 52px);
+                  font-weight: 900;
+                  color: #fff;
+                  text-shadow:
+                    0 0 30px var(--purple),
+                    0 0 60px var(--purple2);
+                  letter-spacing: 6px;
+                "
+              >
+                WAVE 1
+              </div>
+              <div
+                style="
+                  font-family: &quot;Share Tech Mono&quot;, monospace;
+                  font-size: 12px;
+                  color: rgba(155, 48, 255, 0.7);
+                  letter-spacing: 4px;
+                  margin-top: 8px;
+                "
+              >
+                SURVIVE!
+              </div>
+            </div>
+            <!-- SCREEN FLASH -->
+            <div
+              id="screen-flash"
+              style="
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.1s ease;
+              "
+            ></div>
+            <!-- GAME OVER -->
+          </div>
+        </div>
+
+        <!-- ═══ PAUSE MENU ═══ -->
+        <div
+          id="pause-menu"
+          style="
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            z-index: 99998;
+          "
+        >
+          <div
+            style="
+              text-align: center;
+              background: rgba(4, 0, 18, 0.97);
+              border: 1px solid rgba(155, 48, 255, 0.5);
+              border-radius: 16px;
+              padding: 44px 60px;
+              box-shadow: 0 0 60px rgba(155, 48, 255, 0.25);
+            "
+          >
+            <div style="font-size: 40px; margin-bottom: 12px">⏸</div>
+            <div
+              style="
+                font-family: &quot;Orbitron&quot;, sans-serif;
+                font-size: 26px;
+                font-weight: 900;
+                color: #fff;
+                letter-spacing: 4px;
+                margin-bottom: 8px;
+              "
+            >
+              PAUSED
+            </div>
+            <div
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 11px;
+                color: rgba(155, 48, 255, 0.6);
+                letter-spacing: 3px;
+                margin-bottom: 32px;
+              "
+            >
+              GAME IS PAUSED
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 14px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button
+                onclick="resumeGame()"
+                style="
+                  padding: 13px 32px;
+                  background: rgba(155, 48, 255, 0.2);
+                  border: 1px solid var(--purple);
+                  border-radius: 6px;
+                  color: #fff;
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  letter-spacing: 2px;
+                  cursor: pointer;
+                "
+              >
+                ▶ CONTINUE
+              </button>
+              <button
+                onclick="exitGame()"
+                style="
+                  padding: 13px 32px;
+                  background: rgba(255, 10, 80, 0.1);
+                  border: 1px solid rgba(255, 10, 80, 0.4);
+                  border-radius: 6px;
+                  color: #fff;
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  letter-spacing: 2px;
+                  cursor: pointer;
+                "
+              >
+                ✕ EXIT
+              </button>
+            </div>
+            <div
+              style="
+                margin-top: 20px;
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 9px;
+                color: rgba(255, 255, 255, 0.2);
+                letter-spacing: 2px;
+              "
+            >
+              PRESS ESC TO RESUME
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ GAME OVER SCREEN (fixed, above everything) ═══ -->
+        <div
+          id="game-over-screen"
+          style="
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+          "
+        >
+          <div
+            style="
+              text-align: center;
+              background: rgba(4, 0, 18, 0.97);
+              border: 1px solid #ff0a50;
+              border-radius: 16px;
+              padding: 44px 60px;
+              box-shadow: 0 0 60px rgba(255, 10, 80, 0.3);
+              position: relative;
+              z-index: 100000;
+            "
+          >
+            <div style="font-size: 48px; margin-bottom: 16px">💀</div>
+            <div
+              style="
+                font-family: &quot;Orbitron&quot;, sans-serif;
+                font-size: 28px;
+                font-weight: 900;
+                color: #ff0a50;
+                letter-spacing: 4px;
+                margin-bottom: 8px;
+              "
+            >
+              GAME OVER
+            </div>
+            <div
+              id="go-wave"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.6);
+                letter-spacing: 2px;
+                margin-bottom: 6px;
+              "
+            >
+              Wave Reached: 1
+            </div>
+            <div
+              id="go-kills"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.6);
+                letter-spacing: 2px;
+                margin-bottom: 6px;
+              "
+            >
+              Kills: 0
+            </div>
+            <div
+              id="go-coins"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: #ffd700;
+                letter-spacing: 2px;
+                margin-bottom: 6px;
+              "
+            >
+              Coins: 0
+            </div>
+            <div
+              id="go-combo"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: #ffdd00;
+                letter-spacing: 2px;
+                margin-bottom: 6px;
+              "
+            >
+              Best Combo: x0
+            </div>
+            <div
+              id="go-best-wave"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: rgba(0, 238, 255, 0.8);
+                letter-spacing: 2px;
+                margin-bottom: 6px;
+              "
+            >
+              Personal Best: Wave 0
+            </div>
+            <div
+              id="go-exp"
+              style="
+                font-family: &quot;Share Tech Mono&quot;, monospace;
+                font-size: 13px;
+                color: #9b30ff;
+                letter-spacing: 2px;
+                margin-bottom: 24px;
+              "
+            >
+              EXP Earned: +0
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 14px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button
+                onclick="restartGame()"
+                style="
+                  padding: 12px 28px;
+                  background: rgba(155, 48, 255, 0.2);
+                  border: 1px solid var(--purple);
+                  border-radius: 6px;
+                  color: #fff;
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  letter-spacing: 2px;
+                  cursor: pointer;
+                  position: relative;
+                  z-index: 100001;
+                "
+              >
+                ▶ PLAY AGAIN
+              </button>
+              <button
+                onclick="exitGame()"
+                style="
+                  padding: 12px 28px;
+                  background: rgba(255, 10, 80, 0.1);
+                  border: 1px solid rgba(255, 10, 80, 0.4);
+                  border-radius: 6px;
+                  color: #fff;
+                  font-family: &quot;Orbitron&quot;, sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  letter-spacing: 2px;
+                  cursor: pointer;
+                  position: relative;
+                  z-index: 100001;
+                "
+              >
+                ✕ EXIT
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ UPGRADE SCREEN ═══ -->
+        <div id="upgrade-screen">
+          <div class="upgrade-title">⚡ LEVEL UP!</div>
+          <div class="upgrade-sub">CHOOSE YOUR UPGRADE</div>
+          <div class="upgrade-cards" id="upgrade-cards-container"></div>
+        </div>
+
+        <!-- ═══ BOSS HP BAR ═══ -->
+        <div
+          id="boss-bar-wrap"
+          style="
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+          "
+        >
+          <div id="boss-bar-name">⚠ BOSS</div>
+          <div id="boss-bar-out">
+            <div id="boss-bar-in" style="width: 100%"></div>
+          </div>
+          <div id="boss-bar-txt">100%</div>
+        </div>
+
+        <!-- ═══ COMBO HUD ═══ -->
+        <div
+          id="combo-hud"
+          style="
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 3000;
+          "
+        >
+          <div id="combo-count">x1</div>
+          <div id="combo-mult">COMBO</div>
+          <div id="combo-bar-out">
+            <div id="combo-bar-in" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <!-- ═══ RELOAD INDICATOR ═══ -->
+        <div
+          id="reload-indicator"
+          style="
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            position: fixed;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+          "
+        >
+          <div id="reload-txt">RELOADING...</div>
+          <div id="reload-bar-out"><div id="reload-bar-in"></div></div>
+        </div>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+    <script src="/mobile.js"></script>
+  </body>
+</html>
