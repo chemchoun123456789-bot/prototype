@@ -2526,6 +2526,7 @@
             >
               <button
                 onclick="resumeGame()"
+                ontouchend="event.preventDefault();resumeGame();"
                 style="
                   padding: 13px 32px;
                   background: rgba(155, 48, 255, 0.2);
@@ -2693,6 +2694,7 @@
             >
               <button
                 onclick="restartGame()"
+                ontouchend="event.preventDefault();restartGame();"
                 style="
                   padding: 12px 28px;
                   background: rgba(155, 48, 255, 0.2);
