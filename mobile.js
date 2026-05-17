@@ -260,6 +260,8 @@
   }
 
 
+  /* ═══════════════════════════════════════════════════════
+     4.  LEFT CONTROLS  (move joystick only)
   ═══════════════════════════════════════════════════════ */
   const $lc = document.createElement('div');
   $lc.id = 'mob-left-controls';
