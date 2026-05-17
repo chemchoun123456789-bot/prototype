@@ -613,47 +613,14 @@
       const pmObs = new MutationObserver(() => {
         const pmVisible = window.getComputedStyle($pm).display !== 'none';
         if (pmVisible) {
-          /* PAUSED: hide joysticks & buttons */
           $lc.style.display = 'none';
           $rc.style.display = 'none';
           $lz.style.display = 'none';
-          /* patch Continue button — call resumeGame directly on touchend */
-          const $cont = $pm.querySelector('button[onclick*="resumeGame"]');
-          if ($cont && !$cont._mobPatched) {
-            $cont._mobPatched = true;
-            $cont.addEventListener('touchend', (ev) => {
-              ev.preventDefault();
-              jTid = null; aTid = null; sTid = null; cTid = null;
-              releaseAll(); stopFire(); shiftKey(false);
-              if (typeof window.resumeGame === 'function') window.resumeGame();
-            }, { passive:false });
-          }
         } else if (gameOn && !upgradeOn) {
           showGame();
         }
       });
       pmObs.observe($pm, { attributes:true, attributeFilter:['style'] });
-    }
-
-    /* patch Play Again button */
-    const $goScreen = document.getElementById('game-over-screen');
-    if ($goScreen) {
-      const goObs = new MutationObserver(() => {
-        const goVisible = window.getComputedStyle($goScreen).display !== 'none';
-        if (goVisible) {
-          const $again = $goScreen.querySelector('button[onclick*="restartGame"]');
-          if ($again && !$again._mobPatched) {
-            $again._mobPatched = true;
-            $again.addEventListener('touchend', (ev) => {
-              ev.preventDefault();
-              jTid = null; aTid = null; sTid = null; cTid = null;
-              releaseAll(); stopFire(); shiftKey(false);
-              if (typeof window.restartGame === 'function') window.restartGame();
-            }, { passive:false });
-          }
-        }
-      });
-      goObs.observe($goScreen, { attributes:true, attributeFilter:['style'] });
     }
 
     evalState();
@@ -667,6 +634,11 @@
   document.addEventListener('touchmove', (e) => {
     if (!gameOn) return;
     if ($supplyBar.contains(e.target) || $sRow.contains(e.target)) return;
+    /* allow touch on pause-menu and game-over overlays */
+    const $pm2 = document.getElementById('pause-menu');
+    const $go2 = document.getElementById('game-over-screen');
+    if ($pm2 && $pm2.contains(e.target)) return;
+    if ($go2 && $go2.contains(e.target)) return;
     if (e.cancelable) e.preventDefault();
   }, { passive:false });
 
@@ -697,9 +669,49 @@
     hideMinimap();
     attachObs();
     checkRot();
+    patchOverlayButtons();
+    /* retry until buttons are found and patched */
+    const patchT = setInterval(() => { patchOverlayButtons(); }, 600);
+    setTimeout(() => clearInterval(patchT), 12000);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  function patchOverlayButtons() {
+    /* ── CONTINUE button ── */
+    const $pm = document.getElementById('pause-menu');
+    if ($pm) {
+      const $cont = $pm.querySelector('button[onclick*="resumeGame"]');
+      if ($cont && !$cont._mobPatched) {
+        $cont._mobPatched = true;
+        $cont.style.touchAction = 'manipulation';
+        $cont.style.pointerEvents = 'auto';
+        $cont.style.cursor = 'pointer';
+        $cont.addEventListener('touchstart', (ev) => { ev.stopPropagation(); }, { passive:true });
+        $cont.addEventListener('touchend', (ev) => {
+          ev.preventDefault(); ev.stopPropagation();
+          jTid = null; aTid = null; sTid = null;
+          releaseAll(); stopFire(); shiftKey(false);
+          setTimeout(() => { if (typeof window.resumeGame === 'function') window.resumeGame(); }, 0);
+        }, { passive:false });
+      }
+    }
+    /* ── PLAY AGAIN button ── */
+    const $go = document.getElementById('game-over-screen');
+    if ($go) {
+      const $again = $go.querySelector('button[onclick*="restartGame"]');
+      if ($again && !$again._mobPatched) {
+        $again._mobPatched = true;
+        $again.style.touchAction = 'manipulation';
+        $again.style.pointerEvents = 'auto';
+        $again.style.cursor = 'pointer';
+        $again.addEventListener('touchstart', (ev) => { ev.stopPropagation(); }, { passive:true });
+        $again.addEventListener('touchend', (ev) => {
+          ev.preventDefault(); ev.stopPropagation();
+          jTid = null; aTid = null; sTid = null;
+          releaseAll(); stopFire(); shiftKey(false);
+          setTimeout(() => { if (typeof window.restartGame === 'function') window.restartGame(); }, 0);
+        }, { passive:false });
+      }
+    }
+  }
 
 })();
