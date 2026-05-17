@@ -30,6 +30,74 @@
 /* ── D. RIGHT CONTROLS  (top-row + aim + supply) ────────── */
 #mob-right-controls{display:none;position:fixed;bottom:16px;right:16px;z-index:9999;flex-direction:column;align-items:center;gap:8px;touch-action:none;user-select:none;-webkit-user-select:none;}
 
+/* Override layout on mobile: smaller buttons, tighter spacing */
+@media (max-width:900px){
+  #mob-right-controls{
+    bottom:10px !important;
+    right:10px !important;
+    gap:6px !important;
+    align-items:center !important;
+  }
+  /* Top row: sprint left, charge right — smaller */
+  #mob-top-row{
+    gap:8px !important;
+    align-items:center !important;
+  }
+  #mob-sprint{
+    width:36px !important;
+    height:36px !important;
+  }
+  #mob-sprint svg{width:13px !important;height:13px !important;}
+  #mob-sprint-lbl{font-size:4px !important;}
+
+  #mob-charge{
+    width:44px !important;
+    height:44px !important;
+  }
+  #mob-charge svg{width:18px !important;height:18px !important;}
+  #mob-charge-lbl{font-size:4px !important;}
+
+  /* Aim joystick — slightly smaller */
+  #mob-aim-base{
+    width:90px !important;
+    height:90px !important;
+  }
+  #mob-aim-knob{
+    width:38px !important;
+    height:38px !important;
+  }
+  #mob-aim-knob svg{width:22px !important;height:22px !important;}
+
+  /* Move joystick */
+  #mob-left-controls{
+    bottom:10px !important;
+    left:10px !important;
+  }
+  #mob-joy-base{
+    width:90px !important;
+    height:90px !important;
+  }
+  #mob-joy-knob{
+    width:38px !important;
+    height:38px !important;
+  }
+  #mob-joy-knob svg{width:20px !important;height:20px !important;}
+
+  /* Supply row below aim */
+  #mob-supply-row{gap:4px !important;}
+  #mob-supply-row > div{
+    padding:2px 5px !important;
+    min-width:32px !important;
+    border-radius:6px !important;
+  }
+  #mob-supply-row > div > div:first-child{font-size:9px !important;}
+  #mob-supply-row > div > div:nth-child(2){font-size:4.5px !important;}
+  #mob-supply-row > div > div:nth-child(3){font-size:5px !important;}
+  #mob-supply-row > div > div:nth-child(4){font-size:5px !important;}
+}
+
+
+
 /* Top row: Sprint (left) + Charge (right) */
 #mob-top-row{display:flex;flex-direction:row;align-items:center;gap:14px;}
 
@@ -88,24 +156,32 @@
 
 /* ── H. GAME OVER CARD — compact ─────────────────────────── */
 @media (max-width:900px){
-  #game-over-screen{padding:0 !important;}
+  #game-over-screen{padding:0 !important;align-items:center !important;}
   #game-over-screen > div{
-    padding:20px 22px !important;
-    margin:20px auto !important;
-    width:calc(100% - 40px) !important;
-    max-width:360px !important;
+    padding:16px 18px !important;
+    margin:0 16px !important;
+    width:calc(100% - 32px) !important;
+    max-width:340px !important;
     box-sizing:border-box !important;
     border-radius:14px !important;
+    max-height:92dvh !important;
+    overflow-y:auto !important;
   }
-  /* Title */
-  #game-over-screen h2,
-  #game-over-screen .go-title { font-size:26px !important; margin-bottom:8px !important; }
-  /* Stats text */
-  #game-over-screen p,
-  #game-over-screen .go-stat  { font-size:11px !important; margin:3px 0 !important; }
-  /* Buttons */
-  #game-over-screen button    { min-height:40px !important; font-size:10px !important; padding:9px 16px !important; border-radius:8px !important; }
-  #game-over-screen .go-skull { font-size:36px !important; margin-bottom:6px !important; }
+  /* Skull icon */
+  #game-over-screen > div > div:first-child { font-size:28px !important; margin-bottom:6px !important; }
+  /* GAME OVER title */
+  #game-over-screen > div > div:nth-child(2){ font-size:20px !important; letter-spacing:3px !important; margin-bottom:4px !important; }
+  /* Stats rows */
+  #go-wave,#go-kills,#go-coins,#go-combo,#go-best-wave,#go-exp { font-size:10px !important; margin-bottom:3px !important; }
+  /* Buttons row — force visible, smaller */
+  #game-over-screen button {
+    min-height:36px !important;
+    font-size:9px !important;
+    padding:8px 14px !important;
+    border-radius:7px !important;
+    letter-spacing:1px !important;
+  }
+  #game-over-screen > div > div:last-child:not(button){ display:flex !important; flex-wrap:wrap !important; gap:8px !important; justify-content:center !important; margin-top:10px !important; }
 }
 
 /* ── I. UPGRADE SCREEN — compact ──────────────────────────── */
@@ -119,6 +195,12 @@
   .upgrade-card .upgrade-card-name{font-size:8px !important;letter-spacing:.8px !important;}
   .upgrade-card .upgrade-card-desc{font-size:7.5px !important;}
   .upgrade-card .upgrade-card-val{font-size:11px !important;}
+  /* Hide shop/supply HUD bar during upgrade card — only show the reward cards */
+  #upgrade-screen #mob-supply-bar,
+  #upgrade-screen [id*="supply"],
+  #upgrade-screen [id*="shop"],
+  #upgrade-screen [class*="supply-bar"],
+  #upgrade-screen [class*="shop-bar"]{ display:none !important; }
 }
 
 /* ── J. MENU & HUD SCREENS ──────────────────────────────── */
@@ -167,5 +249,27 @@
   #boss-bar-wrap{bottom:134px !important;}
   .sidebar{width:230px !important;}
   .nav-item{padding:11px 16px !important;font-size:10px !important;min-height:44px !important;}
-  #pause-menu > div{padding:28px 24px !important;margin:0 16px !important;}
+  /* Pause card — compact, no HUD bleed-through */
+  #pause-menu > div{
+    padding:20px 22px !important;
+    margin:0 16px !important;
+    width:calc(100% - 32px) !important;
+    max-width:300px !important;
+    box-sizing:border-box !important;
+    border-radius:14px !important;
+  }
+  #pause-menu > div > div:first-child{ font-size:26px !important; margin-bottom:6px !important; }
+  #pause-menu > div > div:nth-child(2){ font-size:18px !important; letter-spacing:3px !important; margin-bottom:4px !important; }
+  #pause-menu > div > div:nth-child(3){ font-size:8px !important; letter-spacing:2px !important; margin-bottom:16px !important; }
+  #pause-menu button{
+    min-height:36px !important;
+    font-size:9px !important;
+    padding:8px 18px !important;
+    border-radius:7px !important;
+    letter-spacing:1.5px !important;
+  }
+  #pause-menu > div > div:last-child{ font-size:7px !important; margin-top:10px !important; }
+  /* While paused, game HUD bars (HP/shield/ammo) hidden behind overlay — z-index already handled */
+  #pause-menu{ z-index:99998 !important; }
+  /* Hide mobile controllers when pause-menu is visible — handled via JS observer */
 }
