@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   mobile.css  —  LAST STAND: MACHINE WAR  v5
+   mobile.css  —  LAST STAND: MACHINE WAR  v6
    Link AFTER style.css.  Desktop untouched.
    ═══════════════════════════════════════════════════════════ */
 
@@ -14,170 +14,208 @@
 .mob-rot-arrow{font-size:28px;color:rgba(155,48,255,.88);animation:mob-pulse 1s ease-in-out infinite;}
 @keyframes mob-pulse{0%,100%{opacity:.3;transform:scale(.88);}50%{opacity:1;transform:scale(1.12);}}
 
-/* ── B. LEFT-ZONE CAPTURE ───────────────────────────────── */
-#mob-left-zone{display:none;position:fixed;top:0;left:0;width:50%;height:100%;z-index:9000;touch-action:none;-webkit-tap-highlight-color:transparent;background:transparent;}
+/* ── B. LEFT CONTROLS  — MOVE JOYSTICK only ─────────────── */
+#mob-left-controls{
+  display:none;
+  position:fixed; bottom:16px; left:16px;
+  z-index:9999;
+  touch-action:none; user-select:none; -webkit-user-select:none;
+}
 
-/* ── C. LEFT CONTROLS  (move joystick only) ─────────────── */
-#mob-left-controls{display:none;position:fixed;bottom:16px;left:16px;z-index:9999;flex-direction:column;align-items:center;gap:0;touch-action:none;user-select:none;-webkit-user-select:none;}
-#mob-joy-base{width:100px;height:100px;border-radius:50%;background:rgba(4,0,18,.48);border:1.5px solid rgba(155,48,255,.36);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 16px rgba(155,48,255,.14),inset 0 0 24px rgba(155,48,255,.06);position:relative;display:flex;align-items:center;justify-content:center;touch-action:none;}
-#mob-joy-base::before{content:'';position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(155,48,255,.16);pointer-events:none;}
-#mob-joy-base::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(to bottom,transparent 49%,rgba(155,48,255,.08) 49%,rgba(155,48,255,.08) 51%,transparent 51%),linear-gradient(to right,transparent 49%,rgba(155,48,255,.08) 49%,rgba(155,48,255,.08) 51%,transparent 51%);pointer-events:none;}
-#mob-joy-knob{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(178,80,255,.84),rgba(88,14,192,.64));border:1.5px solid rgba(155,48,255,.72);box-shadow:0 0 10px rgba(155,48,255,.52),0 0 24px rgba(155,48,255,.20);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);will-change:transform;display:flex;align-items:center;justify-content:center;transition:box-shadow .08s;}
-#mob-joy-knob svg{width:24px;height:24px;display:block;pointer-events:none;}
+/* MOVE JOYSTICK — squircle shape */
+#mob-joy-base{
+  width:92px; height:92px;
+  border-radius:22px;                        /* squircle */
+  background:rgba(4,0,18,.50);
+  border:1.5px solid rgba(155,48,255,.38);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 16px rgba(155,48,255,.14),inset 0 0 22px rgba(155,48,255,.06);
+  position:relative; display:flex; align-items:center; justify-content:center;
+  touch-action:none;
+}
+#mob-joy-base::before{content:'';position:absolute;inset:9px;border-radius:14px;border:1px dashed rgba(155,48,255,.16);pointer-events:none;}
+#mob-joy-base::after{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(to bottom,transparent 49%,rgba(155,48,255,.08) 49%,rgba(155,48,255,.08) 51%,transparent 51%),linear-gradient(to right,transparent 49%,rgba(155,48,255,.08) 49%,rgba(155,48,255,.08) 51%,transparent 51%);pointer-events:none;}
+#mob-joy-knob{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(178,80,255,.84),rgba(88,14,192,.64));border:1.5px solid rgba(155,48,255,.72);box-shadow:0 0 10px rgba(155,48,255,.52),0 0 24px rgba(155,48,255,.20);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);will-change:transform;display:flex;align-items:center;justify-content:center;transition:box-shadow .08s;}
+#mob-joy-knob svg{width:22px;height:22px;display:block;pointer-events:none;}
 #mob-joy-knob.active{box-shadow:0 0 18px rgba(155,48,255,.9),0 0 36px rgba(155,48,255,.38);}
 #mob-joy-label{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:rgba(155,48,255,.42);white-space:nowrap;pointer-events:none;}
 
-/* ── D. RIGHT CONTROLS  (top-row + aim + supply) ────────── */
-#mob-right-controls{display:none;position:fixed;bottom:16px;right:16px;z-index:9999;flex-direction:column;align-items:center;gap:8px;touch-action:none;user-select:none;-webkit-user-select:none;}
+/* ── C. RIGHT CONTROLS  column: CHARGE → SPRINT → AIM → SUPPLY ─ */
+#mob-right-controls{
+  display:none;
+  position:fixed; bottom:16px; right:14px;
+  z-index:9999;
+  flex-direction:column; align-items:center; gap:8px;
+  touch-action:none; user-select:none; -webkit-user-select:none;
+}
 
-/* Top row: Sprint (left) + Charge (right) */
-#mob-top-row{display:flex;flex-direction:row;align-items:center;gap:14px;}
+/* ── CHARGE SHOT button ── */
+#mob-charge{
+  width:52px; height:52px;
+  border-radius:50%;
+  background:rgba(4,0,18,.56);
+  border:1.5px solid rgba(155,48,255,.42);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 14px rgba(155,48,255,.12),inset 0 0 12px rgba(155,48,255,.05);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; cursor:pointer; touch-action:none;
+  position:relative; transition:border-color .12s, box-shadow .12s;
+}
+#mob-charge-icon{width:22px;height:22px;display:block;transition:transform .15s ease;}
+#mob-charge-lbl{font-family:'Orbitron',sans-serif;font-size:5px;font-weight:700;letter-spacing:.8px;color:rgba(155,48,255,.68);z-index:1;}
 
-/* SPRINT — smaller so it doesn't hit enemies counter */
-#mob-sprint{width:42px;height:42px;border-radius:50%;background:rgba(4,0,18,.54);border:1.5px solid rgba(255,215,0,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 12px rgba(255,200,0,.10),inset 0 0 10px rgba(255,200,0,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:all .10s ease;cursor:pointer;touch-action:none;}
+/* Progress ring SVG – overlaid outside the button */
+#mob-charge-ring-svg{
+  position:absolute;
+  width:68px; height:68px;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  pointer-events:none;
+  z-index:2;
+}
+#mob-charge-progress{
+  stroke-dasharray:144;
+  stroke-dashoffset:144;     /* hidden by default */
+  transition:none;
+}
+
+#mob-charge.active{border-color:rgba(155,48,255,.82);box-shadow:0 0 20px rgba(155,48,255,.50),inset 0 0 12px rgba(155,48,255,.16);transform:scale(.94);}
+#mob-charge.charging{border-color:rgba(255,80,0,.90);box-shadow:0 0 28px rgba(255,100,0,.60),inset 0 0 18px rgba(255,60,0,.20);background:rgba(30,6,0,.78);}
+#mob-charge.charging #mob-charge-lbl{color:rgba(255,160,0,.95);}
+
+/* ── SPRINT button ── */
+#mob-sprint{
+  width:42px; height:42px;
+  border-radius:50%;
+  background:rgba(4,0,18,.54);
+  border:1.5px solid rgba(255,215,0,.38);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 12px rgba(255,200,0,.10);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1px; cursor:pointer; touch-action:none; transition:all .10s ease;
+}
 #mob-sprint svg{width:15px;height:15px;display:block;}
 #mob-sprint-lbl{font-family:'Orbitron',sans-serif;font-size:5px;font-weight:700;letter-spacing:1px;color:rgba(255,210,0,.68);}
 #mob-sprint.active{border-color:rgba(255,215,0,.88);box-shadow:0 0 20px rgba(255,200,0,.50),inset 0 0 12px rgba(255,200,0,.16);transform:scale(.91);background:rgba(30,20,0,.72);}
 
-/* CHARGE SHOT button */
-#mob-charge{width:52px;height:52px;border-radius:50%;background:rgba(4,0,18,.54);border:1.5px solid rgba(155,48,255,.40);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 14px rgba(155,48,255,.12),inset 0 0 12px rgba(155,48,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .10s ease;cursor:pointer;touch-action:none;position:relative;}
-#mob-charge svg{width:22px;height:22px;display:block;}
-#mob-charge-lbl{font-family:'Orbitron',sans-serif;font-size:5px;font-weight:700;letter-spacing:.8px;color:rgba(155,48,255,.68);}
-#mob-charge.active{border-color:rgba(155,48,255,.80);box-shadow:0 0 22px rgba(155,48,255,.50),inset 0 0 14px rgba(155,48,255,.16);transform:scale(.92);}
-#mob-charge.charging{border-color:rgba(255,80,0,.90);box-shadow:0 0 30px rgba(255,100,0,.60),inset 0 0 20px rgba(255,60,0,.20);background:rgba(30,6,0,.76);animation:mob-charge-ring-anim .45s ease-in-out infinite;}
-#mob-charge.charging #mob-charge-lbl{color:rgba(255,150,0,.95);}
-@keyframes mob-charge-ring-anim{0%,100%{box-shadow:0 0 20px rgba(255,70,0,.40),inset 0 0 12px rgba(255,60,0,.10);}50%{box-shadow:0 0 40px rgba(255,110,0,.70),inset 0 0 26px rgba(255,80,0,.22);}}
-
-/* AIM JOYSTICK */
-#mob-aim-base{width:100px;height:100px;border-radius:50%;background:rgba(4,0,18,.48);border:1.5px solid rgba(0,238,255,.36);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 16px rgba(0,238,255,.14),inset 0 0 24px rgba(0,238,255,.05);position:relative;display:flex;align-items:center;justify-content:center;touch-action:none;transition:border-color .12s,box-shadow .12s;}
-#mob-aim-base::before{content:'';position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(0,238,255,.14);pointer-events:none;}
-#mob-aim-base::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(to bottom,transparent 49%,rgba(0,238,255,.07) 49%,rgba(0,238,255,.07) 51%,transparent 51%),linear-gradient(to right,transparent 49%,rgba(0,238,255,.07) 49%,rgba(0,238,255,.07) 51%,transparent 51%);pointer-events:none;}
-#mob-aim-base.firing{border-color:rgba(0,238,255,.75);box-shadow:0 0 26px rgba(0,238,255,.38),inset 0 0 18px rgba(0,238,255,.14);}
-#mob-aim-knob{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(0,200,255,.76),rgba(0,100,180,.56));border:1.5px solid rgba(0,238,255,.72);box-shadow:0 0 10px rgba(0,238,255,.50),0 0 22px rgba(0,238,255,.18);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);will-change:transform;display:flex;align-items:center;justify-content:center;transition:box-shadow .08s;}
-#mob-aim-knob svg{width:26px;height:26px;display:block;pointer-events:none;}
+/* ── AIM+FIRE JOYSTICK — squircle shape ── */
+#mob-aim-base{
+  width:92px; height:92px;
+  border-radius:22px;                        /* squircle */
+  background:rgba(4,0,18,.50);
+  border:1.5px solid rgba(0,238,255,.38);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 16px rgba(0,238,255,.14),inset 0 0 22px rgba(0,238,255,.05);
+  position:relative; display:flex; align-items:center; justify-content:center;
+  touch-action:none; transition:border-color .12s,box-shadow .12s;
+}
+#mob-aim-base::before{content:'';position:absolute;inset:9px;border-radius:14px;border:1px dashed rgba(0,238,255,.14);pointer-events:none;}
+#mob-aim-base::after{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(to bottom,transparent 49%,rgba(0,238,255,.07) 49%,rgba(0,238,255,.07) 51%,transparent 51%),linear-gradient(to right,transparent 49%,rgba(0,238,255,.07) 49%,rgba(0,238,255,.07) 51%,transparent 51%);pointer-events:none;}
+#mob-aim-base.firing{border-color:rgba(0,238,255,.75);box-shadow:0 0 24px rgba(0,238,255,.36),inset 0 0 16px rgba(0,238,255,.12);}
+#mob-aim-knob{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 38% 34%,rgba(0,200,255,.76),rgba(0,100,180,.56));border:1.5px solid rgba(0,238,255,.72);box-shadow:0 0 10px rgba(0,238,255,.50),0 0 22px rgba(0,238,255,.18);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);will-change:transform;display:flex;align-items:center;justify-content:center;transition:box-shadow .08s;}
+#mob-aim-knob svg{width:24px;height:24px;display:block;pointer-events:none;}
 #mob-aim-knob.active{box-shadow:0 0 18px rgba(0,238,255,.90),0 0 36px rgba(0,238,255,.36);}
 #mob-aim-label{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:rgba(0,238,255,.42);white-space:nowrap;pointer-events:none;}
 
-/* SUPPLY ROW (below aim joystick) */
+/* ── SUPPLY ROW — below AIM joystick ── */
 #mob-supply-row{display:flex;flex-direction:row;gap:5px;pointer-events:all;touch-action:manipulation;}
-#mob-supply-row > div{padding:3px 6px !important;border-radius:7px !important;min-width:38px !important;text-align:center !important;cursor:pointer !important;touch-action:manipulation !important;-webkit-tap-highlight-color:transparent;user-select:none;}
+#mob-supply-row > div{padding:3px 6px !important;border-radius:7px !important;min-width:36px !important;text-align:center !important;cursor:pointer !important;touch-action:manipulation !important;-webkit-tap-highlight-color:transparent;user-select:none;}
 #mob-supply-row > div > div:first-child{font-size:10px !important;}
 #mob-supply-row > div > div:nth-child(2){font-size:5.5px !important;letter-spacing:.7px !important;}
 #mob-supply-row > div > div:nth-child(3){font-size:6px !important;}
 #mob-supply-row > div > div:nth-child(4){font-size:6px !important;}
 
-/* ── Mobile overrides: tighter layout, smaller buttons ─────── */
-@media (max-width:900px){
-  /* Right panel */
-  #mob-right-controls{
-    bottom:10px !important;
-    right:10px !important;
-    gap:6px !important;
-    align-items:center !important;
-  }
-  /* Top row */
-  #mob-top-row{ gap:8px !important; align-items:center !important; }
-
-  /* Sprint smaller */
-  #mob-sprint{ width:36px !important; height:36px !important; }
-  #mob-sprint svg{ width:13px !important; height:13px !important; }
-  #mob-sprint-lbl{ font-size:4px !important; }
-
-  /* Charge smaller */
-  #mob-charge{ width:44px !important; height:44px !important; }
-  #mob-charge svg{ width:18px !important; height:18px !important; }
-  #mob-charge-lbl{ font-size:4px !important; }
-
-  /* Aim joystick smaller */
-  #mob-aim-base{ width:90px !important; height:90px !important; }
-  #mob-aim-knob{ width:38px !important; height:38px !important; }
-  #mob-aim-knob svg{ width:22px !important; height:22px !important; }
-
-  /* Move joystick */
-  #mob-left-controls{ bottom:10px !important; left:10px !important; }
-  #mob-joy-base{ width:90px !important; height:90px !important; }
-  #mob-joy-knob{ width:38px !important; height:38px !important; }
-  #mob-joy-knob svg{ width:20px !important; height:20px !important; }
-
-  /* Supply row */
-  #mob-supply-row{ gap:4px !important; }
-  #mob-supply-row > div{ padding:2px 5px !important; min-width:32px !important; border-radius:6px !important; }
-  #mob-supply-row > div > div:first-child{ font-size:9px !important; }
-  #mob-supply-row > div > div:nth-child(2){ font-size:4.5px !important; }
-  #mob-supply-row > div > div:nth-child(3){ font-size:5px !important; }
-  #mob-supply-row > div > div:nth-child(4){ font-size:5px !important; }
+/* ── D. PAUSE BUTTON ─────────────────────────────────────── */
+#mob-pause-btn{
+  display:none;
+  position:fixed; top:8px; right:8px; z-index:9990;
+  width:32px; height:32px; border-radius:8px;
+  background:rgba(4,0,18,.62); border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  align-items:center; justify-content:center;
+  cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  transition:all .10s ease;
 }
-
-/* ── E. PAUSE BUTTON (top-right, above wave) ─────────────── */
-#mob-pause-btn{display:none;position:fixed;top:8px;right:8px;z-index:9990;width:34px;height:34px;border-radius:8px;background:rgba(4,0,18,.60);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 10px rgba(0,0,0,.30);display:none;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all .10s ease;}
-#mob-pause-btn svg{width:16px;height:16px;display:block;}
+#mob-pause-btn svg{width:14px;height:14px;display:block;}
 #mob-pause-btn.pressed{transform:scale(.88);background:rgba(20,0,50,.80);}
 
-/* ── F. UPGRADE-SCREEN SUPPLY BAR ──────────────────────── */
-#mob-supply-bar{display:none;position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9800;flex-direction:row;gap:8px;pointer-events:all;touch-action:manipulation;}
-#mob-supply-bar > div{padding:4px 9px !important;border-radius:8px !important;min-width:48px !important;text-align:center !important;cursor:pointer !important;touch-action:manipulation !important;-webkit-tap-highlight-color:transparent;user-select:none;}
-#mob-supply-bar > div > div:first-child{font-size:13px !important;}
-#mob-supply-bar > div > div:nth-child(2){font-size:7px !important;letter-spacing:.8px !important;}
-#mob-supply-bar > div > div:nth-child(3){font-size:7px !important;}
-#mob-supply-bar > div > div:nth-child(4){font-size:7px !important;}
-
-/* ── G. MINIMAP HIDDEN ──────────────────────────────────── */
+/* ── E. MINIMAP HIDDEN ──────────────────────────────────── */
 @media (max-width:900px){
   #minimap-canvas,#minimap-canvas + div{display:none !important;}
   #mob-minimap-wrap{display:none !important;}
   #game-canvas,#c{-webkit-tap-highlight-color:transparent !important;user-select:none !important;-webkit-user-select:none !important;}
 }
 
-/* ── H. GAME OVER CARD — compact ─────────────────────────── */
+/* ── F. PAUSE CARD — compact & no HUD bleed-through ─────── */
 @media (max-width:900px){
-  #game-over-screen{padding:0 !important;align-items:center !important;}
+  #pause-menu{
+    z-index:10000 !important;   /* above our controls */
+  }
+  #pause-menu > div{
+    padding:22px 24px !important;
+    margin:auto !important;
+    width:calc(100% - 60px) !important;
+    max-width:320px !important;
+    border-radius:16px !important;
+    box-sizing:border-box !important;
+  }
+  /* Title "PAUSED" */
+  #pause-menu h2,
+  #pause-menu .pause-title{ font-size:24px !important; margin-bottom:6px !important; }
+  /* Sub text */
+  #pause-menu p,
+  #pause-menu .pause-sub  { font-size:9px  !important; margin-bottom:14px !important; }
+  /* Buttons row */
+  #pause-menu .pause-btns { gap:10px !important; }
+  #pause-menu button      { min-height:40px !important; font-size:11px !important; padding:9px 18px !important; border-radius:8px !important; flex:1 !important; }
+  /* Press ESC hint */
+  #pause-menu .pause-hint { font-size:8px !important; margin-top:10px !important; }
+}
+
+/* ── G. GAME OVER CARD — compact, all buttons visible ─────── */
+@media (max-width:900px){
+  #game-over-screen{
+    z-index:10000 !important;
+    padding:0 !important;
+    display:flex !important; align-items:center; justify-content:center;
+  }
   #game-over-screen > div{
-    padding:16px 18px !important;
-    margin:0 16px !important;
-    width:calc(100% - 32px) !important;
+    padding:18px 20px !important;
+    margin:0 auto !important;
+    width:calc(100% - 48px) !important;
     max-width:340px !important;
     box-sizing:border-box !important;
     border-radius:14px !important;
-    max-height:92dvh !important;
+    max-height:90vh !important;
     overflow-y:auto !important;
   }
-  /* Skull icon */
-  #game-over-screen > div > div:first-child { font-size:28px !important; margin-bottom:6px !important; }
-  /* GAME OVER title */
-  #game-over-screen > div > div:nth-child(2){ font-size:20px !important; letter-spacing:3px !important; margin-bottom:4px !important; }
-  /* Stats rows */
-  #go-wave,#go-kills,#go-coins,#go-combo,#go-best-wave,#go-exp { font-size:10px !important; margin-bottom:3px !important; }
-  /* Buttons row — force visible, smaller */
-  #game-over-screen button {
-    min-height:36px !important;
-    font-size:9px !important;
-    padding:8px 14px !important;
-    border-radius:7px !important;
-    letter-spacing:1px !important;
-  }
-  #game-over-screen > div > div:last-child:not(button){ display:flex !important; flex-wrap:wrap !important; gap:8px !important; justify-content:center !important; margin-top:10px !important; }
+  #game-over-screen h2,
+  #game-over-screen .go-title{ font-size:28px !important; margin-bottom:6px !important; }
+  #game-over-screen p,
+  #game-over-screen .go-stat { font-size:10px !important; margin:2px 0 !important; }
+  #game-over-screen .go-skull{ font-size:32px !important; margin-bottom:4px !important; }
+  /* Buttons — MUST be visible */
+  #game-over-screen .go-btns { display:flex !important; flex-direction:row !important; gap:8px !important; margin-top:12px !important; flex-wrap:wrap; }
+  #game-over-screen button   { min-height:38px !important; font-size:9px !important; padding:8px 14px !important; border-radius:8px !important; flex:1 !important; min-width:100px !important; }
 }
 
-/* ── I. UPGRADE SCREEN — compact ──────────────────────────── */
+/* ── H. UPGRADE SCREEN — compact, no supply bar ────────────── */
 @media (max-width:900px){
-  #upgrade-screen{padding:10px 10px !important;gap:6px !important;}
+  #upgrade-screen{
+    z-index:10000 !important;
+    padding:10px !important; gap:6px !important;
+  }
   .upgrade-title{font-size:16px !important;letter-spacing:3px !important;margin-bottom:0 !important;}
   .upgrade-sub{font-size:7.5px !important;letter-spacing:2.5px !important;margin-bottom:4px !important;}
   .upgrade-cards{flex-direction:row !important;gap:7px !important;padding:0 4px !important;max-height:unset !important;overflow-x:auto !important;overflow-y:visible !important;-webkit-overflow-scrolling:touch;}
-  .upgrade-card{min-width:108px !important;max-width:138px !important;flex:1 !important;padding:10px 8px !important;gap:5px !important;}
+  .upgrade-card{min-width:108px !important;max-width:135px !important;flex:1 !important;padding:10px 8px !important;gap:5px !important;}
   .upgrade-card .upgrade-card-icon{font-size:24px !important;}
   .upgrade-card .upgrade-card-name{font-size:8px !important;letter-spacing:.8px !important;}
   .upgrade-card .upgrade-card-desc{font-size:7.5px !important;}
   .upgrade-card .upgrade-card-val{font-size:11px !important;}
-  /* Hide shop/supply HUD bar during upgrade card — only show the reward cards */
-  #upgrade-screen #mob-supply-bar,
-  #upgrade-screen [id*="supply"],
-  #upgrade-screen [id*="shop"],
-  #upgrade-screen [class*="supply-bar"],
-  #upgrade-screen [class*="shop-bar"]{ display:none !important; }
 }
 
-/* ── J. MENU & HUD SCREENS ──────────────────────────────── */
+/* ── I. MENU SCREENS ─────────────────────────────────────── */
 @media (max-width:900px){
   button,.btn,.tb,.nav-item,.card,.ctab{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
   #s-login{flex-direction:column !important;overflow-y:auto !important;}
@@ -223,27 +261,5 @@
   #boss-bar-wrap{bottom:134px !important;}
   .sidebar{width:230px !important;}
   .nav-item{padding:11px 16px !important;font-size:10px !important;min-height:44px !important;}
-  /* Pause card — compact, no HUD bleed-through */
-  #pause-menu > div{
-    padding:20px 22px !important;
-    margin:0 16px !important;
-    width:calc(100% - 32px) !important;
-    max-width:300px !important;
-    box-sizing:border-box !important;
-    border-radius:14px !important;
-  }
-  #pause-menu > div > div:first-child{ font-size:26px !important; margin-bottom:6px !important; }
-  #pause-menu > div > div:nth-child(2){ font-size:18px !important; letter-spacing:3px !important; margin-bottom:4px !important; }
-  #pause-menu > div > div:nth-child(3){ font-size:8px !important; letter-spacing:2px !important; margin-bottom:16px !important; }
-  #pause-menu button{
-    min-height:36px !important;
-    font-size:9px !important;
-    padding:8px 18px !important;
-    border-radius:7px !important;
-    letter-spacing:1.5px !important;
-  }
-  #pause-menu > div > div:last-child{ font-size:7px !important; margin-top:10px !important; }
-  /* While paused, game HUD bars (HP/shield/ammo) hidden behind overlay — z-index already handled */
-  #pause-menu{ z-index:99998 !important; }
-  /* Hide mobile controllers when pause-menu is visible — handled via JS observer */
+  #pause-menu > div{padding:28px 24px !important;margin:0 16px !important;}
 }
