@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   mobile.js  —  LAST STAND: MACHINE WAR  v5
+   mobile.js  —  LAST STAND: MACHINE WAR  v6
    After script.js, before </body>.  Desktop exits instantly.
    ═══════════════════════════════════════════════════════════ */
 (function () {
@@ -11,37 +11,36 @@
   /* ═══════════════════════════════════════════════════════
      CONSTANTS
   ═══════════════════════════════════════════════════════ */
-  const JOY_R        = 44;    // joystick max travel px
+  const JOY_R        = 42;    // joystick max travel px
   const DEADZONE     = 9;
   const AXIS         = 0.30;
-  const AUTO_FIRE_MS = 140;   // continuous fire interval ms
-  const CHARGE_MS    = 360;   // hold charge button → show charging
+  const AUTO_FIRE_MS = 140;   // rapid-fire interval ms
+  const CHARGE_SEC   = 5;     // charge shot duration in seconds
+  const CHARGE_CIRC  = 144;   // stroke-dasharray of progress ring (2π×r, r≈22.9)
 
   /* ═══════════════════════════════════════════════════════
      STATE
   ═══════════════════════════════════════════════════════ */
-  let gameOn    = false;
-  let upgradeOn = false;
+  let gameOn     = false;
   let gameOverOn = false;
+  let upgradeOn  = false;
+  let isPaused   = false;
 
   /* move joystick */
   let jTid = null, jOx = 0, jOy = 0;
 
   /* aim joystick */
   let aTid = null, aOx = 0, aOy = 0;
-  let aimNx = 0, aimNy = 0;           // current aim direction
+  let aimNx = 0, aimNy = 0;
   let autoFireTimer = null;
 
   /* charge button */
-  let cTid = null, chargeAnimTimer = null;
-  let chargeRingEl = null, chargeRingTimer = null, chargeRingRAF = null;
-  const CHARGE_RING_MS = 5000; // 5 seconds to fill charge ring
+  let cTid = null;
+  let chargeRafId = null;
+  let chargeStartTime = 0;
 
   /* sprint */
   let sTid = null;
-
-  /* pause toggle */
-  let isPaused = false;
 
   /* WASD */
   const held = { w:false, a:false, s:false, d:false };
@@ -68,14 +67,14 @@
     <circle cx="20" cy="20" r="5" stroke="rgba(0,238,255,.30)" stroke-width="1" fill="none"/>
   </svg>`;
 
-  /* Charge: crosshair + lightning bolt overlay */
-  const SVG_CHARGE = `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  /* Charge: crosshair + lightning — ID on SVG so we can rotate it */
+  const SVG_CHARGE = `<svg id="mob-charge-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="14" cy="14" r="9" stroke="rgba(155,48,255,.82)" stroke-width="1.5"/>
-    <line x1="14" y1="2"  x2="14" y2="7"  stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="14" y1="21" x2="14" y2="26" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="2"  y1="14" x2="7"  y2="14" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="21" y1="14" x2="26" y2="14" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
-    <polygon points="15.5,7 10,15 14,15 12.5,21 18,13 14,13" fill="rgba(255,190,0,.90)" stroke="rgba(255,210,0,.55)" stroke-width=".5"/>
+    <line x1="14" y1="2"  x2="14" y2="5"  stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="23" x2="14" y2="26" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="2"  y1="14" x2="5"  y2="14" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="23" y1="14" x2="26" y2="14" stroke="rgba(155,48,255,.72)" stroke-width="1.5" stroke-linecap="round"/>
+    <polygon points="15.5,7 10,14 13.5,14 12.5,21 18,14 14.5,14" fill="rgba(255,190,0,.90)" stroke="rgba(255,210,0,.55)" stroke-width=".5"/>
   </svg>`;
 
   const SVG_SPRINT = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,20 +107,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     2.  LEFT-ZONE CAPTURE  (kills canvas touch ring)
-  ═══════════════════════════════════════════════════════ */
-  const $lz = document.createElement('div');
-  $lz.id = 'mob-left-zone';
-  document.body.appendChild($lz);
-
-  /* Left-zone: DISABLED — joystick only activates via $jWrap touchstart below */
-  /* $lz kept in DOM for touch-ring prevention but does NOT start joystick */
-  $lz.addEventListener('touchstart', (e) => {
-    e.preventDefault(); /* block canvas touch ring only */
-  }, { passive:false });
-
-  /* ═══════════════════════════════════════════════════════
-     3.  KEY / MOUSE HELPERS
+     2.  KEY / MOUSE HELPERS
   ═══════════════════════════════════════════════════════ */
   function press(k) {
     if (held[k]) return; held[k] = true;
@@ -147,7 +133,6 @@
     return { x: r.left + r.width/2 + aimNx * reach, y: r.top + r.height/2 + aimNy * reach };
   }
 
-  /* Only send mousemove when ACTUALLY aiming (prevents aimbot spin) */
   function sendAimMove(nx, ny) {
     const $cv = getCV(); if (!$cv) return;
     const r = $cv.getBoundingClientRect();
@@ -159,7 +144,6 @@
     }));
   }
 
-  /* Single shot (mousedown → mouseup in 40ms) */
   function sendShot() {
     const $cv = getCV(); if (!$cv) return;
     const { x, y } = aimPt();
@@ -170,98 +154,25 @@
     }, 40);
   }
 
-  /* Start continuous auto-fire */
-  function startFire() {
-    if (autoFireTimer) return;
-    sendShot();
-    autoFireTimer = setInterval(sendShot, AUTO_FIRE_MS);
-  }
+  function startFire()  { if (autoFireTimer) return; sendShot(); autoFireTimer = setInterval(sendShot, AUTO_FIRE_MS); }
+  function stopFire()   { if (autoFireTimer) { clearInterval(autoFireTimer); autoFireTimer = null; } }
 
-  /* Stop continuous auto-fire */
-  function stopFire() {
-    if (autoFireTimer) { clearInterval(autoFireTimer); autoFireTimer = null; }
-  }
-
-  /* Charge shot helpers */
-  function chargeDown() {
+  function chargeMouseDown() {
     const $cv = getCV(); if (!$cv) return;
     const { x, y } = aimPt();
     $cv.dispatchEvent(new MouseEvent('mousedown', { clientX:x, clientY:y, button:0, buttons:1, bubbles:true, cancelable:true }));
   }
-  function chargeRelease() {
+  function chargeMouseUp() {
     const $cv = getCV(); if (!$cv) return;
     const { x, y } = aimPt();
     $cv.dispatchEvent(new MouseEvent('mouseup',  { clientX:x, clientY:y, button:0, buttons:0, bubbles:true, cancelable:true }));
     $cv.dispatchEvent(new MouseEvent('click',    { clientX:x, clientY:y, button:0, bubbles:true, cancelable:true }));
   }
 
-  /* Charge ring overlay — appears around the player character while charging */
-  function createChargeRing() {
-    if (chargeRingEl) return;
-    const $cv = getCV(); if (!$cv) return;
-    const ring = document.createElement('div');
-    ring.id = 'mob-charge-ring-overlay';
-    ring.style.cssText = 'position:fixed;pointer-events:none;z-index:99990;';
-    ring.innerHTML = `<svg id="mob-charge-ring-svg" viewBox="0 0 80 80" style="width:80px;height:80px;overflow:visible;">
-      <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(155,48,255,0.18)" stroke-width="4"/>
-      <circle id="mob-charge-ring-arc" cx="40" cy="40" r="34" fill="none" stroke="rgba(155,48,255,0.90)"
-        stroke-width="4" stroke-linecap="round"
-        stroke-dasharray="213.6" stroke-dashoffset="213.6"
-        transform="rotate(-90 40 40)"
-        style="transition:stroke 0.2s;filter:drop-shadow(0 0 6px rgba(155,48,255,0.8));"/>
-    </svg>`;
-    document.body.appendChild(ring);
-    chargeRingEl = ring;
-  }
-
-  function positionChargeRing() {
-    if (!chargeRingEl) return;
-    const $cv = getCV(); if (!$cv) return;
-    const r = $cv.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    chargeRingEl.style.left = (cx - 40) + 'px';
-    chargeRingEl.style.top  = (cy - 40) + 'px';
-  }
-
-  function startChargeRing() {
-    createChargeRing();
-    positionChargeRing();
-    chargeRingEl.style.display = 'block';
-    const arc = document.getElementById('mob-charge-ring-arc');
-    if (!arc) return;
-    const circumference = 213.6;
-    const startTime = performance.now();
-    function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / CHARGE_RING_MS, 1);
-      const offset = circumference * (1 - progress);
-      arc.setAttribute('stroke-dashoffset', offset);
-      // colour shift: purple → orange → red as it fills
-      if (progress < 0.5) {
-        arc.setAttribute('stroke', 'rgba(155,48,255,0.90)');
-      } else if (progress < 0.85) {
-        arc.setAttribute('stroke', 'rgba(255,130,0,0.95)');
-      } else {
-        arc.setAttribute('stroke', 'rgba(255,40,0,1.0)');
-      }
-      if (progress < 1) {
-        chargeRingRAF = requestAnimationFrame(tick);
-      }
-    }
-    chargeRingRAF = requestAnimationFrame(tick);
-  }
-
-  function stopChargeRing() {
-    if (chargeRingRAF) { cancelAnimationFrame(chargeRingRAF); chargeRingRAF = null; }
-    if (chargeRingEl) { chargeRingEl.style.display = 'none'; }
-    const arc = document.getElementById('mob-charge-ring-arc');
-    if (arc) arc.setAttribute('stroke-dashoffset', '213.6');
-  }
-
-
   /* ═══════════════════════════════════════════════════════
-     4.  LEFT CONTROLS  (move joystick only)
+     3.  LEFT CONTROLS  — MOVE JOYSTICK only
+         ★ NO left-zone capture — joystick reacts ONLY
+           when the player touches the joystick itself ★
   ═══════════════════════════════════════════════════════ */
   const $lc = document.createElement('div');
   $lc.id = 'mob-left-controls';
@@ -291,6 +202,7 @@
     if (nx >  AXIS) press('d'); else release('d');
   }
 
+  /* Touch ONLY on the joystick element — no zone capture */
   $jWrap.addEventListener('touchstart', (e) => {
     e.preventDefault();
     if (jTid !== null) return;
@@ -303,29 +215,49 @@
   }, { passive:false });
 
   /* ═══════════════════════════════════════════════════════
-     5.  RIGHT CONTROLS  (top-row + aim + supply)
+     4.  RIGHT CONTROLS  — CHARGE → SPRINT → AIM → SUPPLY
   ═══════════════════════════════════════════════════════ */
   const $rc = document.createElement('div');
   $rc.id = 'mob-right-controls';
   $rc.innerHTML = `
-    <div id="mob-top-row">
-      <div id="mob-sprint" role="button" aria-label="Sprint">
-        ${SVG_SPRINT}<span id="mob-sprint-lbl">SPRINT</span>
-      </div>
+    <!-- 1. CHARGE SHOT -->
+    <div id="mob-charge" role="button" aria-label="Charge Shot">
+      <svg id="mob-charge-ring-svg" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle id="mob-charge-progress" cx="25" cy="25" r="23"
+          stroke="rgba(255,100,0,.88)" stroke-width="3" fill="none"
+          stroke-linecap="round"
+          stroke-dasharray="${CHARGE_CIRC}" stroke-dashoffset="${CHARGE_CIRC}"/>
+      </svg>
+      ${SVG_CHARGE}
+      <span id="mob-charge-lbl">CHARGE</span>
     </div>
+
+    <!-- 2. SPRINT -->
+    <div id="mob-sprint" role="button" aria-label="Sprint">
+      ${SVG_SPRINT}
+      <span id="mob-sprint-lbl">SPRINT</span>
+    </div>
+
+    <!-- 3. AIM + FIRE -->
     <div id="mob-aim-wrap">
       <div id="mob-aim-base">
         <div id="mob-aim-knob">${SVG_AIM}</div>
         <span id="mob-aim-label">AIM + FIRE</span>
       </div>
     </div>
+
+    <!-- 4. SUPPLY ROW -->
     <div id="mob-supply-row"></div>`;
   document.body.appendChild($rc);
 
-  const $aBase   = document.getElementById('mob-aim-base');
-  const $aKnob   = document.getElementById('mob-aim-knob');
-  const $sprint  = document.getElementById('mob-sprint');
-  const $sRow    = document.getElementById('mob-supply-row');
+  const $aBase    = document.getElementById('mob-aim-base');
+  const $aKnob    = document.getElementById('mob-aim-knob');
+  const $sprint   = document.getElementById('mob-sprint');
+  const $charge   = document.getElementById('mob-charge');
+  const $chargeLbl= document.getElementById('mob-charge-lbl');
+  const $chargeRing = document.getElementById('mob-charge-progress');
+  const $chargeIcon = document.getElementById('mob-charge-icon');
+  const $sRow     = document.getElementById('mob-supply-row');
 
   /* ── AIM JOYSTICK ── */
   function applyAim(rawDx, rawDy) {
@@ -336,23 +268,23 @@
     $aKnob.style.transform = `translate(calc(-50% + ${nx*clamp}px), calc(-50% + ${ny*clamp}px))`;
 
     if (dist < DEADZONE) {
-      /* Returned to centre — stop firing, clear aim direction */
-      stopFire();
-      aimNx = 0; aimNy = 0;
-      $aBase.classList.remove('firing');
-      $aKnob.classList.remove('active');
+      stopFire(); aimNx = 0; aimNy = 0;
+      $aBase.classList.remove('firing'); $aKnob.classList.remove('active');
       return;
     }
-
     aimNx = nx; aimNy = ny;
-    /* Only now do we move the mouse — prevents aimbot when at rest */
-    sendAimMove(nx, ny);
-
+    sendAimMove(nx, ny);                   /* only when actively aiming */
+    rotateChargeIcon();                    /* rotate charge button to face aim */
     if (!autoFireTimer) {
-      $aBase.classList.add('firing');
-      $aKnob.classList.add('active');
+      $aBase.classList.add('firing'); $aKnob.classList.add('active');
       startFire();
     }
+  }
+
+  function rotateChargeIcon() {
+    if (!$chargeIcon || (aimNx === 0 && aimNy === 0)) return;
+    const angle = Math.atan2(aimNy, aimNx) * 180 / Math.PI;
+    $chargeIcon.style.transform = `rotate(${angle}deg)`;
   }
 
   document.getElementById('mob-aim-wrap').addEventListener('touchstart', (e) => {
@@ -365,6 +297,57 @@
     applyAim(t.clientX - aOx, t.clientY - aOy);
   }, { passive:false });
 
+  /* ── CHARGE BUTTON — 5-second hold → auto-fire ── */
+  $charge.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (cTid !== null) return;
+    cTid = e.changedTouches[0].identifier;
+    chargeStartTime = performance.now();
+    $charge.classList.add('active');
+    $chargeLbl.textContent = 'HOLD...';
+    chargeMouseDown();            /* game starts charge animation */
+    runChargeProgress();
+  }, { passive:false });
+
+  function runChargeProgress() {
+    if (cTid === null) return;
+    const elapsed = performance.now() - chargeStartTime;
+    const progress = Math.min(elapsed / (CHARGE_SEC * 1000), 1);
+    const offset   = CHARGE_CIRC * (1 - progress);
+
+    $chargeRing.style.strokeDashoffset = offset.toFixed(2);
+
+    if (progress > 0.15) $charge.classList.add('charging');
+
+    if (progress >= 1) {
+      /* COMPLETED — auto-fire */
+      resetCharge(true);
+      return;
+    }
+    chargeRafId = requestAnimationFrame(runChargeProgress);
+  }
+
+  function resetCharge(fire) {
+    cancelAnimationFrame(chargeRafId);
+    chargeRafId = null; cTid = null;
+    $chargeRing.style.strokeDashoffset = CHARGE_CIRC;
+    $charge.classList.remove('active','charging');
+    $chargeLbl.textContent = 'CHARGE';
+    if (fire) chargeMouseUp();   /* fire the charge shot */
+    else      chargeMouseUp();   /* early release also fires (partial) */
+  }
+
+  /* Charge touchend/cancel — early release also fires */
+  function onChargeEnd(e) {
+    let found = false;
+    for (const t of e.changedTouches) { if (t.identifier === cTid) { found = true; break; } }
+    if (!found) return;
+    e.preventDefault();
+    resetCharge(true);
+  }
+  $charge.addEventListener('touchend',    onChargeEnd, { passive:false });
+  $charge.addEventListener('touchcancel', onChargeEnd, { passive:false });
+
   /* ── SPRINT ── */
   $sprint.addEventListener('touchstart', (e) => {
     e.preventDefault();
@@ -375,7 +358,7 @@
   }, { passive:false });
 
   /* ═══════════════════════════════════════════════════════
-     6.  GLOBAL TOUCH ROUTER  (enables simultaneous multi-touch)
+     5.  GLOBAL TOUCH ROUTER  (multi-touch: move + aim + sprint + charge)
   ═══════════════════════════════════════════════════════ */
   document.addEventListener('touchmove', (e) => {
     if (!gameOn) return;
@@ -387,10 +370,10 @@
     if (consumed) e.preventDefault();
   }, { passive:false });
 
-  document.addEventListener('touchend',    onEnd);
-  document.addEventListener('touchcancel', onEnd);
+  document.addEventListener('touchend',    onGlobalEnd);
+  document.addEventListener('touchcancel', onGlobalEnd);
 
-  function onEnd(e) {
+  function onGlobalEnd(e) {
     for (const t of e.changedTouches) {
       if (t.identifier === jTid) {
         jTid = null;
@@ -399,63 +382,47 @@
         releaseAll();
       }
       if (t.identifier === aTid) {
-        aTid = null;
-        stopFire();
-        aimNx = 0; aimNy = 0;
-        $aBase.classList.remove('firing');
-        $aKnob.classList.remove('active');
+        aTid = null; stopFire(); aimNx = 0; aimNy = 0;
+        $aBase.classList.remove('firing'); $aKnob.classList.remove('active');
         $aKnob.style.transform = 'translate(-50%,-50%)';
       }
       if (t.identifier === sTid) {
-        sTid = null;
-        $sprint.classList.remove('active');
-        shiftKey(false);
+        sTid = null; $sprint.classList.remove('active'); shiftKey(false);
       }
     }
   }
 
   /* ═══════════════════════════════════════════════════════
-     7.  PAUSE BUTTON
+     6.  PAUSE BUTTON
   ═══════════════════════════════════════════════════════ */
-  const $pause = document.createElement('div');
-  $pause.id = 'mob-pause-btn';
-  $pause.setAttribute('role','button');
-  $pause.setAttribute('aria-label','Pause');
-  $pause.innerHTML = SVG_PAUSE;
-  document.body.appendChild($pause);
+  const $pb = document.createElement('div');
+  $pb.id = 'mob-pause-btn';
+  $pb.innerHTML = SVG_PAUSE;
+  document.body.appendChild($pb);
 
-  $pause.addEventListener('touchstart', (e) => {
+  $pb.addEventListener('touchstart', (e) => {
     e.preventDefault();
     isPaused = !isPaused;
-    $pause.innerHTML = isPaused ? SVG_PLAY : SVG_PAUSE;
-    $pause.classList.add('pressed');
-    setTimeout(() => $pause.classList.remove('pressed'), 150);
-
-    /* Try game's own pause function, fall back to Escape key */
+    $pb.innerHTML = isPaused ? SVG_PLAY : SVG_PAUSE;
+    $pb.classList.add('pressed'); setTimeout(() => $pb.classList.remove('pressed'), 150);
     if      (typeof window.pauseGame   === 'function') window.pauseGame();
     else if (typeof window.togglePause === 'function') window.togglePause();
     else document.dispatchEvent(new KeyboardEvent('keydown', { key:'Escape', code:'Escape', keyCode:27, bubbles:true, cancelable:true }));
   }, { passive:false });
 
   /* ═══════════════════════════════════════════════════════
-     8.  SUPPLY BUTTONS  (live in $sRow; move to $supplyBar during upgrade)
+     7.  SUPPLY BUTTONS
   ═══════════════════════════════════════════════════════ */
-  const $supplyBar = document.createElement('div');
-  $supplyBar.id = 'mob-supply-bar';
-  document.body.appendChild($supplyBar);
-
   const SUPPLY_MAP = [
     { id:'btn-spawn-ammo',   fn:'spawnSupply', arg:'ammo'   },
     { id:'btn-spawn-shield', fn:'spawnSupply', arg:'shield' },
     { id:'btn-spawn-heal',   fn:'spawnSupply', arg:'heal'   },
   ];
-  const supplyEls = [];
 
   function initSupply() {
     SUPPLY_MAP.forEach(({ id, fn, arg }) => {
       const $b = document.getElementById(id);
       if (!$b) return;
-      supplyEls.push($b);
       $sRow.appendChild($b);
       $b.addEventListener('touchstart', (ev) => {
         ev.stopPropagation();
@@ -464,54 +431,30 @@
     });
   }
 
-  function moveSupplyTo(target) { supplyEls.forEach(el => target.appendChild(el)); }
-
   /* ═══════════════════════════════════════════════════════
-     9.  AMMO COUNTER  — reposition to top-left below stats
+     8.  AMMO COUNTER — move to top-left below stat bars
   ═══════════════════════════════════════════════════════ */
   function repositionAmmo() {
-    /*── AMMO: top-center ── */
     const $a = document.getElementById('hud-ammo-big');
-    if ($a) {
-      const $p = $a.parentElement;
-      if ($p) {
-        $p.style.position  = 'fixed';
-        $p.style.top       = '8px';
-        $p.style.left      = '50%';
-        $p.style.transform = 'translateX(-50%)';
-        $p.style.bottom    = 'auto';
-        $p.style.textAlign = 'center';
-        $p.style.zIndex    = '9100';
-        $a.style.fontSize  = '14px';
-        $a.style.letterSpacing = '1px';
-        const $lbl = $a.nextElementSibling;
-        if ($lbl) { $lbl.style.fontSize = '6px'; $lbl.style.letterSpacing = '2px'; }
-      }
-    }
-    /* ── STAMINA: move beside ammo (right of top-center) ── */
-    const $st = document.getElementById('hud-stamina-wrap');
-    if ($st) {
-      $st.style.position  = 'fixed';
-      $st.style.top       = '10px';
-      $st.style.left      = 'calc(50% + 70px)';
-      $st.style.transform = 'none';
-      $st.style.bottom    = 'auto';
-      $st.style.zIndex    = '9100';
-      $st.style.background = 'rgba(4,0,18,0.55)';
-      $st.style.padding    = '2px 6px';
-      $st.style.borderRadius = '6px';
-      /* shrink the bar width on mobile */
-      const $bar = $st.querySelector('div > div:last-child') || $st.querySelector('[id="hud-stamina-bar"]')?.parentElement;
-      if ($bar && $bar !== $st) $bar.style.width = '60px';
-    }
+    if (!$a) return;
+    const $p = $a.parentElement; if (!$p) return;
+    $p.style.position  = 'fixed';
+    $p.style.top       = '56px';
+    $p.style.left      = '14px';
+    $p.style.bottom    = 'auto';
+    $p.style.transform = 'none';
+    $p.style.textAlign = 'left';
+    $a.style.fontSize  = '13px';
+    $a.style.letterSpacing = '1px';
+    const $lbl = $a.nextElementSibling;
+    if ($lbl) { $lbl.style.fontSize = '7px'; $lbl.style.letterSpacing = '2px'; }
   }
 
   /* ═══════════════════════════════════════════════════════
-     10.  MINIMAP KILL
+     9.  MINIMAP KILL
   ═══════════════════════════════════════════════════════ */
   function hideMinimap() {
-    const $mc = document.getElementById('minimap-canvas');
-    if (!$mc) return;
+    const $mc = document.getElementById('minimap-canvas'); if (!$mc) return;
     $mc.style.setProperty('display','none','important');
     let p = $mc.parentElement;
     while (p && p !== document.body) {
@@ -522,123 +465,76 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     11.  SHOW / HIDE PER STATE
+     10.  SHOW / HIDE
   ═══════════════════════════════════════════════════════ */
   function showGame() {
-    $lc.style.display       = 'flex';
-    $rc.style.display       = 'flex';
-    $lz.style.display       = 'block';
-    $pause.style.display    = 'flex';
-    $supplyBar.style.display= 'none';
-    moveSupplyTo($sRow);
-    isPaused = false; $pause.innerHTML = SVG_PAUSE;
-    /* reset any stuck joystick touch IDs so Continue/Play Again work cleanly */
-    jTid = null; aTid = null; sTid = null; cTid = null;
-    $jKnob.style.transform = 'translate(-50%,-50%)';
-    $jKnob.classList.remove('active');
-    $aKnob.style.transform = 'translate(-50%,-50%)';
-    $aKnob.classList.remove('active');
-    $aBase.classList.remove('firing');
-  }
-
-  function showUpgrade() {
-    $lc.style.display       = 'none';
-    $rc.style.display       = 'none';
-    $lz.style.display       = 'none';
-    $pause.style.display    = 'none';
-    $supplyBar.style.display= 'none';  /* hide floating supply bar — upgrade screen shows rewards only */
-    moveSupplyTo($supplyBar);
-    stopFire(); releaseAll(); shiftKey(false);
+    $lc.style.display  = 'flex';
+    $rc.style.display  = 'flex';
+    $pb.style.display  = 'flex';
+    isPaused = false; $pb.innerHTML = SVG_PAUSE;
   }
 
   function hideAll() {
-    $lc.style.display       = 'none';
-    $rc.style.display       = 'none';
-    $lz.style.display       = 'none';
-    $pause.style.display    = 'none';
-    $supplyBar.style.display= 'none';
+    $lc.style.display  = 'none';
+    $rc.style.display  = 'none';
+    $pb.style.display  = 'none';
     stopFire(); releaseAll(); shiftKey(false);
     aimNx = 0; aimNy = 0;
+    /* abort any running charge */
+    if (cTid !== null) { cancelAnimationFrame(chargeRafId); chargeRafId = null; cTid = null; $chargeRing.style.strokeDashoffset = CHARGE_CIRC; $charge.classList.remove('active','charging'); $chargeLbl.textContent = 'CHARGE'; chargeMouseUp(); }
   }
 
   /* ═══════════════════════════════════════════════════════
-     12.  GAME STATE DETECTION
+     11.  GAME STATE DETECTION
+          pause-menu / game-over / upgrade → hideAll()
+          game active (none of above) → showGame()
   ═══════════════════════════════════════════════════════ */
   function vis(id) { const el = document.getElementById(id); return el && window.getComputedStyle(el).display !== 'none'; }
 
   function evalState() {
     const gsOn = vis('game-screen');
-    const usOn = vis('upgrade-screen');
+    const pmOn = vis('pause-menu');
     const goOn = vis('game-over-screen');
+    const usOn = vis('upgrade-screen');
 
-    /* Game Over → hide everything */
-    if (goOn && !gameOverOn) { gameOverOn = true; hideAll(); return; }
-    if (!goOn && gameOverOn) { gameOverOn = false; }
-
-    /* Not in game */
-    if (!gsOn) {
-      if (gameOn || upgradeOn) { gameOn = false; upgradeOn = false; hideAll(); checkRot(); }
+    /* Any overlay → hide everything (allows buttons to be tapped freely) */
+    if (pmOn || goOn || usOn) {
+      if ($lc.style.display !== 'none') hideAll();
       return;
     }
 
-    /* Game screen is up */
-    if (!gameOn) {
-      gameOn = true; tryLock(); repositionAmmo(); hideMinimap();
-      showGame(); return;  /* show controls immediately on first detection */
+    /* Not in a game screen at all */
+    if (!gsOn) {
+      if (gameOn) { gameOn = false; hideAll(); checkRot(); }
+      return;
     }
 
-    if (usOn && !upgradeOn) {
-      upgradeOn = true; showUpgrade();
-    } else if (!usOn && upgradeOn) {
-      upgradeOn = false; showGame();
-    } else if (!upgradeOn && $lc.style.display !== 'flex') {
-      showGame();   /* recovery */
+    /* Normal gameplay */
+    if (!gameOn) {
+      gameOn = true; tryLock(); repositionAmmo(); hideMinimap();
     }
+    if ($lc.style.display === 'none') showGame();  /* recovery */
   }
 
   function attachObs() {
     const $gs = document.getElementById('game-screen');
-    const $us = document.getElementById('upgrade-screen');
-    const $go = document.getElementById('game-over-screen');
     if (!$gs) { setTimeout(attachObs, 300); return; }
+    const targets = ['game-screen','pause-menu','game-over-screen','upgrade-screen']
+      .map(id => document.getElementById(id)).filter(Boolean);
     const obs = new MutationObserver(evalState);
-    obs.observe($gs, { attributes:true, attributeFilter:['style','class'] });
-    if ($us) obs.observe($us, { attributes:true, attributeFilter:['style','class'] });
-    if ($go) obs.observe($go, { attributes:true, attributeFilter:['style','class'] });
+    targets.forEach(el => obs.observe(el, { attributes:true, attributeFilter:['style','class'] }));
     if ($gs.parentElement) obs.observe($gs.parentElement, { childList:true });
-
-    /* Watch pause-menu: hide mobile controls while paused, restore on resume */
-    const $pm = document.getElementById('pause-menu');
-    if ($pm) {
-      const pmObs = new MutationObserver(() => {
-        const pmVisible = window.getComputedStyle($pm).display !== 'none';
-        if (pmVisible) {
-          $lc.style.display = 'none';
-          $rc.style.display = 'none';
-          $lz.style.display = 'none';
-        } else if (gameOn && !upgradeOn) {
-          showGame();
-        }
-      });
-      pmObs.observe($pm, { attributes:true, attributeFilter:['style'] });
-    }
-
     evalState();
   }
 
-  setInterval(evalState, 380);
+  setInterval(evalState, 350);
 
   /* ═══════════════════════════════════════════════════════
-     13.  BROWSER GESTURE PREVENTION
+     12.  BROWSER GESTURE PREVENTION
   ═══════════════════════════════════════════════════════ */
   document.addEventListener('touchmove', (e) => {
-    if (!gameOn) return;
-    if ($supplyBar.contains(e.target) || $sRow.contains(e.target)) return;
-    /* allow touch on pause-menu and game-over overlays */
-    const $pm2 = document.getElementById('pause-menu');
-    const $go2 = document.getElementById('game-over-screen');
-    if ($pm2 && $pm2.contains(e.target)) return;
-    if ($go2 && $go2.contains(e.target)) return;
+    if (!gameOn || vis('pause-menu') || vis('game-over-screen') || vis('upgrade-screen')) return;
+    if ($sRow.contains(e.target)) return;
     if (e.cancelable) e.preventDefault();
   }, { passive:false });
 
@@ -650,12 +546,11 @@
   const VP_G = 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no';
   $vp.content = VP_N;
 
-  const _sG = showGame; showGame   = () => { _sG(); $vp.content = VP_G; };
-  const _sU = showUpgrade; showUpgrade = () => { _sU(); $vp.content = VP_G; };
-  const _hA = hideAll; hideAll     = () => { _hA(); $vp.content = VP_N; };
+  const _sG = showGame; showGame = () => { _sG(); $vp.content = VP_G; };
+  const _hA = hideAll;  hideAll  = () => { _hA(); $vp.content = VP_N; };
 
   /* ═══════════════════════════════════════════════════════
-     14.  INIT
+     13.  INIT
   ═══════════════════════════════════════════════════════ */
   function init() {
     hideAll();
@@ -669,49 +564,9 @@
     hideMinimap();
     attachObs();
     checkRot();
-    patchOverlayButtons();
-    /* retry until buttons are found and patched */
-    const patchT = setInterval(() => { patchOverlayButtons(); }, 600);
-    setTimeout(() => clearInterval(patchT), 12000);
   }
 
-  function patchOverlayButtons() {
-    /* ── CONTINUE button ── */
-    const $pm = document.getElementById('pause-menu');
-    if ($pm) {
-      const $cont = $pm.querySelector('button[onclick*="resumeGame"]');
-      if ($cont && !$cont._mobPatched) {
-        $cont._mobPatched = true;
-        $cont.style.touchAction = 'manipulation';
-        $cont.style.pointerEvents = 'auto';
-        $cont.style.cursor = 'pointer';
-        $cont.addEventListener('touchstart', (ev) => { ev.stopPropagation(); }, { passive:true });
-        $cont.addEventListener('touchend', (ev) => {
-          ev.preventDefault(); ev.stopPropagation();
-          jTid = null; aTid = null; sTid = null;
-          releaseAll(); stopFire(); shiftKey(false);
-          setTimeout(() => { if (typeof window.resumeGame === 'function') window.resumeGame(); }, 0);
-        }, { passive:false });
-      }
-    }
-    /* ── PLAY AGAIN button ── */
-    const $go = document.getElementById('game-over-screen');
-    if ($go) {
-      const $again = $go.querySelector('button[onclick*="restartGame"]');
-      if ($again && !$again._mobPatched) {
-        $again._mobPatched = true;
-        $again.style.touchAction = 'manipulation';
-        $again.style.pointerEvents = 'auto';
-        $again.style.cursor = 'pointer';
-        $again.addEventListener('touchstart', (ev) => { ev.stopPropagation(); }, { passive:true });
-        $again.addEventListener('touchend', (ev) => {
-          ev.preventDefault(); ev.stopPropagation();
-          jTid = null; aTid = null; sTid = null;
-          releaseAll(); stopFire(); shiftKey(false);
-          setTimeout(() => { if (typeof window.restartGame === 'function') window.restartGame(); }, 0);
-        }, { passive:false });
-      }
-    }
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 
 })();
