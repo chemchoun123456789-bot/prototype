@@ -34,6 +34,8 @@
 
   /* charge button */
   let cTid = null, chargeAnimTimer = null;
+  let chargeRingEl = null, chargeRingTimer = null, chargeRingRAF = null;
+  const CHARGE_RING_MS = 5000; // 5 seconds to fill charge ring
 
   /* sprint */
   let sTid = null;
@@ -112,13 +114,10 @@
   $lz.id = 'mob-left-zone';
   document.body.appendChild($lz);
 
+  /* Left-zone: DISABLED — joystick only activates via $jWrap touchstart below */
+  /* $lz kept in DOM for touch-ring prevention but does NOT start joystick */
   $lz.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (jTid !== null) return;
-    const t = e.changedTouches[0];
-    jTid = t.identifier; jOx = t.clientX; jOy = t.clientY;
-    $jKnob.classList.add('active');
-    applyJoy(0, 0);
+    e.preventDefault(); /* block canvas touch ring only */
   }, { passive:false });
 
   /* ═══════════════════════════════════════════════════════
@@ -196,8 +195,71 @@
     $cv.dispatchEvent(new MouseEvent('click',    { clientX:x, clientY:y, button:0, bubbles:true, cancelable:true }));
   }
 
-  /* ═══════════════════════════════════════════════════════
-     4.  LEFT CONTROLS  (move joystick only)
+  /* Charge ring overlay — appears around the player character while charging */
+  function createChargeRing() {
+    if (chargeRingEl) return;
+    const $cv = getCV(); if (!$cv) return;
+    const ring = document.createElement('div');
+    ring.id = 'mob-charge-ring-overlay';
+    ring.style.cssText = 'position:fixed;pointer-events:none;z-index:99990;';
+    ring.innerHTML = `<svg id="mob-charge-ring-svg" viewBox="0 0 80 80" style="width:80px;height:80px;overflow:visible;">
+      <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(155,48,255,0.18)" stroke-width="4"/>
+      <circle id="mob-charge-ring-arc" cx="40" cy="40" r="34" fill="none" stroke="rgba(155,48,255,0.90)"
+        stroke-width="4" stroke-linecap="round"
+        stroke-dasharray="213.6" stroke-dashoffset="213.6"
+        transform="rotate(-90 40 40)"
+        style="transition:stroke 0.2s;filter:drop-shadow(0 0 6px rgba(155,48,255,0.8));"/>
+    </svg>`;
+    document.body.appendChild(ring);
+    chargeRingEl = ring;
+  }
+
+  function positionChargeRing() {
+    if (!chargeRingEl) return;
+    const $cv = getCV(); if (!$cv) return;
+    const r = $cv.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    chargeRingEl.style.left = (cx - 40) + 'px';
+    chargeRingEl.style.top  = (cy - 40) + 'px';
+  }
+
+  function startChargeRing() {
+    createChargeRing();
+    positionChargeRing();
+    chargeRingEl.style.display = 'block';
+    const arc = document.getElementById('mob-charge-ring-arc');
+    if (!arc) return;
+    const circumference = 213.6;
+    const startTime = performance.now();
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / CHARGE_RING_MS, 1);
+      const offset = circumference * (1 - progress);
+      arc.setAttribute('stroke-dashoffset', offset);
+      // colour shift: purple → orange → red as it fills
+      if (progress < 0.5) {
+        arc.setAttribute('stroke', 'rgba(155,48,255,0.90)');
+      } else if (progress < 0.85) {
+        arc.setAttribute('stroke', 'rgba(255,130,0,0.95)');
+      } else {
+        arc.setAttribute('stroke', 'rgba(255,40,0,1.0)');
+      }
+      if (progress < 1) {
+        chargeRingRAF = requestAnimationFrame(tick);
+      }
+    }
+    chargeRingRAF = requestAnimationFrame(tick);
+  }
+
+  function stopChargeRing() {
+    if (chargeRingRAF) { cancelAnimationFrame(chargeRingRAF); chargeRingRAF = null; }
+    if (chargeRingEl) { chargeRingEl.style.display = 'none'; }
+    const arc = document.getElementById('mob-charge-ring-arc');
+    if (arc) arc.setAttribute('stroke-dashoffset', '213.6');
+  }
+
+
   ═══════════════════════════════════════════════════════ */
   const $lc = document.createElement('div');
   $lc.id = 'mob-left-controls';
@@ -312,7 +374,19 @@
     cTid = e.changedTouches[0].identifier;
     $charge.classList.add('active');
     chargeDown();
-    chargeAnimTimer = setTimeout(() => $charge.classList.add('charging'), CHARGE_MS);
+    chargeAnimTimer = setTimeout(() => {
+      $charge.classList.add('charging');
+      startChargeRing();
+      /* auto-fire the charged shot after 5 seconds */
+      chargeRingTimer = setTimeout(() => {
+        /* release the charge shot automatically */
+        $charge.classList.remove('active','charging');
+        cTid = null;
+        stopChargeRing();
+        clearTimeout(chargeAnimTimer);
+        chargeRelease();
+      }, CHARGE_RING_MS);
+    }, CHARGE_MS);
   }, { passive:false });
 
   function endCharge(e) {
@@ -321,6 +395,8 @@
     if (!found) return;
     cTid = null;
     clearTimeout(chargeAnimTimer);
+    clearTimeout(chargeRingTimer);
+    stopChargeRing();
     $charge.classList.remove('active','charging');
     chargeRelease();
   }
@@ -474,6 +550,13 @@
     $supplyBar.style.display= 'none';
     moveSupplyTo($sRow);
     isPaused = false; $pause.innerHTML = SVG_PAUSE;
+    /* reset any stuck joystick touch IDs so Continue/Play Again work cleanly */
+    jTid = null; aTid = null; sTid = null; cTid = null;
+    $jKnob.style.transform = 'translate(-50%,-50%)';
+    $jKnob.classList.remove('active');
+    $aKnob.style.transform = 'translate(-50%,-50%)';
+    $aKnob.classList.remove('active');
+    $aBase.classList.remove('firing');
   }
 
   function showUpgrade() {
@@ -481,7 +564,7 @@
     $rc.style.display       = 'none';
     $lz.style.display       = 'none';
     $pause.style.display    = 'none';
-    $supplyBar.style.display= 'flex';
+    $supplyBar.style.display= 'none';  /* hide floating supply bar — upgrade screen shows rewards only */
     moveSupplyTo($supplyBar);
     stopFire(); releaseAll(); shiftKey(false);
   }
@@ -538,6 +621,37 @@
     if ($us) obs.observe($us, { attributes:true, attributeFilter:['style','class'] });
     if ($go) obs.observe($go, { attributes:true, attributeFilter:['style','class'] });
     if ($gs.parentElement) obs.observe($gs.parentElement, { childList:true });
+
+    /* Watch pause-menu: hide mobile controls while paused, restore on resume */
+    const $pm = document.getElementById('pause-menu');
+    if ($pm) {
+      const pmObs = new MutationObserver(() => {
+        const pmVisible = window.getComputedStyle($pm).display !== 'none';
+        if (pmVisible) {
+          /* PAUSED: hide joysticks & buttons, keep pause btn visible */
+          $lc.style.display = 'none';
+          $rc.style.display = 'none';
+          $lz.style.display = 'none';
+          /* patch Continue button to also restore controls */
+          const $cont = $pm.querySelector('button[onclick*="resumeGame"]');
+          if ($cont && !$cont._mobPatched) {
+            $cont._mobPatched = true;
+            $cont.addEventListener('touchstart', (ev) => {
+              ev.stopPropagation();
+              /* reset stuck touch ids */
+              jTid = null; aTid = null; sTid = null; cTid = null;
+              releaseAll(); stopFire(); shiftKey(false);
+              stopChargeRing();
+            }, { passive:true });
+          }
+        } else if (gameOn && !upgradeOn) {
+          /* RESUMED: show controls */
+          showGame();
+        }
+      });
+      pmObs.observe($pm, { attributes:true, attributeFilter:['style'] });
+    }
+
     evalState();
   }
 
