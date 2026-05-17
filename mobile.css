@@ -30,74 +30,6 @@
 /* ── D. RIGHT CONTROLS  (top-row + aim + supply) ────────── */
 #mob-right-controls{display:none;position:fixed;bottom:16px;right:16px;z-index:9999;flex-direction:column;align-items:center;gap:8px;touch-action:none;user-select:none;-webkit-user-select:none;}
 
-/* Override layout on mobile: smaller buttons, tighter spacing */
-@media (max-width:900px){
-  #mob-right-controls{
-    bottom:10px !important;
-    right:10px !important;
-    gap:6px !important;
-    align-items:center !important;
-  }
-  /* Top row: sprint left, charge right — smaller */
-  #mob-top-row{
-    gap:8px !important;
-    align-items:center !important;
-  }
-  #mob-sprint{
-    width:36px !important;
-    height:36px !important;
-  }
-  #mob-sprint svg{width:13px !important;height:13px !important;}
-  #mob-sprint-lbl{font-size:4px !important;}
-
-  #mob-charge{
-    width:44px !important;
-    height:44px !important;
-  }
-  #mob-charge svg{width:18px !important;height:18px !important;}
-  #mob-charge-lbl{font-size:4px !important;}
-
-  /* Aim joystick — slightly smaller */
-  #mob-aim-base{
-    width:90px !important;
-    height:90px !important;
-  }
-  #mob-aim-knob{
-    width:38px !important;
-    height:38px !important;
-  }
-  #mob-aim-knob svg{width:22px !important;height:22px !important;}
-
-  /* Move joystick */
-  #mob-left-controls{
-    bottom:10px !important;
-    left:10px !important;
-  }
-  #mob-joy-base{
-    width:90px !important;
-    height:90px !important;
-  }
-  #mob-joy-knob{
-    width:38px !important;
-    height:38px !important;
-  }
-  #mob-joy-knob svg{width:20px !important;height:20px !important;}
-
-  /* Supply row below aim */
-  #mob-supply-row{gap:4px !important;}
-  #mob-supply-row > div{
-    padding:2px 5px !important;
-    min-width:32px !important;
-    border-radius:6px !important;
-  }
-  #mob-supply-row > div > div:first-child{font-size:9px !important;}
-  #mob-supply-row > div > div:nth-child(2){font-size:4.5px !important;}
-  #mob-supply-row > div > div:nth-child(3){font-size:5px !important;}
-  #mob-supply-row > div > div:nth-child(4){font-size:5px !important;}
-}
-
-
-
 /* Top row: Sprint (left) + Charge (right) */
 #mob-top-row{display:flex;flex-direction:row;align-items:center;gap:14px;}
 
@@ -133,6 +65,48 @@
 #mob-supply-row > div > div:nth-child(2){font-size:5.5px !important;letter-spacing:.7px !important;}
 #mob-supply-row > div > div:nth-child(3){font-size:6px !important;}
 #mob-supply-row > div > div:nth-child(4){font-size:6px !important;}
+
+/* ── Mobile overrides: tighter layout, smaller buttons ─────── */
+@media (max-width:900px){
+  /* Right panel */
+  #mob-right-controls{
+    bottom:10px !important;
+    right:10px !important;
+    gap:6px !important;
+    align-items:center !important;
+  }
+  /* Top row */
+  #mob-top-row{ gap:8px !important; align-items:center !important; }
+
+  /* Sprint smaller */
+  #mob-sprint{ width:36px !important; height:36px !important; }
+  #mob-sprint svg{ width:13px !important; height:13px !important; }
+  #mob-sprint-lbl{ font-size:4px !important; }
+
+  /* Charge smaller */
+  #mob-charge{ width:44px !important; height:44px !important; }
+  #mob-charge svg{ width:18px !important; height:18px !important; }
+  #mob-charge-lbl{ font-size:4px !important; }
+
+  /* Aim joystick smaller */
+  #mob-aim-base{ width:90px !important; height:90px !important; }
+  #mob-aim-knob{ width:38px !important; height:38px !important; }
+  #mob-aim-knob svg{ width:22px !important; height:22px !important; }
+
+  /* Move joystick */
+  #mob-left-controls{ bottom:10px !important; left:10px !important; }
+  #mob-joy-base{ width:90px !important; height:90px !important; }
+  #mob-joy-knob{ width:38px !important; height:38px !important; }
+  #mob-joy-knob svg{ width:20px !important; height:20px !important; }
+
+  /* Supply row */
+  #mob-supply-row{ gap:4px !important; }
+  #mob-supply-row > div{ padding:2px 5px !important; min-width:32px !important; border-radius:6px !important; }
+  #mob-supply-row > div > div:first-child{ font-size:9px !important; }
+  #mob-supply-row > div > div:nth-child(2){ font-size:4.5px !important; }
+  #mob-supply-row > div > div:nth-child(3){ font-size:5px !important; }
+  #mob-supply-row > div > div:nth-child(4){ font-size:5px !important; }
+}
 
 /* ── E. PAUSE BUTTON (top-right, above wave) ─────────────── */
 #mob-pause-btn{display:none;position:fixed;top:8px;right:8px;z-index:9990;width:34px;height:34px;border-radius:8px;background:rgba(4,0,18,.60);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 0 10px rgba(0,0,0,.30);display:none;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all .10s ease;}
