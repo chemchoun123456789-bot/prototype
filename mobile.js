@@ -312,9 +312,6 @@
       <div id="mob-sprint" role="button" aria-label="Sprint">
         ${SVG_SPRINT}<span id="mob-sprint-lbl">SPRINT</span>
       </div>
-      <div id="mob-charge" role="button" aria-label="Charge Shot">
-        ${SVG_CHARGE}<span id="mob-charge-lbl">CHARGE</span>
-      </div>
     </div>
     <div id="mob-aim-wrap">
       <div id="mob-aim-base">
@@ -328,7 +325,6 @@
   const $aBase   = document.getElementById('mob-aim-base');
   const $aKnob   = document.getElementById('mob-aim-knob');
   const $sprint  = document.getElementById('mob-sprint');
-  const $charge  = document.getElementById('mob-charge');
   const $sRow    = document.getElementById('mob-supply-row');
 
   /* ── AIM JOYSTICK ── */
@@ -368,42 +364,6 @@
     aOx = br.left + br.width/2; aOy = br.top + br.height/2;
     applyAim(t.clientX - aOx, t.clientY - aOy);
   }, { passive:false });
-
-  /* ── CHARGE BUTTON ── */
-  $charge.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (cTid !== null) return;
-    cTid = e.changedTouches[0].identifier;
-    $charge.classList.add('active');
-    chargeDown();
-    chargeAnimTimer = setTimeout(() => {
-      $charge.classList.add('charging');
-      startChargeRing();
-      /* auto-fire the charged shot after 5 seconds */
-      chargeRingTimer = setTimeout(() => {
-        /* release the charge shot automatically */
-        $charge.classList.remove('active','charging');
-        cTid = null;
-        stopChargeRing();
-        clearTimeout(chargeAnimTimer);
-        chargeRelease();
-      }, CHARGE_RING_MS);
-    }, CHARGE_MS);
-  }, { passive:false });
-
-  function endCharge(e) {
-    let found = false;
-    for (const t of e.changedTouches) { if (t.identifier === cTid) { found = true; break; } }
-    if (!found) return;
-    cTid = null;
-    clearTimeout(chargeAnimTimer);
-    clearTimeout(chargeRingTimer);
-    stopChargeRing();
-    $charge.classList.remove('active','charging');
-    chargeRelease();
-  }
-  $charge.addEventListener('touchend',    endCharge, { passive:false });
-  $charge.addEventListener('touchcancel', endCharge, { passive:false });
 
   /* ── SPRINT ── */
   $sprint.addEventListener('touchstart', (e) => {
@@ -510,20 +470,40 @@
      9.  AMMO COUNTER  — reposition to top-left below stats
   ═══════════════════════════════════════════════════════ */
   function repositionAmmo() {
+    /*── AMMO: top-center ── */
     const $a = document.getElementById('hud-ammo-big');
-    if (!$a) return;
-    const $p = $a.parentElement;
-    if (!$p) return;
-    $p.style.position  = 'fixed';
-    $p.style.top       = '56px';
-    $p.style.left      = '14px';
-    $p.style.bottom    = 'auto';
-    $p.style.transform = 'none';
-    $p.style.textAlign = 'left';
-    $a.style.fontSize  = '13px';
-    $a.style.letterSpacing = '1px';
-    const $lbl = $a.nextElementSibling;
-    if ($lbl) { $lbl.style.fontSize = '7px'; $lbl.style.letterSpacing = '2px'; }
+    if ($a) {
+      const $p = $a.parentElement;
+      if ($p) {
+        $p.style.position  = 'fixed';
+        $p.style.top       = '8px';
+        $p.style.left      = '50%';
+        $p.style.transform = 'translateX(-50%)';
+        $p.style.bottom    = 'auto';
+        $p.style.textAlign = 'center';
+        $p.style.zIndex    = '9100';
+        $a.style.fontSize  = '14px';
+        $a.style.letterSpacing = '1px';
+        const $lbl = $a.nextElementSibling;
+        if ($lbl) { $lbl.style.fontSize = '6px'; $lbl.style.letterSpacing = '2px'; }
+      }
+    }
+    /* ── STAMINA: move beside ammo (right of top-center) ── */
+    const $st = document.getElementById('hud-stamina-wrap');
+    if ($st) {
+      $st.style.position  = 'fixed';
+      $st.style.top       = '10px';
+      $st.style.left      = 'calc(50% + 70px)';
+      $st.style.transform = 'none';
+      $st.style.bottom    = 'auto';
+      $st.style.zIndex    = '9100';
+      $st.style.background = 'rgba(4,0,18,0.55)';
+      $st.style.padding    = '2px 6px';
+      $st.style.borderRadius = '6px';
+      /* shrink the bar width on mobile */
+      const $bar = $st.querySelector('div > div:last-child') || $st.querySelector('[id="hud-stamina-bar"]')?.parentElement;
+      if ($bar && $bar !== $st) $bar.style.width = '60px';
+    }
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -633,28 +613,47 @@
       const pmObs = new MutationObserver(() => {
         const pmVisible = window.getComputedStyle($pm).display !== 'none';
         if (pmVisible) {
-          /* PAUSED: hide joysticks & buttons, keep pause btn visible */
+          /* PAUSED: hide joysticks & buttons */
           $lc.style.display = 'none';
           $rc.style.display = 'none';
           $lz.style.display = 'none';
-          /* patch Continue button to also restore controls */
+          /* patch Continue button — call resumeGame directly on touchend */
           const $cont = $pm.querySelector('button[onclick*="resumeGame"]');
           if ($cont && !$cont._mobPatched) {
             $cont._mobPatched = true;
-            $cont.addEventListener('touchstart', (ev) => {
-              ev.stopPropagation();
-              /* reset stuck touch ids */
+            $cont.addEventListener('touchend', (ev) => {
+              ev.preventDefault();
               jTid = null; aTid = null; sTid = null; cTid = null;
               releaseAll(); stopFire(); shiftKey(false);
-              stopChargeRing();
-            }, { passive:true });
+              if (typeof window.resumeGame === 'function') window.resumeGame();
+            }, { passive:false });
           }
         } else if (gameOn && !upgradeOn) {
-          /* RESUMED: show controls */
           showGame();
         }
       });
       pmObs.observe($pm, { attributes:true, attributeFilter:['style'] });
+    }
+
+    /* patch Play Again button */
+    const $goScreen = document.getElementById('game-over-screen');
+    if ($goScreen) {
+      const goObs = new MutationObserver(() => {
+        const goVisible = window.getComputedStyle($goScreen).display !== 'none';
+        if (goVisible) {
+          const $again = $goScreen.querySelector('button[onclick*="restartGame"]');
+          if ($again && !$again._mobPatched) {
+            $again._mobPatched = true;
+            $again.addEventListener('touchend', (ev) => {
+              ev.preventDefault();
+              jTid = null; aTid = null; sTid = null; cTid = null;
+              releaseAll(); stopFire(); shiftKey(false);
+              if (typeof window.restartGame === 'function') window.restartGame();
+            }, { passive:false });
+          }
+        }
+      });
+      goObs.observe($goScreen, { attributes:true, attributeFilter:['style'] });
     }
 
     evalState();
