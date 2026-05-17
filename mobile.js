@@ -600,13 +600,16 @@
     }
 
     /* Game screen is up */
-    if (!gameOn) { gameOn = true; tryLock(); repositionAmmo(); hideMinimap(); }
+    if (!gameOn) {
+      gameOn = true; tryLock(); repositionAmmo(); hideMinimap();
+      showGame(); return;  /* show controls immediately on first detection */
+    }
 
     if (usOn && !upgradeOn) {
       upgradeOn = true; showUpgrade();
     } else if (!usOn && upgradeOn) {
       upgradeOn = false; showGame();
-    } else if (!upgradeOn && $lc.style.display === 'none') {
+    } else if (!upgradeOn && $lc.style.display !== 'flex') {
       showGame();   /* recovery */
     }
   }
